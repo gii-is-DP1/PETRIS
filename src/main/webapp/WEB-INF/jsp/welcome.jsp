@@ -21,5 +21,9 @@
             <spring:url value="/resources/images/pets.png" htmlEscape="true" var="petsImage"/>
             <img class="img-responsive" src="${petsImage}"/>
         </div>
+        <div class="col-md-13">
+            <spring:url value="/resources/images/universidadLogo.png" htmlEscape="true" var="petsImage"/>
+            <img class="img-responsive" src="${petsImage}" width="350px"/>
+        </div>
     </div>
 </petclinic:layout>

@@ -36,9 +36,8 @@
         <id>gonriblun</id>
         <name>Gonzalo</name>
         <email>gonriblun@alum.us.es</email>
-        <url>http://www.tmht.com/gonriblun</url>
         <roles>
-        <role>leader</role>
+        <role>student</role>
         </roles>
         </developer>
     </developers>

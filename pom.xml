@@ -32,6 +32,17 @@
 
     </properties>
 
+    <developers>
+        <developer>
+            <id>lucantdel</id>
+            <name>Lucas</name>
+            <email>lucantdel@alum.us.es</email>
+            <roles>
+                <role>student</role>
+            </roles>
+        </developer>
+    <developers>
+
     <dependencies>
         <!-- Spring and Spring Boot dependencies -->
         <dependency>

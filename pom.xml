@@ -48,6 +48,15 @@
                 <role>student</role>
             </roles>
         </developer>
+
+        <developer>
+            <id>raumerbas</id>
+            <name>Raul</name>
+            <email>raumerbas@alum.us.es</email>
+            <roles>
+                <role>student</role>
+            </roles>
+        </developer>
     </developers>
 
     <dependencies>

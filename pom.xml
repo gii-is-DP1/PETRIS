@@ -40,7 +40,16 @@
         <role>student</role>
         </roles>
         </developer>
+        <developer>
+            <id>dancorfon</id>
+            <name>Daniel</name>
+            <email>dancorfon@alum.us.es</email>
+            <roles>
+                <role>student</role>
+            </roles>
+        </developer>
     </developers>
+
     <dependencies>
         <!-- Spring and Spring Boot dependencies -->
         <dependency>

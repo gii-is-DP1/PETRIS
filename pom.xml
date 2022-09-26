@@ -40,6 +40,7 @@
         <role>student</role>
         </roles>
         </developer>
+        
         <developer>
             <id>dancorfon</id>
             <name>Daniel</name>
@@ -53,6 +54,15 @@
             <id>raumerbas</id>
             <name>Raul</name>
             <email>raumerbas@alum.us.es</email>
+            <roles>
+                <role>student</role>
+            </roles>
+        </developer>
+
+        <developer>
+            <id>ferbaqfer</id>
+            <name>Fernando</name>
+            <email>ferbaqfer@alum.us.es</email>
             <roles>
                 <role>student</role>
             </roles>

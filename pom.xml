@@ -67,9 +67,7 @@
                 <role>student</role>
             </roles>
         </developer>
-    </developers>
-
-    <developers>
+        
         <developer>
             <id>lucantdel</id>
             <name>Lucas</name>
@@ -78,7 +76,7 @@
                 <role>student</role> 
             </roles>
         </developer>
-    <developers>
+    </developers>
 
     <dependencies>
         <!-- Spring and Spring Boot dependencies -->

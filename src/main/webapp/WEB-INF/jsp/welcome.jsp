@@ -66,10 +66,9 @@
             <body>
 
                 
-                <button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 65%;">Iniciar sesion</button>
+                <form action="/login2"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 65%;">Iniciar sesion</button></form>
                 <button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 55%;">Registrarse</button>
-                <h1 style="position: absolute; right: 41%; bottom: 33%;">Como jugar</h1>
-                <iframe src="https://drive.google.com/file/d/1YNfE8CKL91dhHQvb4ToP3VycgK_pLOQX/preview" style="height: 300px; width: 600px; position: absolute; right: 33%; bottom: 2%;" allow="autoplay"></iframe>
+                <form action="/video"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 45%;">Como jugar</button></form>
                 <img src="https://2tomatoesgames.com/wp-content/uploads/2020/07/petris-logo.png" style="height: 150px; position: absolute; right: 35%; bottom: 80%;">
 
 

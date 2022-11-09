@@ -34,7 +34,17 @@ public class Game extends BaseEntity{
     @Column(name = "loser")
     private String loser;
 
+    @NotNull
+    @Column(name = "phase_type_id")
+    private PhaseType phaseType;
 
+    @NotNull
+    @JoinColumn(name = "player_id")
+    private Player player1;
+
+    @NotNull
+    @JoinColumn(name = "player_id")
+    private Player player2;
     
 
 }

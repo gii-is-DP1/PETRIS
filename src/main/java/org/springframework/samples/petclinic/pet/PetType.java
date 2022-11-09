@@ -20,9 +20,14 @@ import javax.persistence.Table;
 
 import org.springframework.samples.petclinic.model.NamedEntity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author Juergen Hoeller Can be Cat, Dog, Hamster...
  */
+@Getter
+@Setter
 @Entity
 @Table(name = "types")
 public class PetType extends NamedEntity {

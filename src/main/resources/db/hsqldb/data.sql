@@ -107,6 +107,8 @@ INSERT INTO tokens(id, token_type_id , colour_id, space_id, player_id) VALUES (2
 INSERT INTO tokens(id, token_type_id , colour_id, space_id, player_id) VALUES (3, 2,1,6, 1 );
 INSERT INTO tokens(id, token_type_id , colour_id, space_id, player_id) VALUES (4, 2,2, null, 2);
 
+INSERT INTO phase_types(id, name) VALUES (1,'Spread');
+INSERT INTO phase_types(id, name) VALUES (2,'Contamination');
+INSERT INTO phase_types(id, name) VALUES (3,'Binary Fision');
 
-
-
+INSERT INTO games(id,time,round,winner,loser,phase_type_id,player_id,player_id) VALUES (1, 30, 1,2, "", "", 1, 2);

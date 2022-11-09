@@ -111,4 +111,4 @@ INSERT INTO phase_types(id, name) VALUES (1,'Spread');
 INSERT INTO phase_types(id, name) VALUES (2,'Contamination');
 INSERT INTO phase_types(id, name) VALUES (3,'Binary Fision');
 
-INSERT INTO games(id,time,round,winner,loser,phase_type_id,player_id,player_id) VALUES (1, 30, 1,2, "", "", 1, 2);
+INSERT INTO games(id, loser, round, time, winner, phase_type_id, player1_id, player2_id) VALUES (1,'A', 2, 15, 'B', 2, 1, 2);

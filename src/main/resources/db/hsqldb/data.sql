@@ -1,23 +1,13 @@
--- One admin user, named admin1 with passwor 4dm1n and authority admin
-INSERT INTO users(username,password,enabled) VALUES ('admin1','4dm1n',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
--- One owner user, named owner1 with passwor 0wn3r
-INSERT INTO users(username,password,enabled) VALUES ('owner1','0wn3r',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (2,'owner1','owner');
--- One vet user, named vet1 with passwor v3t
-INSERT INTO users(username,password,enabled) VALUES ('vet1','v3t',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (3,'vet1','veterinarian');
-
-INSERT INTO users(username,password,enabled) VALUES ('raumerbas','0wn3r',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (5,'raumerbas','owner');
-INSERT INTO users(username,password,enabled) VALUES ('gonriblun','7913',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (4,'gonriblun','owner');
-INSERT INTO users(username,password,enabled) VALUES ('lucantdel','0wn3r',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (6,'lucantdel','owner');
-INSERT INTO users(username,password,enabled) VALUES ('dancorfon','0wn3r',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (7,'dancorfon','owner');
-INSERT INTO users(username,password,enabled) VALUES ('jaigargar1','0wn3r',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (8,'jaigargar1','owner');
+INSERT INTO users(username,email,points,played_games,winned_games,losed_games,password) VALUES ('raumerbas','top1delmundo@email.com',100,28,27,1,'soygod');
+INSERT INTO authorities(id,username,authority) VALUES (1,'raumerbas','admin');
+INSERT INTO users(username,email,points,played_games,winned_games,losed_games,password) VALUES ('gonriblun','top2delmundo@email.com',100,25,21,4,'soysemigod');
+INSERT INTO authorities(id,username,authority) VALUES (2,'gonriblun','admin');
+INSERT INTO users(username,email,points,played_games,winned_games,losed_games,password) VALUES ('lucantdel','top3delmundo@email.com',100,28,24,4,'soysemigod');
+INSERT INTO authorities(id,username,authority) VALUES (3,'lucantdel','admin');
+INSERT INTO users(username,email,points,played_games,winned_games,losed_games,password) VALUES ('dancorfon','top4delmundo@email.com',100,24,21,3,'soysemigod');
+INSERT INTO authorities(id,username,authority) VALUES (4,'dancorfon','admin');
+INSERT INTO users(username,email,points,played_games,winned_games,losed_games,password) VALUES ('jaigargar1','top5delmundo@email.com',100,25,20,5,'soysemigod');
+INSERT INTO authorities(id,username,authority) VALUES (5,'jaigargar1','admin');
 
 
 INSERT INTO vets(id, first_name,last_name) VALUES (1, 'James', 'Carter');
@@ -111,4 +101,4 @@ INSERT INTO phase_types(id, name) VALUES (1,'Spread');
 INSERT INTO phase_types(id, name) VALUES (2,'Contamination');
 INSERT INTO phase_types(id, name) VALUES (3,'Binary Fision');
 
-INSERT INTO games(id,time,round,winner,loser,phase_type_id,player_id,player_id) VALUES (1, 30, 1,2, "", "", 1, 2);
+

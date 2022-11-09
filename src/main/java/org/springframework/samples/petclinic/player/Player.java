@@ -5,6 +5,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.apache.tomcat.jni.User;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.token.Colour;
 

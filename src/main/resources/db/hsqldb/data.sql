@@ -1,14 +1,15 @@
 INSERT INTO users(username,email,points,played_games,winned_games,losed_games,password) VALUES ('raumerbas','top1delmundo@email.com',100,28,27,1,'soygod');
-INSERT INTO authorities(id,username,authority) VALUES (1,'raumerbas','admin');
 INSERT INTO users(username,email,points,played_games,winned_games,losed_games,password) VALUES ('gonriblun','top2delmundo@email.com',100,25,21,4,'soysemigod');
-INSERT INTO authorities(id,username,authority) VALUES (2,'gonriblun','admin');
 INSERT INTO users(username,email,points,played_games,winned_games,losed_games,password) VALUES ('lucantdel','top3delmundo@email.com',100,28,24,4,'soysemigod');
-INSERT INTO authorities(id,username,authority) VALUES (3,'lucantdel','admin');
 INSERT INTO users(username,email,points,played_games,winned_games,losed_games,password) VALUES ('dancorfon','top4delmundo@email.com',100,24,21,3,'soysemigod');
-INSERT INTO authorities(id,username,authority) VALUES (4,'dancorfon','admin');
 INSERT INTO users(username,email,points,played_games,winned_games,losed_games,password) VALUES ('jaigargar1','top5delmundo@email.com',100,25,20,5,'soysemigod');
+/*
+INSERT INTO authorities(id,username,authority) VALUES (1,'raumerbas','admin');
+INSERT INTO authorities(id,username,authority) VALUES (2,'gonriblun','admin');
+INSERT INTO authorities(id,username,authority) VALUES (3,'lucantdel','admin');
+INSERT INTO authorities(id,username,authority) VALUES (4,'dancorfon','admin');
 INSERT INTO authorities(id,username,authority) VALUES (5,'jaigargar1','admin');
-
+*/
 
 INSERT INTO vets(id, first_name,last_name) VALUES (1, 'James', 'Carter');
 INSERT INTO vets(id, first_name,last_name) VALUES (2, 'Helen', 'Leary');
@@ -35,21 +36,21 @@ INSERT INTO types VALUES (5, 'bird');
 INSERT INTO types VALUES (6, 'hamster');
 INSERT INTO types VALUES (7, 'turtle');
 
-INSERT INTO owners VALUES (1, 'George', 'Franklin', '110 W. Liberty St.', 'Madison', '6085551023', 'owner1');
-INSERT INTO owners VALUES (2, 'Betty', 'Davis', '638 Cardinal Ave.', 'Sun Prairie', '6085551749', 'owner1');
-INSERT INTO owners VALUES (3, 'Eduardo', 'Rodriquez', '2693 Commerce St.', 'McFarland', '6085558763', 'owner1');
-INSERT INTO owners VALUES (4, 'Harold', 'Davis', '563 Friendly St.', 'Windsor', '6085553198', 'owner1');
-INSERT INTO owners VALUES (5, 'Peter', 'McTavish', '2387 S. Fair Way', 'Madison', '6085552765', 'owner1');
-INSERT INTO owners VALUES (6, 'Jean', 'Coleman', '105 N. Lake St.', 'Monona', '6085552654', 'owner1');
-INSERT INTO owners VALUES (7, 'Jeff', 'Black', '1450 Oak Blvd.', 'Monona', '6085555387', 'owner1');
-INSERT INTO owners VALUES (8, 'Maria', 'Escobito', '345 Maple St.', 'Madison', '6085557683', 'owner1');
-INSERT INTO owners VALUES (9, 'David', 'Schroeder', '2749 Blackhawk Trail', 'Madison', '6085559435', 'owner1');
-INSERT INTO owners VALUES (10, 'Carlos', 'Estaban', '2335 Independence La.', 'Waunakee', '6085555487', 'owner1');
+INSERT INTO owners VALUES (1, 'George', 'Franklin', '110 W. Liberty St.', 'Madison', '6085551023', 'raumerbas');
+INSERT INTO owners VALUES (2, 'Betty', 'Davis', '638 Cardinal Ave.', 'Sun Prairie', '6085551749', 'raumerbas');
+INSERT INTO owners VALUES (3, 'Eduardo', 'Rodriquez', '2693 Commerce St.', 'McFarland', '6085558763', 'raumerbas');
+INSERT INTO owners VALUES (4, 'Harold', 'Davis', '563 Friendly St.', 'Windsor', '6085553198', 'raumerbas');
+INSERT INTO owners VALUES (5, 'Peter', 'McTavish', '2387 S. Fair Way', 'Madison', '6085552765', 'raumerbas');
+INSERT INTO owners VALUES (6, 'Jean', 'Coleman', '105 N. Lake St.', 'Monona', '6085552654', 'raumerbas');
+INSERT INTO owners VALUES (7, 'Jeff', 'Black', '1450 Oak Blvd.', 'Monona', '6085555387', 'raumerbas');
+INSERT INTO owners VALUES (8, 'Maria', 'Escobito', '345 Maple St.', 'Madison', '6085557683', 'raumerbas');
+INSERT INTO owners VALUES (9, 'David', 'Schroeder', '2749 Blackhawk Trail', 'Madison', '6085559435', 'raumerbas');
+INSERT INTO owners VALUES (10, 'Carlos', 'Estaban', '2335 Independence La.', 'Waunakee', '6085555487', 'raumerbas');
 INSERT INTO owners VALUES (12, 'Raul', 'Hernan', 'Ecija', 'Sevilla', '6085558767', 'raumerbas');
-INSERT INTO owners VALUES (11, 'Gonzalo', 'Ribas', 'Espartinas', 'Sevilla', '6418176718', 'gonriblun');
-INSERT INTO owners VALUES (13, 'Lucas', 'Antonanzas', 'Los Bermejales', 'Sevilla', '6013123720', 'lucantdel');
-INSERT INTO owners VALUES (14, 'Daniel', 'Cortes', 'Tomares', 'Sevilla', '6714685968', 'dancorfon');
-INSERT INTO owners VALUES (15, 'Jaime', 'Garcia', 'Santa Justa', 'Sevilla', '6714435395', 'jaigargar1');
+INSERT INTO owners VALUES (11, 'Gonzalo', 'Ribas', 'Espartinas', 'Sevilla', '6418176718', 'raumerbas');
+INSERT INTO owners VALUES (13, 'Lucas', 'Antonanzas', 'Los Bermejales', 'Sevilla', '6013123720', 'raumerbas');
+INSERT INTO owners VALUES (14, 'Daniel', 'Cortes', 'Tomares', 'Sevilla', '6714685968', 'raumerbas');
+INSERT INTO owners VALUES (15, 'Jaime', 'Garcia', 'Santa Justa', 'Sevilla', '6714435395', 'raumerbas');
 
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (1, 'Leo', '2010-09-07', 1, 1);
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (2, 'Basil', '2012-08-06', 6, 2);

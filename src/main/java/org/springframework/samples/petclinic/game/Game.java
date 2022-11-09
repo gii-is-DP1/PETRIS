@@ -1,7 +1,5 @@
 package org.springframework.samples.petclinic.game;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -23,31 +21,29 @@ import lombok.Setter;
 public class Game extends BaseEntity{
 
     @Column(name = "time")
-    private LocalDateTime time; 
+    private Integer time; 
 
     @NotNull
     @Column(name = "round")
     @Range(min=0, max=4)
     private Integer round;
 
-    @Column(name = "winner_id")
-    private Player winner;
+    @Column(name = "winner")
+    private String winner;
 
-    @Column(name = "loser_id")
-    private Player loser;
-
-    @NotNull
-    @Column(name = "phase_id")
-    private PhaseType phase;
+    @Column(name = "loser")
+    private String loser;
 
     @NotNull
-    @OneToMany
-    @JoinColumn(name="player1_id")
+    @Column(name = "phase_type_id")
+    private PhaseType phaseType;
+
+    @NotNull
+    @JoinColumn(name = "player_id")
     private Player player1;
 
     @NotNull
-    @OneToMany
-    @JoinColumn(name="player2_id")
+    @JoinColumn(name = "player_id")
     private Player player2;
 
 }

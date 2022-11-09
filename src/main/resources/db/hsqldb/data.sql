@@ -85,8 +85,30 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03', 'neutered');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
 
-INSERT INTO phase_types(id, name) VALUES (1,'Spread')
-INSERT INTO phase_types(id, name) VALUES (2,'Contamination')
-INSERT INTO phase_types(id, name) VALUES (3,'Binary Fision')
+INSERT INTO colours(id,name) VALUES (1, 'red');
+INSERT INTO colours(id,name) VALUES (2, 'black');
 
-INSERT INTO games(id,time,round,winner_id,loser_id,phase_id,player1_id,player2_id) VALUES (1, , 1, , , 2, 1, 2)
+INSERT INTO token_types(id,name) VALUES (1, 'bacterium');
+INSERT INTO token_types(id,name) VALUES (2, 'sarcina');
+
+INSERT INTO spaces(id, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas) VALUES (1, 0,0,0,0);
+INSERT INTO spaces(id, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas) VALUES (2, 0,0,0,0);
+INSERT INTO spaces(id, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas) VALUES (3, 0,0,0,0);
+INSERT INTO spaces(id, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas) VALUES (4, 0,0,0,0);
+INSERT INTO spaces(id, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas) VALUES (5, 0,0,0,0);
+INSERT INTO spaces(id, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas) VALUES (6, 0,0,0,0);
+INSERT INTO spaces(id, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas) VALUES (7, 0,0,0,0);
+
+INSERT INTO players(id, turn , colour_id, used_bacteria, used_sarcinas, contamination_points) VALUES (1, TRUE , 1 , 0,0,0);
+INSERT INTO players(id, turn , colour_id, used_bacteria, used_sarcinas, contamination_points) VALUES (2, FALSE , 2 , 0,0,0);
+
+INSERT INTO tokens(id, token_type_id , colour_id, space_id, player_id) VALUES (1, 1,1,1, 1);
+INSERT INTO tokens(id, token_type_id , colour_id, space_id, player_id) VALUES (2, 1,2,3, 2 );
+INSERT INTO tokens(id, token_type_id , colour_id, space_id, player_id) VALUES (3, 2,1,6, 1 );
+INSERT INTO tokens(id, token_type_id , colour_id, space_id, player_id) VALUES (4, 2,2, null, 2);
+
+INSERT INTO phase_types(id, name) VALUES (1,'Spread');
+INSERT INTO phase_types(id, name) VALUES (2,'Contamination');
+INSERT INTO phase_types(id, name) VALUES (3,'Binary Fision');
+
+INSERT INTO games(id,time,round,winner,loser,phase_type_id,player_id,player_id) VALUES (1, 30, 1,2, "", "", 1, 2);

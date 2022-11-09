@@ -30,7 +30,7 @@ public class WelcomeController {
 		person6.setFirstName("Jaime ");
 
 		person1.setLastName("Ribas");
-		person2.setLastName("Vaquero");
+		person2.setLastName("Baquero");
 		person3.setLastName("Antoñanzas");
 		person4.setLastName("Mérida");
 		person5.setLastName("Cortes");

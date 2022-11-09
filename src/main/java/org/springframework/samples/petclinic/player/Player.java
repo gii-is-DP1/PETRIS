@@ -1,24 +1,24 @@
 package org.springframework.samples.petclinic.player;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.token.Colour;
-import org.springframework.samples.petclinic.token.Token;
 
 
 @Entity
+@Table(name = "players")
 public class Player extends BaseEntity{
 
     @NotNull
-    private String turn;
+    private boolean turn;
 
     @NotNull
+    @ManyToOne
     private Colour colour;
-
-    private boolean isWinner;
 
     @NotNull
     private Integer usedBacteria;
@@ -29,6 +29,4 @@ public class Player extends BaseEntity{
     @NotNull
     private Integer contaminationPoints;
 
-    @OneToMany
-    private Token token; 
 }

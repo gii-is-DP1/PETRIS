@@ -3,7 +3,8 @@ package org.springframework.samples.petclinic.game;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -23,7 +24,6 @@ public class Game extends BaseEntity{
     @Column(name = "time")
     private Integer time; 
 
-    @NotNull
     @Column(name = "round")
     @Range(min=0, max=4)
     private Integer round;
@@ -34,16 +34,16 @@ public class Game extends BaseEntity{
     @Column(name = "loser")
     private String loser;
 
-    @NotNull
-    @Column(name = "phase_type_id")
+    @ManyToOne
+    @JoinColumn(name = "phase_type_id")
     private PhaseType phaseType;
 
-    @NotNull
-    @JoinColumn(name = "player_id")
+    @OneToOne
+    @JoinColumn(name = "player1_id")
     private Player player1;
 
-    @NotNull
-    @JoinColumn(name = "player_id")
+    @OneToOne
+    @JoinColumn(name = "player2_id")
     private Player player2;
     
 

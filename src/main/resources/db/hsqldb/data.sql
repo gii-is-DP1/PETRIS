@@ -85,3 +85,8 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03', 'neutered');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
 
+INSERT INTO phase_types(id, name) VALUES (1,'Spread')
+INSERT INTO phase_types(id, name) VALUES (2,'Contamination')
+INSERT INTO phase_types(id, name) VALUES (3,'Binary Fision')
+
+INSERT INTO games(id,time,round,winner_id,loser_id,phase_id,player1_id,player2_id) VALUES (1, , 1, , , 2, 1, 2)

@@ -54,6 +54,7 @@ public class User extends BaseEntity {
 	@NotNull
 	@Size(min = 5)
 	String password;
+
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private Set<Authorities> authorities;

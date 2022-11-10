@@ -48,7 +48,7 @@ public class Statistics extends BaseEntity {
     Boolean winner;
 
     @NotNull
-    @Min(1)
+    @Min(0)
     @Max(20)
     Integer usedBacteries;
 

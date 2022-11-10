@@ -1,8 +1,8 @@
-INSERT INTO users(username,email,points,played_games,winned_games,losed_games,password) VALUES ('raumerbas','top1delmundo@email.com',100,28,27,1,'soygod');
-INSERT INTO users(username,email,points,played_games,winned_games,losed_games,password) VALUES ('gonriblun','top2delmundo@email.com',100,25,21,4,'soysemigod');
-INSERT INTO users(username,email,points,played_games,winned_games,losed_games,password) VALUES ('lucantdel','top3delmundo@email.com',100,28,24,4,'soysemigod');
-INSERT INTO users(username,email,points,played_games,winned_games,losed_games,password) VALUES ('dancorfon','top4delmundo@email.com',100,24,21,3,'soysemigod');
-INSERT INTO users(username,email,points,played_games,winned_games,losed_games,password) VALUES ('jaigargar1','top5delmundo@email.com',100,25,20,5,'soysemigod');
+INSERT INTO users(username,email,points,played_games,won_games,lost_games,password) VALUES ('raumerbas','top1delmundo@email.com',100,28,27,1,'soygod');
+INSERT INTO users(username,email,points,played_games,won_games,lost_games,password) VALUES ('gonriblun','top2delmundo@email.com',100,25,21,4,'soysemigod');
+INSERT INTO users(username,email,points,played_games,won_games,lost_games,password) VALUES ('lucantdel','top3delmundo@email.com',100,28,24,4,'soysemigod');
+INSERT INTO users(username,email,points,played_games,won_games,lost_games,password) VALUES ('dancorfon','top4delmundo@email.com',100,24,21,3,'soysemigod');
+INSERT INTO users(username,email,points,played_games,won_games,lost_games,password) VALUES ('jaigargar1','top5delmundo@email.com',100,25,20,5,'soysemigod');
 /*
 INSERT INTO authorities(id,username,authority) VALUES (1,'raumerbas','admin');
 INSERT INTO authorities(id,username,authority) VALUES (2,'gonriblun','admin');

@@ -24,7 +24,7 @@
                {
                 color: black;
                 text-align: center;
-                font-family: "Franchise";
+                font-family: "Showcard gothic";
                 font-size: 100px;
                }  
                
@@ -34,7 +34,7 @@
 
                 
                 
-                <h1 style="position: absolute; right: 39%; bottom: 75%;">Como jugar</h1>
+                <h1 style="position: absolute; right: 32%; bottom: 75%;">Como jugar</h1>
                 <iframe src="https://drive.google.com/file/d/1YNfE8CKL91dhHQvb4ToP3VycgK_pLOQX/preview" style="height: 400px; width: 800px; position: absolute; right: 27%; bottom: 30%;" allow="autoplay"></iframe>
                 
 

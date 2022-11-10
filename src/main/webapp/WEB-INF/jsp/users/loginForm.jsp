@@ -1,289 +1,144 @@
-<%@ page session="false" trimDirectiveWhitespaces="true" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<!DOCTYPE html>
 
+<html lang="es">    
+        <head>
+        <meta charset="utf-8"/>
+        <title>Form login</title>
+    <style>
+* {
+    margin: 0px;
+    padding: 0px;
+}
 
-<!-- %@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %-->  
+body{
+    background: url(https://fotografias.lasexta.com/clipping/cmsimages02/2018/06/18/21F93752-00FB-4A7D-AAD3-4CCCA693F10C/98.jpg?crop=1000,563,x0,y53&width=1900&height=1069&optimize=high&format=webply);
+    background-size: cover;
+}
 
+#contenedor1{
+    background: #f9f7f7;
+    width: 460px;
+    height: 370px;
+    margin: auto;
+    margin-top: 100px;
+}
 
-<layout pageName="home">
-    <div class="inicio">
-        <html  lang="en">
-            <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="X-UA-Compatible" content="IE-edge">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Login Page</title>
-            
-            
-            <style>
+#form1{
+    width: 100%;
+    padding: 50px 20px 10px 20px;
+    box-sizing: border-box;
+}
 
-                
-            
-            * {
+#contenedor1 h1{
+    text-align: center;
+    padding-top: 20px;
+    color: #566573;
+    font-size: 45px;
+    font-family: Verdana;
 
-                box-sizing: border-box;
+}
 
-            }
+#form1 input[type="text"],
+#form1 input[type="password"]{
+    border: none;
+    background: none;
+    width: 90%;
+    height: 40px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+#form1 input[type="submit"]{
+    width: 100%;
+    height: 60px;
+    background: #1b4f72;
+    color: white;
+    cursor: pointer;
+    border: 2px solid white;
+    font-size: 25px;
+    font-weight: 900;
 
-            body {
+}
 
-            
-                padding: 0;
-                margin: 0;
-                font-family: "Inter", sans-serif;
-                background: linear-gradient(45deg, #131086, #b621f3);
-                padding: 40px;
+#form1 input[type="submit"]:hover{
+    background: #3498db;
+}
 
-            }
+#form1 hr{
+    margin-bottom: 40px;
+    color: #aed6f1;
+}
 
-            #container {
+#contenedor2{
+    background: #f9f7f7;
+    width: 460px;
+    height: 140px;
+    margin: auto;
+    margin-top: 10px;
+}
 
-                min-height: calc(100vh - 40px * 2);
-                display: grid;
-                grid-template-columns: 50% 50%;
-                border-radius: 10px;
-                overflow: hidden;
+#form2{
+    width: 100%;
+    padding: 23px 20px 0px 20px;
+    box-sizing: border-box;
+}
 
-            }
+#form2 input[type="submit"]{
+    width: 100%;
+    height: 60px;
+    background: white;
+    border: 2px solid white;
+    cursor: pointer;
+    font-size: 25px;
+    color: #1b4f72;
+}
 
-            #login-left {
+#form2 input[type="submit"]:hover{
+    background: #3498db;
+    color: white;
+}
 
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                padding-left: 150px;
-                background-color: white;
+#referencias{
+    margin-left: 110px;
+    margin-top: 14px;
+}
 
-            }
+#referencias a{
+    padding-left: 10px;
+    text-decoration: none;
+    color: #1b4f72;
+}
 
-            #login-right {
+img{
+    float: left;
+}
 
-                background-color: #eee;
-                display: flex;
-                justify-content: center;
-
-                
-
-            }
-
-            #login-right #img { 
-
-                width: 80%;
-
-            }
-
-            #login-header {
-
-                margin-bottom: 50px;
-            }
-
-            #login-header #h1 {
-
-                font-size: 40px;
-                margin-bottom: 10px;
-
-            }
-            
-            #login-header #p {
-
-                opacity: .7;
+       
+    </style>
+    </head>
+    <body>
         
-            }
-            
-            
-            #login-form {
-
-                width: 450px;
-
-            }
-
-            #login-form #content {
-
-                display: flex;
-                flex-direction: column;
-                gap: 35px;
-
-            }
-
-            #login-form #footer {
-
-                display: flex;
-                gap: 30px;
-                margin-top: 70px;
-
-            }
-            
-            #login-form #footer #a {
-
-                flex: 6;
-                gap: 15px;
-                border: 1px solid black;
-                border-radius: 100px;
-                padding: .6rem;
-                justify-content: center;
-                display: flex;
-                color: black;
-                text-decoration: none;
-
-
-            }
-
-            #login-form #footer #a #hoover {
-
-                background-color: #eee;
-
-
-            }
-
-            #form-item label:not(.checkboxLabel) { 
-
-                display: inline-block;
-                background-color: white;
-                margin-bottom: absolute;
-                padding: 0 10px;
-                transform: translate(30px, -10px);
-                font-size: 14px;
-
-            }
-
-            input[type='text'],
-            input[type='password'] {
-
-                border: 1px solid black;
-                height: 55px;
-                padding: 0 2rem;
-                width: 100%;
-                outline: none;
-                transition: background .5s;
-                font-size: 18px;
-                border-radius: 100px;
-
-            }
-
-            #checkbox {
-
-                display: flex;
-                align-items: center;
-                gap: 7px;
-
-            }
-
-            input[type='checkbox'] {
-
-                width: 20px;
-                height: 20px;
-                accent-color: #131086;
-
-            }
-
-            #button {
-
-                border: none;
-                background: linear-gradient(45deg, #131086, #b621f3);
-                color: white;
-                padding: 1rem;
-                border-radius: 100px;
-                text-align: center;
-                text-transform: uppercase;
-                font-size: 18px;
-                height: 55px;
-                cursor: pointer;
-
-            }
-
-            /* Responsive */
-
-            @media (max-width:1350px) {
-
-                #login-left {
-                    padding: 50px !important;
-                }
-
-                #login-form {
-
-                    width: 100%;
-                }
-
-                #login-form #footer {
-
-                    flex-direction: column;
-                    gap: 15px;
-
-                }
-
-            }
-
-            @media (max-width:768px) {
-
-                #body {
-                    padding: 20px;
-                }
-
-                #container {
-                    grid-template-columns: auto;
-
-                }
-
-                #login-right {
-                    display: none;
-                }
-
-            }
-                
-               
-            </style>   
-            </head>
-            <body>
-
-                <div class="container">
-                    <div class="login-left">
-                        <div class="login-header">
-                            <h1>Welcome to Our Application</h1>
-                            <p>Please login ti use the platform</p>
-                        </div>
-                        <form class="login-form">
-                            <div class="login-form-content">
-                                <div class="form-item">
-                                    <label for="email">Enter Email</label>
-                                    <input type="text" id="email">
-                                </div>
-                                <div class="form-item">
-                                    <label for="password">Enter Password</label>
-                                    <input type="password" id="password">
-                                </div>
-                                <div class="form-item">
-                                    <div class="checkbox">
-                                        <input type="checkbox" id="rememberMeCheckbox" checked>
-                                        <label for="rememberMeCheckbox" class="checkboxLabel">Remember me</label>
-                                    </div>
-                                </div>
-                                <button type="submit">Sign In</button>
-                            </div>
-                            <div class="login-form-footer">
-                                <a href="#">
-                                    <img width="30" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Facebook_f_logo_%282019%29.svg/2048px-Facebook_f_logo_%282019%29.svg.png"
-                                    alt=""> Facebook Login
-                                </a>
-                                <a href="#">
-                                    <img width="30" src="https://rotulosmatesanz.com/wp-content/uploads/2017/09/2000px-Google_G_Logo.svg_.png" 
-                                    alt=""> Google Login
-                                </a>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="login-right">
-                        <img width="30" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Google_Chrome_icon_%28February_2022%29.svg/2048px-Google_Chrome_icon_%28February_2022%29.svg.png" alt="">
-                    </div>
-
-                </div>
-
-            </body>
-            
-            
-        </html>
-      </div>
-
-</layout>
+        <div id="contenedor1">
+            <h1>Iniciar sesion</h1>
+            <form id="form1">
+                <img src="https://www.avante.es/wp-content/uploads/2018/03/471a1ad342659289433e05a611d206f8.png" width="40px" height="38px" alt=""/>
+                <input type="text" name="" placeholder="Usuario"/>
+                <hr>
+                <img src="https://www.avante.es/wp-content/uploads/2018/03/471a1ad342659289433e05a611d206f8.png"width="40px" height="38px" alt=""/>
+                <input type="password" name="" placeholder="Contrase&ntilde;a">
+                <hr>
+                <input type="submit" value="Sign in">
+            </form>
+        </div>
+        <div id="contenedor2">
+            <form id="form2">
+                <input type="submit" value="Create Account"/>
+            </form>
+            <div id="referencias">
+                <a>Daniel</a>
+                <a href="">Term of Use</a>
+                <a href="">Privace Policy</a>
+            </div>
+        </div>
+    </body>
+</html>

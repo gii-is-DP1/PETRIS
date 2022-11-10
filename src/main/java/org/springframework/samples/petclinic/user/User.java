@@ -31,25 +31,21 @@ public class User extends BaseEntity {
 	@Email
 	String email;
 
-	@NotNull
 	@Min(0)
 	Integer points;
 
-	@NotNull
 	@Min(0)
 	@Column(name = "played_games")
 	Integer playedGames;
 
 
-	@NotNull
 	@Min(0)
-	@Column(name = "winned_games")
-	Integer winnedGames;
+	@Column(name = "won_games")
+	Integer wonGames;
 
-	@NotNull
 	@Min(0)
-	@Column(name = "losed_games")
-	Integer losedGames;
+	@Column(name = "lost_games")
+	Integer lostGames;
 
 	@NotNull
 	@Size(min = 5)

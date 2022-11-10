@@ -103,3 +103,5 @@ INSERT INTO phase_types(id, name) VALUES (2,'Contamination');
 INSERT INTO phase_types(id, name) VALUES (3,'Binary Fision');
 
 INSERT INTO games(id, loser, round, time, winner, phase_type_id, player1_id, player2_id) VALUES (1,'A', 2, 15, 'B', 2, 1, 2);
+
+INSERT INTO statistics(id, init_time, end_time, final_round, winner, used_bacteries, used_sarcines, game_points, game_id) VALUES (1, '15:13:45', '15:18:32', 2, TRUE, 17, 3, 13, 1);

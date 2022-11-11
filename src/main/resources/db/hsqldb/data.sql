@@ -3,6 +3,7 @@ INSERT INTO users(username,email,points,played_games,winned_games,losed_games,pa
 INSERT INTO users(username,email,points,played_games,winned_games,losed_games,password) VALUES ('lucantdel','top3delmundo@email.com',100,28,24,4,'soysemigod');
 INSERT INTO users(username,email,points,played_games,winned_games,losed_games,password) VALUES ('dancorfon','top4delmundo@email.com',100,24,21,3,'soysemigod');
 INSERT INTO users(username,email,points,played_games,winned_games,losed_games,password) VALUES ('jaigargar1','top5delmundo@email.com',100,25,20,5,'soysemigod');
+
 /*
 INSERT INTO authorities(id,username,authority) VALUES (1,'raumerbas','admin');
 INSERT INTO authorities(id,username,authority) VALUES (2,'gonriblun','admin');
@@ -82,24 +83,26 @@ INSERT INTO colours(id,name) VALUES (2, 'black');
 INSERT INTO token_types(id,name) VALUES (1, 'bacterium');
 INSERT INTO token_types(id,name) VALUES (2, 'sarcina');
 
-INSERT INTO spaces(id, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas) VALUES (1, 0,0,0,0);
-INSERT INTO spaces(id, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas) VALUES (2, 0,0,0,0);
-INSERT INTO spaces(id, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas) VALUES (3, 0,0,0,0);
-INSERT INTO spaces(id, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas) VALUES (4, 0,0,0,0);
-INSERT INTO spaces(id, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas) VALUES (5, 0,0,0,0);
-INSERT INTO spaces(id, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas) VALUES (6, 0,0,0,0);
-INSERT INTO spaces(id, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas) VALUES (7, 0,0,0,0);
 
 INSERT INTO players(id, turn , colour_id, used_bacteria, used_sarcinas, contamination_points) VALUES (1, TRUE , 1 , 0,0,0);
 INSERT INTO players(id, turn , colour_id, used_bacteria, used_sarcinas, contamination_points) VALUES (2, FALSE , 2 , 0,0,0);
 
-INSERT INTO tokens(id, token_type_id , colour_id, space_id, player_id) VALUES (1, 1,1,1, 1);
-INSERT INTO tokens(id, token_type_id , colour_id, space_id, player_id) VALUES (2, 1,2,3, 2 );
-INSERT INTO tokens(id, token_type_id , colour_id, space_id, player_id) VALUES (3, 2,1,6, 1 );
-INSERT INTO tokens(id, token_type_id , colour_id, space_id, player_id) VALUES (4, 2,2, null, 2);
 
 INSERT INTO phase_types(id, name) VALUES (1,'Spread');
 INSERT INTO phase_types(id, name) VALUES (2,'Contamination');
 INSERT INTO phase_types(id, name) VALUES (3,'Binary Fision');
 
-INSERT INTO games(id, loser, round, time, winner, phase_type_id, player1_id, player2_id) VALUES (1,'A', 2, 15, 'B', 2, 1, 2);
+INSERT INTO games(id, loser, round, time, winner, phase_type_id, player1_id, player2_id, is_active) VALUES (1,'A', 2, 15, 'B', 2, 1, 2, TRUE);
+
+INSERT INTO spaces(id, position, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas, game_id) VALUES (1, 1, 0,0,0,0,1);
+INSERT INTO spaces(id, position, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas, game_id) VALUES (2, 2, 0,0,0,0,1);
+INSERT INTO spaces(id, position, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas, game_id) VALUES (3, 3, 0,0,0,0,1);
+INSERT INTO spaces(id, position, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas, game_id) VALUES (4, 4, 0,0,0,0,1);
+INSERT INTO spaces(id, position, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas, game_id) VALUES (5, 5, 0,0,0,0,1);
+INSERT INTO spaces(id, position, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas, game_id) VALUES (6, 6, 0,0,0,0,1);
+INSERT INTO spaces(id, position, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas, game_id) VALUES (7, 7, 0,0,0,0,1);
+
+INSERT INTO tokens(id, token_type_id , colour_id, space_id, player_id) VALUES (1, 1,1,1, 1);
+INSERT INTO tokens(id, token_type_id , colour_id, space_id, player_id) VALUES (2, 1,2,3, 2 );
+INSERT INTO tokens(id, token_type_id , colour_id, space_id, player_id) VALUES (3, 2,1,6, 1 );
+INSERT INTO tokens(id, token_type_id , colour_id, space_id, player_id) VALUES (4, 2,2, null, 2);

@@ -66,10 +66,9 @@ public class UserController {
 		}
 		else {
 			//creating owner, user and authorities
-			user.setEnabled(true);
 			this.userService.saveUser(user);
 
-			return "redirect:/users/" + user.getUsername();
+			return "redirect:/owners";
 		}
 	}
 

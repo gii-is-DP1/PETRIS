@@ -1,17 +1,16 @@
 
-INSERT INTO users(username,email,points,played_games,won_games,lost_games,password) VALUES ('raumerbas','top1delmundo@email.com',100,28,27,1,'soygod');
-INSERT INTO users(username,email,points,played_games,won_games,lost_games,password) VALUES ('gonriblun','top2delmundo@email.com',100,25,21,4,'soysemigod');
-INSERT INTO users(username,email,points,played_games,won_games,lost_games,password) VALUES ('lucantdel','top3delmundo@email.com',100,28,24,4,'soysemigod');
-INSERT INTO users(username,email,points,played_games,won_games,lost_games,password) VALUES ('dancorfon','top4delmundo@email.com',100,24,21,3,'soysemigod');
-INSERT INTO users(username,email,points,played_games,won_games,lost_games,password) VALUES ('jaigargar1','top5delmundo@email.com',100,25,20,5,'soysemigod');
+INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('raumerbas','soygod',TRUE,'top1delmundo@email.com',100,28,27,1);
+INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('gonriblun','soysemigod',TRUE,'top2delmundo@email.com',100,25,21,4);
+INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('lucantdel','soysemigod',TRUE,'top3delmundo@email.com',100,28,24,4);
+INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('dancorfon','soysemigod',TRUE,'top4delmundo@email.com',100,24,21,3);
+INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('jaigargar1','soysemigod',TRUE,'top5delmundo@email.com',100,25,20,5);
 
-/*
 INSERT INTO authorities(id,username,authority) VALUES (1,'raumerbas','admin');
 INSERT INTO authorities(id,username,authority) VALUES (2,'gonriblun','admin');
 INSERT INTO authorities(id,username,authority) VALUES (3,'lucantdel','admin');
 INSERT INTO authorities(id,username,authority) VALUES (4,'dancorfon','admin');
 INSERT INTO authorities(id,username,authority) VALUES (5,'jaigargar1','admin');
-*/
+
 
 INSERT INTO vets(id, first_name,last_name) VALUES (1, 'James', 'Carter');
 INSERT INTO vets(id, first_name,last_name) VALUES (2, 'Helen', 'Leary');

@@ -1,10 +1,13 @@
 package org.springframework.samples.petclinic.configuration;
 
+import javax.annotation.security.PermitAll;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,6 +16,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistration;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -26,6 +31,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+
 
 	@Autowired
 	DataSource dataSource;
@@ -41,29 +48,39 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/owners/**").hasAnyAuthority("owner","admin")				
 				.antMatchers("/vets/**").authenticated()
 				.antMatchers("/video").permitAll()
-				.antMatchers("/login2").permitAll()
+				.antMatchers("/login").permitAll()
 				.anyRequest().denyAll()
 				.and()
 				 	.formLogin()
-				 	/*.loginPage("/login")*/
-				 	.failureUrl("/login-error")
+				 	.loginPage("/login")
+					.defaultSuccessUrl("/owners")
+					.permitAll()
+				 	.failureUrl("/login?error=true")
 				.and()
 					.logout()
-						.logoutSuccessUrl("/"); 
+					.permitAll()
+					.logoutSuccessUrl("/login?logout=true")
+					.and()
+					.csrf()
+					.disable();
+					
+					
                 // Configuración para que funcione la consola de administración 
                 // de la BD H2 (deshabilitar las cabeceras de protección contra
                 // ataques de tipo csrf y habilitar los framesets si su contenido
                 // se sirve desde esta misma página.
-                http.csrf().ignoringAntMatchers("/h2-console/**");
+               /* http.csrf().ignoringAntMatchers("/h2-console/**"); */
                 http.headers().frameOptions().sameOrigin();
 	}
+
+	
 
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication()
 	      .dataSource(dataSource)
 	      .usersByUsernameQuery(
-	       "select username,password,email "
+	       "select username,password,enabled "
 	        + "from users "
 	        + "where username = ?")
 	      .authoritiesByUsernameQuery(
@@ -72,7 +89,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	        + "where username = ?")	      	      
 	      .passwordEncoder(passwordEncoder());	
 	}
-	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {	    
 		PasswordEncoder encoder =  NoOpPasswordEncoder.getInstance();

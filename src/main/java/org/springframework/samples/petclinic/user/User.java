@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import javax.persistence.Table;
@@ -23,8 +24,9 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity {
+public class User{
 	@NotNull
+	@Id
 	String username;
 
 	@NotNull
@@ -50,6 +52,8 @@ public class User extends BaseEntity {
 	@NotNull
 	@Size(min = 5)
 	String password;
+
+	boolean enabled;
 
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")

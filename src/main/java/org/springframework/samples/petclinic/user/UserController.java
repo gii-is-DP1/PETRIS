@@ -36,7 +36,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class UserController {
 
-	private static final String VIEWS_OWNER_CREATE_FORM = "users/createOwnerForm";
 	private static final String VIEWS_USER_CREATE_FORM = "users/createUserForm";
 
 	private final UserService userService;
@@ -71,5 +70,10 @@ public class UserController {
 			return "redirect:/users/" + user.getUsername();
 		}
 	}
+
+	@GetMapping("/login")
+    public String login(){
+        return "/users/loginForm";
+    }
 
 }

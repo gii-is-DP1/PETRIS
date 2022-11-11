@@ -71,10 +71,12 @@ public class Game extends BaseEntity{
         }
         this.spaces = spacesToAdd;
     }
-    //no puedes mover más bacterias de las que tienes en la casilla 
-    public boolean permittedNumToMove(Space space, Integer numBacteriaToMove, String colour){
-        boolean res =   (colour =="red" && space.getNumRedBacteria()>=numBacteriaToMove) || 
-                        (colour == "black" && space.getNumBlackBacteria()>=numBacteriaToMove);
+    //no puedes mover más bacterias de las que tienes en la casilla, ni mover a una casilla dejando mas de 5
+    public boolean permittedNumToMove(Space space1, Space space2, Integer numBacteriaToMove, String colour){
+        boolean res =   ((colour =="red" && space1.getNumRedBacteria()>=numBacteriaToMove) || 
+                        (colour == "black" && space1.getNumBlackBacteria()>=numBacteriaToMove)) &&
+                        ((colour == "red" && space2.getNumRedBacteria() + numBacteriaToMove <6) ||
+                        (colour == "black" && space2.getNumBlackBacteria() + numBacteriaToMove <6));
         return res;
     }
     //se puede mover de una casilla a su adyacente
@@ -90,7 +92,7 @@ public class Game extends BaseEntity{
         return res;
     }
     //no se puede mover de una casilla a otra si se deja una casilla con el mismo numero de fichas rojas y negras
-    public boolean numBacteriaInSpaceOk(Space space){
+    public boolean numBacteriaNotEqual(Space space){
         
         boolean res = (space.getNumBlackBacteria() + space.getNumBlackSarcinas()*5) != (space.getNumRedBacteria() + space.getNumRedSarcinas() *5);
         
@@ -108,10 +110,10 @@ public class Game extends BaseEntity{
         String colour = player.getColour().getName();
 
         boolean res =  moveToSpaceWithoutSarcine(colour, space2) && 
-                        permittedNumToMove(space1, numBacteriaToMove, colour) && 
+                        permittedNumToMove(space1, space2, numBacteriaToMove, colour) && 
                         isNeighbour(space1, space2) && 
-                        numBacteriaInSpaceOk(space1) && 
-                        numBacteriaInSpaceOk(space2);
+                        numBacteriaNotEqual(space1) && 
+                        numBacteriaNotEqual(space2);
         return res;
     }
     //añadir una nueva bacteria por casilla en la fase de fision
@@ -143,7 +145,7 @@ public class Game extends BaseEntity{
             }
         }
     }
-    //contar puntos de una ronda (puntos que gana un jugador)
+    //contar puntos de la fase de contaminacion
     public Integer countContaminationPoints(Player player){
         String colour = player.getColour().getName();
         Integer points = 0;
@@ -164,6 +166,38 @@ public class Game extends BaseEntity{
                 }
             }
         }
+        player.setPoints(player.getPoints()+points);
         return points;
+    }
+    //quien es el ganador al pasar las 4 rondas
+    public String getWinnerLastRound(Player player1, Player player2){
+        String winnerColour ="";
+        String player1Colour = player1.getColour().getName();
+        String player2Colour = player2.getColour().getName();
+        Integer player1points = player1.getPoints();
+        Integer player2points = player2.getPoints();
+        if  (player1points > player2points){
+            winnerColour = player1Colour;
+        }else if (player2points> player1points){
+            winnerColour = player2Colour;
+        }else{
+            Integer player1UsedSarcinas = player1.getUsedSarcinas();
+            Integer player2UsedSarcinas = player2.getUsedSarcinas();
+            if (player1UsedSarcinas<player2UsedSarcinas){
+                winnerColour = player1Colour;
+            }else if(player1UsedSarcinas>player2UsedSarcinas){
+                winnerColour = player2Colour;
+            }else{
+                Integer player1UsedBacteria = player1.getUsedBacteria();
+                Integer player2UsedBacteria = player2.getUsedBacteria();
+                if(player1UsedBacteria<player2UsedBacteria){
+                    winnerColour = player1Colour;
+                }else if(player1UsedBacteria>player2UsedBacteria){
+                    winnerColour = player2Colour;
+                }
+            }
+        }
+        this.winner = winnerColour;
+        return winnerColour + "player is the winner";
     }
 }

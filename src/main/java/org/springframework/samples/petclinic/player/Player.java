@@ -7,7 +7,6 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.token.Colour;
-import org.springframework.samples.petclinic.token.Token;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -34,6 +33,8 @@ public class Player extends BaseEntity{
 
     @NotNull
     private Integer contaminationPoints;
+
+    private Integer points;
 
     /*
      * public Token getTokenwithIdDifferent(Object type, Integer id) {

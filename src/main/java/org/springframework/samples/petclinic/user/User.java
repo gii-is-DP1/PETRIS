@@ -55,6 +55,10 @@ public class User{
 
 	boolean enabled;
 
+	Double winrate() {
+		return wonGames*1.0/playedGames;
+	}
+
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private Set<Authorities> authorities;

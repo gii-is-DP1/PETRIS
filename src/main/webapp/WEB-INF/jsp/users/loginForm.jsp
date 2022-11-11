@@ -20,7 +20,6 @@ body{
     height: 370px;
     margin: auto;
     margin-top: 100px;
-    
 }
 
 #form1{

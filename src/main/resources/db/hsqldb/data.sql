@@ -4,12 +4,17 @@ INSERT INTO users(username,password,enabled,email,points,played_games,won_games,
 INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('lucantdel','soysemigod',TRUE,'top3delmundo@email.com',100,28,24,4);
 INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('dancorfon','soysemigod',TRUE,'top4delmundo@email.com',100,24,21,3);
 INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('jaigargar1','soysemigod',TRUE,'top5delmundo@email.com',100,25,20,5);
+INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('player1','soysemigod',TRUE,'top5delmundo@email.com',100,25,20,5);
+INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('player2','soysemigod',TRUE,'player2@email.com',0,0,0,0);
+
 
 INSERT INTO authorities(id,username,authority) VALUES (1,'raumerbas','admin');
 INSERT INTO authorities(id,username,authority) VALUES (2,'gonriblun','admin');
 INSERT INTO authorities(id,username,authority) VALUES (3,'lucantdel','admin');
 INSERT INTO authorities(id,username,authority) VALUES (4,'dancorfon','admin');
 INSERT INTO authorities(id,username,authority) VALUES (5,'jaigargar1','admin');
+INSERT INTO authorities(id,username,authority) VALUES (6,'player1','owner');
+INSERT INTO authorities(id,username,authority) VALUES (7,'player2','owner');
 
 
 INSERT INTO vets(id, first_name,last_name) VALUES (1, 'James', 'Carter');

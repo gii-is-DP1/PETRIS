@@ -44,6 +44,10 @@ public class UserService {
 	public void saveUser(User user) throws DataAccessException {
 		userRepository.save(user);
 	}
+
+    public User findUserByName(String username) {
+		return userRepository.findByName(username);
+	}
 	
 	@Transactional
 	public static Optional<User> findUser(String username) {

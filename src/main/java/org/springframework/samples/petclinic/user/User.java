@@ -33,19 +33,14 @@ public class User{
 	@Email
 	String email;
 
-	@Min(0)
 	Integer points;
 
-	@Min(0)
 	@Column(name = "played_games")
 	Integer playedGames;
 
-
-	@Min(0)
 	@Column(name = "won_games")
 	Integer wonGames;
 
-	@Min(0)
 	@Column(name = "lost_games")
 	Integer lostGames;
 
@@ -57,6 +52,10 @@ public class User{
 
 	Double winrate() {
 		return wonGames*1.0/playedGames;
+	}
+	
+	public boolean isNew() {
+		return this.username == null;
 	}
 
 	

@@ -1,9 +1,3 @@
-<%@ page session="false" trimDirectiveWhitespaces="true" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
-<!-- %@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %-->  
 
 <layout pageName="home">
     <div class="inicio">
@@ -66,10 +60,8 @@
             <body>
 
                 
-                <form action="/login"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 65%;">Iniciar sesion</button></form>
-                <form action="/users/new"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 55%;">Registrarse</button></form>
-                <form action="/game"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 45%;">Jugar</button></form>
-                <form action="/video"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 35%;">Como jugar</button></form>
+                <form action="/game/create"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 65%;">Crear partida</button></form>
+                <form action="/game/join"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 55%;">Unirse</button></form>
                 <img src="https://2tomatoesgames.com/wp-content/uploads/2020/07/petris-logo.png" style="height: 150px; position: absolute; right: 35%; bottom: 80%;">
 
 

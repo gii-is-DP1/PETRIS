@@ -33,19 +33,14 @@ public class User{
 	@Email
 	String email;
 
-	@Min(0)
 	Integer points;
 
-	@Min(0)
 	@Column(name = "played_games")
 	Integer playedGames;
 
-
-	@Min(0)
 	@Column(name = "won_games")
 	Integer wonGames;
 
-	@Min(0)
 	@Column(name = "lost_games")
 	Integer lostGames;
 
@@ -54,6 +49,10 @@ public class User{
 	String password;
 
 	boolean enabled;
+
+	public boolean isNew() {
+		return this.username == null;
+	}
 
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")

@@ -20,10 +20,10 @@
             <div class="col-sm-offset-2 col-sm-10">
                 <c:choose>
                     <c:when test="${user['new']}">
-                        <button class="btn btn-default" type="submit">Add User</button>
+                        <button class="btn btn-default" type="submit">Add Owner</button>
                     </c:when>
                     <c:otherwise>
-                        <button class="btn btn-default" type="submit">Update User</button>
+                        <button class="btn btn-default" type="submit">Update Owner</button>
                     </c:otherwise>
                 </c:choose>
             </div>

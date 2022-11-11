@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class UserController {
 
 	private static final String VIEWS_USER_CREATE_FORM = "users/createUserForm";
+	private static final String VIEWS_OWNER_CREATE_FORM = "users/createOwnerForm";
 
 	private final UserService userService;
 
@@ -65,8 +66,9 @@ public class UserController {
 		}
 		else {
 			//creating owner, user and authorities
+			user.setEnabled(true);
 			this.userService.saveUser(user);
-			
+
 			return "redirect:/users/" + user.getUsername();
 		}
 	}

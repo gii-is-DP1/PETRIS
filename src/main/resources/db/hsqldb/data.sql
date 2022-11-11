@@ -1,8 +1,9 @@
-INSERT INTO users(username,email,points,played_games,winned_games,losed_games,password) VALUES ('raumerbas','top1delmundo@email.com',100,28,27,1,'soygod');
-INSERT INTO users(username,email,points,played_games,winned_games,losed_games,password) VALUES ('gonriblun','top2delmundo@email.com',100,25,21,4,'soysemigod');
-INSERT INTO users(username,email,points,played_games,winned_games,losed_games,password) VALUES ('lucantdel','top3delmundo@email.com',100,28,24,4,'soysemigod');
-INSERT INTO users(username,email,points,played_games,winned_games,losed_games,password) VALUES ('dancorfon','top4delmundo@email.com',100,24,21,3,'soysemigod');
-INSERT INTO users(username,email,points,played_games,winned_games,losed_games,password) VALUES ('jaigargar1','top5delmundo@email.com',100,25,20,5,'soysemigod');
+
+INSERT INTO users(username,email,points,played_games,won_games,lost_games,password) VALUES ('raumerbas','top1delmundo@email.com',100,28,27,1,'soygod');
+INSERT INTO users(username,email,points,played_games,won_games,lost_games,password) VALUES ('gonriblun','top2delmundo@email.com',100,25,21,4,'soysemigod');
+INSERT INTO users(username,email,points,played_games,won_games,lost_games,password) VALUES ('lucantdel','top3delmundo@email.com',100,28,24,4,'soysemigod');
+INSERT INTO users(username,email,points,played_games,won_games,lost_games,password) VALUES ('dancorfon','top4delmundo@email.com',100,24,21,3,'soysemigod');
+INSERT INTO users(username,email,points,played_games,won_games,lost_games,password) VALUES ('jaigargar1','top5delmundo@email.com',100,25,20,5,'soysemigod');
 
 /*
 INSERT INTO authorities(id,username,authority) VALUES (1,'raumerbas','admin');
@@ -92,6 +93,7 @@ INSERT INTO phase_types(id, name) VALUES (1,'Spread');
 INSERT INTO phase_types(id, name) VALUES (2,'Contamination');
 INSERT INTO phase_types(id, name) VALUES (3,'Binary Fision');
 
+
 INSERT INTO games(id, loser, round, time, winner, phase_type_id, player1_id, player2_id, is_active) VALUES (1,'A', 2, 15, 'B', 2, 1, 2, TRUE);
 
 INSERT INTO spaces(id, position, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas, game_id) VALUES (1, 1, 0,0,0,0,1);
@@ -106,3 +108,6 @@ INSERT INTO tokens(id, token_type_id , colour_id, space_id, player_id) VALUES (1
 INSERT INTO tokens(id, token_type_id , colour_id, space_id, player_id) VALUES (2, 1,2,3, 2 );
 INSERT INTO tokens(id, token_type_id , colour_id, space_id, player_id) VALUES (3, 2,1,6, 1 );
 INSERT INTO tokens(id, token_type_id , colour_id, space_id, player_id) VALUES (4, 2,2, null, 2);
+
+INSERT INTO statistics(id, init_time, end_time, final_round, winner, used_bacteries, used_sarcines, game_points, game_id) VALUES (1,'13:20:32','13:15:45', 2, TRUE, 16, 2, 13, 1);
+

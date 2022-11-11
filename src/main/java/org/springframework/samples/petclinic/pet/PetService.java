@@ -72,7 +72,6 @@ public class PetService {
 				petRepository.save(pet);
 	}
 
-
 	public Collection<Visit> findVisitsByPetId(int petId) {
 		return visitRepository.findByPetId(petId);
 	}

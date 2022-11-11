@@ -71,7 +71,7 @@ public class UserController {
 			//creating owner, user and authorities
 			this.userService.saveUser(user);
 			
-			return "redirect:/users/" + user.getId();
+			return "redirect:/users/" + user.getUsername();
 		}
 	}
 

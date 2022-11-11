@@ -6,7 +6,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.samples.petclinic.model.BaseEntity;
-import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.space.Space;
 

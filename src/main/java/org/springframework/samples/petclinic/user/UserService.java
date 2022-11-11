@@ -34,6 +34,9 @@ public class UserService {
 
 	private UserRepository userRepository;
 
+    @Autowired
+	private AuthoritiesService authoritiesService;
+
 	@Autowired
 	public UserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
@@ -42,7 +45,9 @@ public class UserService {
 	 
 	@Transactional
 	public void saveUser(User user) throws DataAccessException {
+        user.setEnabled(true);
 		userRepository.save(user);
+        authoritiesService.saveAuthorities(user.getUsername(), "admin");
 	}
 
     public User findUserByName(String username) {

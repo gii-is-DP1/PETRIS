@@ -50,6 +50,10 @@ public class User{
 
 	boolean enabled;
 
+	Double winrate() {
+		return wonGames*1.0/playedGames;
+	}
+	
 	public boolean isNew() {
 		return this.username == null;
 	}

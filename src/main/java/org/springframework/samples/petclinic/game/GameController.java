@@ -1,7 +1,5 @@
 package org.springframework.samples.petclinic.game;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
@@ -21,8 +19,10 @@ public class GameController {
 
     private static final String GAME_VIEW = "games/showGameInit";
     private static final String CREATE_GAME = "games/createGame";
-    private static final String GAME_LISTING = "games/gameListing";
+    //private static final String GAME_LISTING = "games/gameListing";
     private static final String CURRENT_GAME = "games/playingGame";
+    private static final String JOIN_BY_USERNAME = "games/askForUsername";
+
 
     @Autowired
 	public GameController(GameService gameService) {
@@ -53,9 +53,7 @@ public class GameController {
     }
     @GetMapping("/join")
     public String joinGame(ModelMap model){
-        List<Game> allGames=this.gameService.getAllGames();
-        model.put("games",allGames);
-        return GAME_LISTING;
+        return JOIN_BY_USERNAME;
     }
     
     @GetMapping("/playing")

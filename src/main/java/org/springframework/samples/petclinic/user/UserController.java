@@ -26,6 +26,9 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * @author Juergen Hoeller
@@ -51,6 +54,7 @@ public class UserController {
 		dataBinder.setDisallowedFields("id");
 	}
 
+	/* 
 	
 	@GetMapping(value = "/users/new")
 	public String initCreationForm(Map<String, Object> model) {
@@ -60,6 +64,7 @@ public class UserController {
 	}
 
 	@PostMapping(value = "/users/new")
+	@ResponseBody
 	public String processCreationForm(@Valid User user, BindingResult result) {
 		if (result.hasErrors()) {
 			return VIEWS_USER_CREATE_FORM;
@@ -67,10 +72,35 @@ public class UserController {
 		else {
 			//creating owner, user and authorities
 			this.userService.saveUser(user);
-
-			return "redirect:/owners";
+			
+			return "redirect:/";
 		}
 	}
+	*/
+
+	@GetMapping(value = "/users/new")
+    public ModelAndView initCreationForm() {
+        ModelAndView mav = new ModelAndView(VIEWS_USER_CREATE_FORM);
+        mav.addObject("user", new User());
+        return mav;
+    }
+
+    @PostMapping(value = "/users/new")
+    public ModelAndView processCreationForm(@Valid User user, BindingResult result) {
+        ModelAndView mav;
+        if (result.hasErrors()) {
+            mav = new ModelAndView(VIEWS_USER_CREATE_FORM);
+            mav.addObject("user", user);
+        } else {
+            this.userService.saveUser(user);
+            mav = new ModelAndView("welcome");
+			mav.addObject("message", "User saved succesfully!");
+			
+			
+        }
+        return mav;
+    }
+
 
 	@GetMapping("/login")
     public String login(){

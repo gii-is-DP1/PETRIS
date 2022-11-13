@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.user;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -15,7 +16,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.samples.petclinic.model.BaseEntity;
-
+import org.springframework.samples.petclinic.player.Player;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -50,10 +51,13 @@ public class User{
 
 	boolean enabled;
 
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+	private List<Player> jugadores;
+
 	Double winrate() {
 		return wonGames*1.0/playedGames;
 	}
-	
+
 	public boolean isNew() {
 		return this.username == null;
 	}

@@ -10,11 +10,6 @@
         <html>
             <head>
             <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-            <!-- Bootstrap CSS -->
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
             <title>Pantalla inicio</title>
             <style> 
                body
@@ -64,47 +59,18 @@
                 font-family: "Algerian";
                 font-size: 60px;
 
-               }
-               
-               
+               }    
                
             </style>   
             </head>
             <body>
-                    <br/>
-                    <c:if test="${message != null}">
-                    <div class="alert alert-success alert-dismissible fade show" role="alert" data-dismiss="alert">
-                        <button2 type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;
-                        </span></button2>
-                        <strong><c:out value="${message}"></c:out></strong> Please login to play de game.<p style="font-size: 30px; position: absolute; right: 73.5%; bottom: -26%;">&#128516;</p>
-                    </div>
-                    </div>
-                    </c:if>
-        
-                
-                
+
                 
                 <form action="/login"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 65%;">Iniciar sesion</button></form>
                 <form action="/users/new"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 55%;">Registrarse</button></form>
-                <form action="/game"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 45%;">Jugar</button></form>
-                <form action="/video"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 35%;">Como jugar</button></form>
+                <form action="/video"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 45%;">Como jugar</button></form>
                 <img src="https://2tomatoesgames.com/wp-content/uploads/2020/07/petris-logo.png" style="height: 150px; position: absolute; right: 35%; bottom: 80%;">
 
-
-
-
-                <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-                <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
-
-                <script>
-                    window.setTimeout(function() {
-                        $(".alert").fadeTo(1500, 0).slideDown(1000, function(){
-                            $(this).remove();
-                        });
-                    }, 4000);
-                </script>
 
             </body>
             
@@ -112,6 +78,10 @@
         </html>
       </div>
 
-      
+      <div class = "espacio">
+
+
+
+      </div>
 
 </layout>

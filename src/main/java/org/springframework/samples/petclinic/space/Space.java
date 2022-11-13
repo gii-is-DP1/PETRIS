@@ -40,4 +40,14 @@ public class Space extends BaseEntity{
     private Game game;
 
 
+    public static Space createSpace(Integer position, Integer numBlackBacteria, Integer numRedBacteria, Integer numBlackSarcinas, Integer numRedSarcinas ){
+        Space newSpace = new Space();
+        newSpace.setPosition(position);
+        newSpace.setNumBlackBacteria(numBlackBacteria);
+        newSpace.setNumBlackSarcinas(numBlackSarcinas);
+        newSpace.setNumRedBacteria(numRedBacteria);
+        newSpace.setNumRedSarcinas(numRedSarcinas);
+
+        return newSpace;
+    }
 }

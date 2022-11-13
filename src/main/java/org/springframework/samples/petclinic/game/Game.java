@@ -11,8 +11,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 
-import org.hibernate.validator.constraints.Range;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.space.Space;
@@ -26,11 +27,13 @@ import lombok.Setter;
 @Table(name = "games")
 public class Game extends BaseEntity{
 
+    @Min(0)
     @Column(name = "time")
     private Integer time; 
 
+    @Min(0)
+    @Max(4)
     @Column(name = "round")
-    @Range(min=0, max=4)
     private Integer round;
 
     @Column(name = "winner")
@@ -70,51 +73,6 @@ public class Game extends BaseEntity{
             spacesToAdd.add(newSpace);
         }
         this.spaces = spacesToAdd;
-    }
-    //no puedes mover más bacterias de las que tienes en la casilla, ni mover a una casilla dejando mas de 5
-    public boolean permittedNumToMove(Space space1, Space space2, Integer numBacteriaToMove, String colour){
-        boolean res =   ((colour =="red" && space1.getNumRedBacteria()>=numBacteriaToMove) || 
-                        (colour == "black" && space1.getNumBlackBacteria()>=numBacteriaToMove)) &&
-                        ((colour == "red" && space2.getNumRedBacteria() + numBacteriaToMove <6) ||
-                        (colour == "black" && space2.getNumBlackBacteria() + numBacteriaToMove <6));
-        return res;
-    }
-    //se puede mover de una casilla a su adyacente
-    public boolean isNeighbour(Space space1, Space space2){
-        Integer position1 = space1.getPosition();
-        Integer position2 = space2.getPosition();
-
-        boolean res =   position1 == 7 || 
-                        position2 ==7 || 
-                        Math.abs(position1 - position2)==1 || 
-                        (position1==1 && position2==6) || 
-                        (position1==6 && position2==1);
-        return res;
-    }
-    //no se puede mover de una casilla a otra si se deja una casilla con el mismo numero de fichas rojas y negras
-    public boolean numBacteriaNotEqual(Space space){
-        
-        boolean res = (space.getNumBlackBacteria() + space.getNumBlackSarcinas()*5) != (space.getNumRedBacteria() + space.getNumRedSarcinas() *5);
-        
-        return res;
-    }
-    //no puedes mover a una casilla que tenga una sarcina tuya
-    public boolean moveToSpaceWithoutSarcine(String colour, Space space){
-
-        boolean res =   (colour == "red" && space.getNumRedSarcinas()<1) || 
-                        (colour == "black" && space.getNumBlackSarcinas()<1);
-        return res;
-    }
-    //comprobar si un jugador puede mover unas bacterias de una casilla a otra
-    public boolean movementAllowed(Player player, Space space1, Space space2, Integer numBacteriaToMove){
-        String colour = player.getColour().getName();
-
-        boolean res =  moveToSpaceWithoutSarcine(colour, space2) && 
-                        permittedNumToMove(space1, space2, numBacteriaToMove, colour) && 
-                        isNeighbour(space1, space2) && 
-                        numBacteriaNotEqual(space1) && 
-                        numBacteriaNotEqual(space2);
-        return res;
     }
     //añadir una nueva bacteria por casilla en la fase de fision
     public void activateBinaryFision(){

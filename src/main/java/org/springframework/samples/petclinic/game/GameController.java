@@ -17,11 +17,11 @@ public class GameController {
     
     private final GameService gameService;
 
-    private static final String GAME_VIEW = "game/showGameInit";
-    private static final String CREATE_GAME = "game/createGame";
-    private static final String GAME_LISTING = "game/gameListing";
-    private static final String CURRENT_GAME = "game/currentGame";
-
+    private static final String GAME_VIEW = "games/showGameInit";
+    private static final String CREATE_GAME = "games/createGame";
+    //private static final String GAME_LISTING = "games/gameListing";
+    private static final String CURRENT_GAME = "games/playingGame";
+    private static final String JOIN_BY_USERNAME = "games/askForUsername";
 
 
     @Autowired
@@ -53,8 +53,7 @@ public class GameController {
     }
     @GetMapping("/join")
     public String joinGame(ModelMap model){
-        model.put("games",this.gameService.getAllActiveGames());
-        return GAME_LISTING;
+        return JOIN_BY_USERNAME;
     }
     
     @GetMapping("/playing")
@@ -63,5 +62,4 @@ public class GameController {
         model.put("game", activeGame);
         return CURRENT_GAME;
     }
-
 }

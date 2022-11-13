@@ -74,7 +74,7 @@
             </tr>
         </c:forEach>
 
-                <form action="/game"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 65%;">Jugar una partida</button></form>
+                <form action="/games"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 65%;">Jugar una partida</button></form>
                 <form action=""><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 45%;">Espectador</button></form>
                 <form action="/video"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 55%;">Como Jugar</button></form>
                 <!-- <img src="https://2tomatoesgames.com/wp-content/uploads/2020/07/petris-logo.png" style="height: 150px; position: absolute; right: 35%; bottom: 80%;">-->

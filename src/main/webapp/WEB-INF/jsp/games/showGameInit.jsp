@@ -59,8 +59,8 @@
             </head>
             <body>
 
-                <form action="/game/create"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 65%;">Crear partida</button></form>
-                <form action="/game/join"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 55%;">Unirse</button></form>
+                <form action="/games/create"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 65%;">Crear partida</button></form>
+                <form action="/games/join"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 55%;">Unirse</button></form>
                 <img src="https://2tomatoesgames.com/wp-content/uploads/2020/07/petris-logo.png" style="height: 150px; position: absolute; right: 35%; bottom: 80%;">
 
 

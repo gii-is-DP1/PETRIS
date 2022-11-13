@@ -120,4 +120,9 @@ public class UserController {
         return "/users/loginForm";
     }
 
+	@GetMapping("/users/{userId}")
+    public String userInterface(){
+        return "/users/userUI";
+    }
+
 }

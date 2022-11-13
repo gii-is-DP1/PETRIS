@@ -74,8 +74,8 @@
             </tr>
         </c:forEach>
 
-        
-                <form action=""><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 65%;">Jugar una partida</button></form>
+
+                <form action="/game"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 65%;">Jugar una partida</button></form>
                 <form action=""><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 55%;">Historial</button></form>
                 <form action=""><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 45%;">Espectador</button></form>
                 <form action=""><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 35%;">Estadisticas</button></form>

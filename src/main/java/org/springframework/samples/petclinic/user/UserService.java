@@ -50,12 +50,12 @@ public class UserService {
         authoritiesService.saveAuthorities(user.getUsername(), "admin");
 	}
 
-    public User findUserByName(String username) {
+    public User getUserByName(String username) {
 		return userRepository.findByName(username);
 	}
 	
 	@Transactional
-	public static Optional<User> findUser(String username) {
+	public static Optional<User> getUser(String username) {
 		return userRepository.findById(username);
 	}
 }

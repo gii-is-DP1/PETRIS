@@ -8,13 +8,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PlayerService {
+    
+    private PlayerRepository playerRepository;
 
     @Autowired
-	public PlayerService(PlayerRepository feedingRepository) {
-		this.playerRepository = feedingRepository;
+	public PlayerService(PlayerRepository playerRepository) {
+		this.playerRepository = playerRepository;
 	}
 
-    private PlayerRepository playerRepository;
+    public Player getPlayerByUserId(String userName){
+        return playerRepository.findPlayerByUserId(userName);
+    }
+
 
     @Transactional(readOnly = true)
     public List<Player> getAll(){

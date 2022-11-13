@@ -4,6 +4,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.player.Player;
+import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class GameController {
     
     private final GameService gameService;
+    private final PlayerService playerService;
+
 
     private static final String GAME_VIEW = "games/showGameInit";
     private static final String CREATE_GAME = "games/createGame";
@@ -25,8 +29,9 @@ public class GameController {
 
 
     @Autowired
-	public GameController(GameService gameService) {
+	public GameController(GameService gameService,PlayerService playerService) {
 		this.gameService = gameService;
+        this.playerService =  playerService;
 	}
 
     @GetMapping
@@ -48,11 +53,25 @@ public class GameController {
             BeanUtils.copyProperties(game, newGame, "id");
             Game createdGame = this.gameService.save(newGame);
             model.put("message", "game with id " + createdGame.getId()+ " created successfully");
-            return CREATE_GAME;
+            return CURRENT_GAME;
         }
     }
     @GetMapping("/join")
-    public String joinGame(ModelMap model){
+    public String joinGame(String opponentUserName, String userName,  ModelMap model){
+        try {
+            Player player1 = this.playerService.getPlayerByUserId(opponentUserName);
+            Player player2 = this.playerService.getPlayerByUserId(userName);
+            Game game = this.gameService.getGameByPlayerId(player1.getId());
+            if (game.isActive()){
+                game.setPlayer2(player2);
+            }else{
+                model.put("message", "it doesn't exists any game" );
+                return JOIN_BY_USERNAME;
+            }
+            
+        } catch (Exception e) {
+            model.put("message", "invalid username" + userName);
+        }
         return JOIN_BY_USERNAME;
     }
     

@@ -10,40 +10,24 @@
 <nav class="navbar navbar-default" role="navigation">
 	<div class="container">
 		<div class="navbar-header">
-			<a class="navbar-brand"
-				href="<spring:url value="/" htmlEscape="true" />"><span></span></a>
-			<button type="button" class="navbar-toggle" data-toggle="collapse"
-				data-target="#main-navbar">
-				<span class="sr-only"><os-p>Toggle navigation</os-p></span> <span
-					class="icon-bar"></span> <span class="icon-bar"></span> <span
-					class="icon-bar"></span>
-			</button>
+			<a class="navbar-brand2" href="#"><img src="https://2tomatoesgames.com/wp-content/uploads/2020/07/petris-logo.png" style="width: 170px;"></a>
+                    <button2 class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button2>
 		</div>
 		<div class="navbar-collapse collapse" id="main-navbar">
 			<ul class="nav navbar-nav">
 
-				<petclinic:menuItem active="${name eq 'home'}" url="/"
+				<petclinic:menuItem active="${name eq 'home'}" url="/users/userId"
 					title="home page">
 					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
 					<span>Home</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'owners'}" url="/owners/find"
+				<petclinic:menuItem active="${name eq 'owners'}" url="/users/userId/personalStatistics"
 					title="find owners">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-					<span>Find owners</span>
-				</petclinic:menuItem>
-
-				<petclinic:menuItem active="${name eq 'vets'}" url="/vets"
-					title="veterinarians">
-					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-					<span>Veterinarians</span>
-				</petclinic:menuItem>
-
-				<petclinic:menuItem active="${name eq 'error'}" url="/oups"
-					title="trigger a RuntimeException to see how it is handled">
-					<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
-					<span>Error</span>
+					<span>Estadisticas</span>
 				</petclinic:menuItem>
 
 			</ul>

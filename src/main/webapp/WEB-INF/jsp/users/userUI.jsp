@@ -5,7 +5,7 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <!-- %@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %-->  
 
-<layout pageName="home">
+<petclinic:layout pageName="home">
     <div class="inicio">
         <html>
             <head>
@@ -95,4 +95,4 @@
 
       </div>
 
-</layout>
+</petclinic:layout>

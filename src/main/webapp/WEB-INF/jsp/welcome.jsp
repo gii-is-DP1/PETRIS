@@ -76,7 +76,7 @@
                     <div class="alert alert-success alert-dismissible fade show" role="alert" data-dismiss="alert">
                         <button2 type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;
                         </span></button2>
-                        <strong><c:out value="${message}"></c:out></strong> Please login to play de game.<p style="font-size: 30px; position: absolute; right: 73.5%; bottom: -26%;">&#128516;</p>
+                        <strong><c:out value="${message}"></c:out></strong> Please login to play the game.<p style="font-size: 30px; position: absolute; right: 73.5%; bottom: -26%;">&#128516;</p>
                     </div>
                     </div>
                     </c:if>

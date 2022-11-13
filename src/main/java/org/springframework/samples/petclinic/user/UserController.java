@@ -105,7 +105,7 @@ public class UserController {
     }
 
 
-	@GetMapping("/users/personalStatistics")
+	@GetMapping("/users/{userId}/personalStatistics")
 	public String personalStatistics(ModelMap model) {
 		String view = "users/pStatistics";
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

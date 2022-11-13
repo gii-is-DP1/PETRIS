@@ -89,10 +89,9 @@ INSERT INTO token_types(id,name) VALUES (1, 'bacterium');
 INSERT INTO token_types(id,name) VALUES (2, 'sarcina');
 
 
-INSERT INTO players(id, turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (1, TRUE , 1 , 0,0,0,0,'dancorfon');
-INSERT INTO players(id, turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (2, FALSE , 2 , 0,0,0,0,'raumerbas');
-INSERT INTO players(id, turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (3, FALSE , 1 , 0,0,0,0,'gonriblun');
-INSERT INTO players(id, turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (4, FALSE , 2 , 0,0,0,0,'lucantdel');
+INSERT INTO players(id, turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (1, TRUE , 1 , 0,0,0,0,'raumerbas');
+INSERT INTO players(id, turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (2, FALSE , 2 , 0,0,0,0,'gonriblun');
+
 
 
 INSERT INTO phase_types(id, name) VALUES (1,'Spread');

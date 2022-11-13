@@ -54,6 +54,10 @@ public class User{
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private List<Player> jugadores;
 
+	Double winrate() {
+		return wonGames*1.0/playedGames;
+	}
+
 	public boolean isNew() {
 		return this.username == null;
 	}

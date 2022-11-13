@@ -10,7 +10,7 @@
 <nav class="navbar navbar-default" role="navigation">
 	<div class="container">
 		<div class="navbar-header">
-			<a class="navbar-brand2" href="#"><img src="https://2tomatoesgames.com/wp-content/uploads/2020/07/petris-logo.png" style="width: 170px;"></a>
+			<a class="navbar-brand2" href="/users/userId"><img src="https://2tomatoesgames.com/wp-content/uploads/2020/07/petris-logo.png" style="width: 170px;"></a>
                     <button2 class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button2>
@@ -25,9 +25,21 @@
 				</petclinic:menuItem>
 
 				<petclinic:menuItem active="${name eq 'owners'}" url="/users/userId/personalStatistics"
-					title="find owners">
-					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					title="personal statistics">
+					<span class="glyphicon glyphicon-signal" aria-hidden="true"></span>
 					<span>Estadisticas</span>
+				</petclinic:menuItem>
+
+				<petclinic:menuItem active="${name eq 'owners'}" url="/users/userId/historial"
+					title="historial">
+					<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+					<span>Historial</span>
+				</petclinic:menuItem>
+
+				<petclinic:menuItem active="${name eq 'owners'}" url="/users/userId/friends"
+					title="friends">
+					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+					<span>Amigos</span>
 				</petclinic:menuItem>
 
 			</ul>

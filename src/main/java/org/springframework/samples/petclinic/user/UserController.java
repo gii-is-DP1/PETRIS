@@ -152,7 +152,7 @@ public class UserController {
 		return vista;
 	}
 
-	@GetMapping(path = "users/{userId}/delete/{username}")
+	@GetMapping(path = "users/{userId}/friends/delete/{username}")
 	public String eliminarAmigo(@PathVariable("username") String username, ModelMap modelMap) {
 
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -161,9 +161,15 @@ public class UserController {
 		return "redirect:/users/{userId}/friends";
 	}
 
-	@GetMapping(path = "users/{userId}/search/{username}")
-	public String inspeccionarAmigo(@PathVariable("username") String username, ModelMap modelMap) {
-		return "redirect:/users/{userId}/friends/{username}/friendDetails";
+	@GetMapping("/users/{userId}/friends/search/{username}")
+	public String friendDetails(@PathVariable("username") String username, ModelMap modelMap) {
+		
+		User friend = this.userService.getUserByName(username);
+		modelMap.addAttribute("friend", friend);
+		Double wr = friend.winrate();
+		modelMap.addAttribute("wr", wr);
+		String view = "users/friendDetails";
+		return view;
 	}
 
 }

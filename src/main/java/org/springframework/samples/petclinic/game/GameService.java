@@ -29,6 +29,10 @@ public class GameService {
     public Game save(Game g){
         return gameRepository.save(g);
     }
+    public Game getGameByPlayerId(Integer id){
+        return gameRepository.getGameByPlayerId(id);
+    }
+
     //no puedes mover más bacterias de las que tienes en la casilla, ni mover a una casilla dejando mas de 5, ni dejando el mismo numero en algun disco
     public boolean permittedNumToMove(Space space1, Space space2, Integer numBacteriaToMove, String colour){
 

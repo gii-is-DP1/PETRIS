@@ -14,5 +14,9 @@ public interface GameRepository extends CrudRepository<Game,Integer>{
 
     @Query("SELECT g FROM Game g WHERE g.isActive = true")
     List<Game> findAllActiveGames();
+
+    
+    @Query("SELECT g FROM Game g WHERE g.player1 = ?1 OR g.player2 = ?1")
+    Game getGameByPlayerId(Integer id);
     
 }

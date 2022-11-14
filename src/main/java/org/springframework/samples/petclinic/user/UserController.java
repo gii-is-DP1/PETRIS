@@ -15,9 +15,14 @@
  */
 package org.springframework.samples.petclinic.user;
 
-
+import java.util.Map;
 
 import javax.validation.Valid;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,9 +35,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 
@@ -120,8 +123,10 @@ public class UserController {
 	public String personalStatistics(ModelMap model) {
 		String view = "users/pStatistics";
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User u = UserService.findUser(ud.getUsername()).get();
+		User u = UserService.getUser(ud.getUsername()).get();
+		Double wr = u.winrate();
 		model.addAttribute("user", u);
+		model.addAttribute("wr", wr);
 		return view;
 
 	}
@@ -136,15 +141,29 @@ public class UserController {
         return "/users/userUI";
     }
 
-	/*
-	@GetMapping("/users/${userId}/friends")
-	public String getFriends(){
-
-
-
-	}
-	*/
-
 	
+	@GetMapping(value = "/users/{userId}/friends")
+	public String initFindForm(ModelMap modelMap) {
+		String vista = "users/friendsUI";
+		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User user = userService.getUser(ud.getUsername()).get();
+		List<User> amigos = userService.findAmigos(user.getUsername());
+		modelMap.addAttribute("amigos", amigos);
+		return vista;
+	}
+
+	@GetMapping(path = "users/{userId}/delete/{username}")
+	public String eliminarAmigo(@PathVariable("username") String username, ModelMap modelMap) {
+
+		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User user = userService.getUser(ud.getUsername()).get();
+		userService.borrarAmigo(user, username);
+		return "redirect:/users/{userId}/friends";
+	}
+
+	@GetMapping(path = "users/{userId}/search/{username}")
+	public String inspeccionarAmigo(@PathVariable("username") String username, ModelMap modelMap) {
+		return "redirect:/users/{userId}/friends/{username}/friendDetails";
+	}
 
 }

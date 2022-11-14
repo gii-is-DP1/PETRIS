@@ -51,7 +51,16 @@ public class User{
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private List<Player> jugadores;
 
-	Double winrate() {
+	public User(String username, String email, String password){
+		this.username = username;
+		this.email = email;
+		this.password = password;
+	}
+
+	public User() {
+    }
+
+    Double winrate() {
 		return wonGames*1.0/playedGames;
 	}
 

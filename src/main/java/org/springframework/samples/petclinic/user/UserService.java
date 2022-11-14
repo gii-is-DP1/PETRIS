@@ -41,21 +41,17 @@ public class UserService {
 	public UserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
-	
-	 
-	@Transactional
-	public void saveUser(User user) throws DataAccessException {
-        user.setEnabled(true);
-		userRepository.save(user);
-        authoritiesService.saveAuthorities(user.getUsername(), "admin");
-	}
-
     public User getUserByName(String username) {
-		return userRepository.findByName(username);
+		return userRepository.findUserByUsername(username);
 	}
-	
 	@Transactional
 	public static Optional<User> getUser(String username) {
 		return userRepository.findById(username);
+	}
+	@Transactional
+	public void saveUser(User user) throws DataAccessException {
+		user.setEnabled(true);
+		userRepository.save(user);
+		authoritiesService.saveAuthorities(user.getUsername(), "admin");
 	}
 }

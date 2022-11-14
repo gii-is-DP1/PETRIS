@@ -138,29 +138,15 @@ public class UserController {
         return "/users/userUI";
     }
 
-	@GetMapping(value = "/users/{userId}/friends")
-	public String initFindForm(ModelMap modelMap) {
-		String vista = "users/friendsUI";
-		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User user = userService.findUser(ud.getUsername()).get();
-		List<User> amigos = userService.findAmigos(user.getUsername());
-		modelMap.addAttribute("amigos", amigos);
-		return vista;
-	}
+	/*
+	@GetMapping("/users/${userId}/friends")
+	public String getFriends(){
 
-	@GetMapping(path = "users/{userId}/delete/{username}")
-	public String eliminarAmigo(@PathVariable("username") String username, ModelMap modelMap) {
 
-		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User user = userService.findUser(ud.getUsername()).get();
-		userService.borrarAmigo(user, username);
-		return "redirect:/users/{userId}/friends";
-	}
 
-	@GetMapping(path = "users/{userId}/search/{username}")
-	public String inspeccionarAmigo(@PathVariable("username") String username, ModelMap modelMap) {
-		return "redirect:/users/{userId}/friends/{username}/friendDetails";
 	}
+	*/
+
 	
 
 }

@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <title>Form login</title>
+        <title>Login Form</title>
     <style>
 * {
     margin: 0px;
@@ -70,7 +70,7 @@ body{
 #contenedor2{
     background: #f9f7f7;
     width: 460px;
-    height: 140px;
+    height: 30px;
     margin: auto;
     margin-top: 10px;
 }
@@ -128,11 +128,7 @@ img{
             </form>
         </div>
         <div id="contenedor2">
-            <form id="form2">
-                <input type="submit" value="Create Account"/>
-            </form>
             <div id="referencias">
-                <a>Daniel</a>
                 <a href="">Term of Use</a>
                 <a href="">Privace Policy</a>
             </div>

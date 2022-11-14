@@ -106,7 +106,9 @@ public class UserController {
 		String view = "users/pStatistics";
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User u = UserService.getUser(ud.getUsername()).get();
+		Double wr = u.winrate();
 		model.addAttribute("user", u);
+		model.addAttribute("wr", wr);
 		return view;
 
 	}

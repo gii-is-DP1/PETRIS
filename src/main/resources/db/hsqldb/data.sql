@@ -8,6 +8,9 @@ INSERT INTO users(username,password,enabled,email,points,played_games,won_games,
 INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('player2','soysemigod',TRUE,'player2@email.com',0,0,0,0);
 
 
+INSERT INTO users_friends(user_username, friends_username) VALUES ('dancorfon', 'raumerbas');
+INSERT INTO users_friends(user_username, friends_username) VALUES ('dancorfon', 'gonriblun');
+
 INSERT INTO authorities(id,username,authority) VALUES (1,'raumerbas','admin');
 INSERT INTO authorities(id,username,authority) VALUES (2,'gonriblun','admin');
 INSERT INTO authorities(id,username,authority) VALUES (3,'lucantdel','admin');

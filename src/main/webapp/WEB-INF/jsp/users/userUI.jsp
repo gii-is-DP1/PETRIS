@@ -14,7 +14,7 @@
             <style> 
                body
                {
-                height: 400px;
+                height: 700px;
                 background-image: url('https://c4.wallpaperflare.com/wallpaper/458/849/290/nintendo-super-mario-nintendo-entertainment-system-controllers-wallpaper-preview.jpg');
                 background-repeat: no-repeat;
                 background-position: center;

@@ -36,6 +36,7 @@
 								<spring:param name="username" value="${amigo.username}" />
 							</spring:url> <a href="${fn:escapeXml(friendUrl)}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></td>
 
+                            
 					</tr>
 				</c:forEach>
 			</tbody>

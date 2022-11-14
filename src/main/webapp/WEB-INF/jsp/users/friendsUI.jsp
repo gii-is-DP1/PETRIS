@@ -25,13 +25,13 @@
 								<c:out value="${amigo.username}" />
 							</p>
 						</td>
-						<td><spring:url value="/users/{userId}/delete/{username}"
+						<td><spring:url value="/users/{userId}/friends/delete/{username}"
 								var="friendUrl">
 								<spring:param name="username" value="${amigo.username}" />
 							</spring:url> <a href="${fn:escapeXml(friendUrl)}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
                                 &nbsp;
                                 &nbsp;
-                            <spring:url value="/users/{userId}/search/{username}"
+                            <spring:url value="/users/{userId}/friends/search/{username}"
 								var="friendUrl">
 								<spring:param name="username" value="${amigo.username}" />
 							</spring:url> <a href="${fn:escapeXml(friendUrl)}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></td>

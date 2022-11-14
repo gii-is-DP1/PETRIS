@@ -131,6 +131,16 @@ public class UserController {
 
 	}
 
+	@GetMapping("/users/{userId}/profile")
+	public String profile(ModelMap model) {
+		String view = "users/profile";
+		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User u = UserService.getUser(ud.getUsername()).get();
+		model.addAttribute("user", u);
+		return view;
+
+	}
+
 	@GetMapping("/login")
     public String login(){
         return "/users/loginForm";

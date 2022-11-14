@@ -121,4 +121,13 @@ public class UserController {
         return "/users/userUI";
     }
 
+	/*
+	@GetMapping("/users/${userId}/friends")
+	public String getFriends(){
+
+
+
+	}
+	*/
+
 }

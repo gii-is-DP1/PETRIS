@@ -77,6 +77,25 @@ public class GameController {
   
         return JOIN_BY_USERNAME;
     }
+/*
+    @GetMapping("/join")
+    public String joinGame1(String opponentUserName,  ModelMap model){
+        try {
+            Player player1 = this.playerService.getPlayerByUserId(opponentUserName);
+            Game game = this.gameService.getGameByPlayerId(player1.getId());
+            if (game.isActive()){
+                game.setPlayer2(player2);
+            }else{
+                model.put("message", "it doesn't exists any game" );
+                return JOIN_BY_USERNAME;
+            }
+            
+        } catch (Exception e) {
+            model.put("message", "invalid username");
+        }
+        return JOIN_BY_USERNAME;
+    }
+    */
     
     @GetMapping("/playing")
     public String gameActive(ModelMap model, Integer gameId){

@@ -31,7 +31,7 @@
                 transform: translateY(8px);
                }
     </style>
-    <form:form modelAttribute="game" class="form-horizontal" id="add-game-form">
+    <form:form modelAttribute="game" action="/games/create" class="form-horizontal" id="add-game-form">
         <div class="form-group has-feedback">
             <div class="col-sm-offset-2 col-sm-10">
                 <button class="btn button" type="submit">Create game</button>

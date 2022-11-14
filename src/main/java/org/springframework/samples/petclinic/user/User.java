@@ -7,15 +7,13 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.player.Player;
 
 import lombok.Getter;
@@ -52,7 +50,10 @@ public class User{
 	boolean enabled;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-	private List<Player> jugadores;
+	private List<Player> players;
+
+	@ManyToMany(cascade = CascadeType.ALL)
+	private List<User> friends;
 
 	Double winrate() {
 		return wonGames*1.0/playedGames;

@@ -53,7 +53,6 @@ public class GameController {
             game.setActive(true);
             BeanUtils.copyProperties(game, newGame, "id");
             Game createdGame = this.gameService.save(newGame);
-            createdGame.createSpaces();
             model.put("message", "game with id " + createdGame.getId()+ " created successfully");
             return CURRENT_GAME;
         }

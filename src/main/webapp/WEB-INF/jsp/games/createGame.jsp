@@ -1,40 +1,21 @@
+<%@ page session="false" trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="games">
     <h2>
-        <c:if test="${game['new']}">New Game</c:if> 
+        <c:if test="${game['new']}">New </c:if> Owner
     </h2>
-    <style>
-        button
-               {
-                display: inline-block;
-                padding: 15px 25px;
-                font-size: 24px;
-                cursor: pointer;
-                text-align: center;	
-                text-decoration: none;
-                outline: none;
-                color: #fff;
-                background-color: #4CAF50;
-                border: none;
-                border-radius: 15px;
-                box-shadow: 0 9px #999;
-                
-               }
-
-               button:hover {background-color: #3e8e41}
-
-               button:active 
-               {
-                background-color: #3e8e41;
-                box-shadow: 0 5px #666;
-                transform: translateY(8px);
-               }
-    </style>
-    <form:form modelAttribute="game" action="/games/create" class="form-horizontal" id="add-game-form">
+    <form:form modelAttribute="game" class="form-horizontal" id="add-game-form">
         <div class="form-group has-feedback">
+        </div>
+        <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button class="btn button" type="submit">Create game</button>
+                <button class="btn btn-default" type="submit">Create Game</button>
             </div>
         </div>
     </form:form>

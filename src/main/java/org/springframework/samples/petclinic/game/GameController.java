@@ -50,6 +50,7 @@ public class GameController {
             return CREATE_GAME;
         }else{
             Game newGame = new Game();
+            game.setActive(true);
             BeanUtils.copyProperties(game, newGame, "id");
             Game createdGame = this.gameService.save(newGame);
             createdGame.createSpaces();
@@ -59,6 +60,7 @@ public class GameController {
     }
     @GetMapping("/join")
     public String joinGame(String opponentUserName, String userName,  ModelMap model){
+
         try {
             Player player1 = this.playerService.getPlayerByUserId(opponentUserName);
             Player player2 = this.playerService.getPlayerByUserId(userName);
@@ -73,6 +75,7 @@ public class GameController {
         } catch (Exception e) {
             model.put("message", "invalid username" + userName);
         }
+  
         return JOIN_BY_USERNAME;
     }
 /*

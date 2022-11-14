@@ -7,6 +7,13 @@ INSERT INTO users(username,password,enabled,email,points,played_games,won_games,
 INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('player1','soysemigod',TRUE,'top5delmundo@email.com',100,25,20,5);
 INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('player2','soysemigod',TRUE,'player2@email.com',0,0,0,0);
 
+INSERT INTO USERS_FRIENDS VALUES ('raumerbas', 'dancorfon');
+INSERT INTO USERS_FRIENDS VALUES ('raumerbas', 'gonriblun');
+INSERT INTO USERS_FRIENDS VALUES ('gonriblun', 'raumerbas');
+INSERT INTO USERS_FRIENDS VALUES ('dancorfon', 'raumerbas');
+
+INSERT INTO users_friends(user_username, friends_username) VALUES ('dancorfon', 'raumerbas');
+INSERT INTO users_friends(user_username, friends_username) VALUES ('dancorfon', 'gonriblun');
 
 INSERT INTO authorities(id,username,authority) VALUES (1,'raumerbas','admin');
 INSERT INTO authorities(id,username,authority) VALUES (2,'gonriblun','admin');

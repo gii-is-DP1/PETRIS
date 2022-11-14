@@ -4,7 +4,7 @@
         <html>
             <head>
             <meta charset="utf-8">
-            <title>Pantalla inicio</title>
+            <title>Play Game</title>
             <style> 
                body
                {

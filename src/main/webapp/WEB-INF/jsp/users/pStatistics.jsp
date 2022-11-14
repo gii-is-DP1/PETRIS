@@ -136,6 +136,12 @@
                     <c:out value="${user.points}"/>
                 </td>
             </tr>
+            <tr>
+                <th style = "width: 500px; position: absolute; right: 36%; bottom: 52%">Win rate </th>
+                <td style = "position: absolute; right: 36%; bottom: 52%">
+                    <c:out value="${wr}"/>
+                </td>
+            </tr>
         </tbody>
     </table>
 </petclinic:layout>

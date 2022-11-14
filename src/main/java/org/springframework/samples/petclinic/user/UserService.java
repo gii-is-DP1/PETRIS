@@ -16,6 +16,7 @@
 package org.springframework.samples.petclinic.user;
 
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +54,24 @@ public class UserService {
 		user.setEnabled(true);
 		userRepository.save(user);
 		authoritiesService.saveAuthorities(user.getUsername(), "admin");
+	}
+
+	@Transactional
+	public List<User> findAmigos(String user){
+		return userRepository.findByName(user).getFriends();
+	}
+
+	@Transactional
+	public void borrarAmigo(User user, String username) throws DataAccessException {
+
+		List<User> friends = user.getFriends();
+		User friend = userRepository.findByName(username);
+		List<User> othersFriends = friend.getFriends();
+		friends.remove(friend);
+		othersFriends.remove(user);
+		user.setFriends(friends);
+		friend.setFriends(othersFriends);
+		userRepository.save(user);
+		userRepository.save(friend);
 	}
 }

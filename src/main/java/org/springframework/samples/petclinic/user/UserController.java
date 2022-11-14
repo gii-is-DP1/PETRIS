@@ -15,7 +15,14 @@
  */
 package org.springframework.samples.petclinic.user;
 
+import java.util.Map;
+
 import javax.validation.Valid;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,8 +33,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+
 
 /**
  * @author Juergen Hoeller
@@ -99,11 +109,31 @@ public class UserController {
         }
         return mav;
     }
+/* 
+	@GetMapping(value = "/users/{userId}/friends/{friendId}")
+	public ModelAndView processFindUser(@PathVariable("friendId") String username, BindingResult result){
+		ModelAndView mav = new ModelAndView("users/userDetails");
+		mav.addObject(this.userService.findUserByName(username));
+		return mav;
+	} 
+	*/
 
 
 	@GetMapping("/users/{userId}/personalStatistics")
 	public String personalStatistics(ModelMap model) {
 		String view = "users/pStatistics";
+		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User u = UserService.getUser(ud.getUsername()).get();
+		Double wr = u.winrate();
+		model.addAttribute("user", u);
+		model.addAttribute("wr", wr);
+		return view;
+
+	}
+
+	@GetMapping("/users/{userId}/profile")
+	public String profile(ModelMap model) {
+		String view = "users/profile";
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User u = UserService.getUser(ud.getUsername()).get();
 		model.addAttribute("user", u);
@@ -120,5 +150,36 @@ public class UserController {
     public String userInterface(){
         return "/users/userUI";
     }
+
+	
+	@GetMapping(value = "/users/{userId}/friends")
+	public String initFindForm(ModelMap modelMap) {
+		String vista = "users/friendsUI";
+		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User user = userService.getUser(ud.getUsername()).get();
+		List<User> amigos = userService.findAmigos(user.getUsername());
+		modelMap.addAttribute("amigos", amigos);
+		return vista;
+	}
+
+	@GetMapping(path = "users/{userId}/friends/delete/{username}")
+	public String eliminarAmigo(@PathVariable("username") String username, ModelMap modelMap) {
+
+		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User user = userService.getUser(ud.getUsername()).get();
+		userService.borrarAmigo(user, username);
+		return "redirect:/users/{userId}/friends";
+	}
+
+	@GetMapping("/users/{userId}/friends/search/{username}")
+	public String friendDetails(@PathVariable("username") String username, ModelMap modelMap) {
+		
+		User friend = this.userService.getUserByName(username);
+		modelMap.addAttribute("friend", friend);
+		Double wr = friend.winrate();
+		modelMap.addAttribute("wr", wr);
+		String view = "users/friendDetails";
+		return view;
+	}
 
 }

@@ -60,7 +60,7 @@ body{
 #contenedor2{
     background: #f9f7f7;
     width: 460px;
-    height: 140px;
+    height: 107px;
     margin: auto;
     margin-top: 10px;
 }
@@ -72,11 +72,12 @@ body{
 #form2 input[type="submit"]{
     width: 100%;
     height: 60px;
-    background: white;
+    background: #1b4f72;
     border: 2px solid white;
     cursor: pointer;
     font-size: 25px;
-    color: #1b4f72;
+    color: white;
+    font-weight: 900;
 }
 #form2 input[type="submit"]:hover{
     background: #3498db;
@@ -114,11 +115,6 @@ img{
             <form id="form2" name="f2" action="/users/new" method="get">
                 <input type="submit" value="Create Account"/>
             </form>
-            <div id="referencias">
-                <a>Daniel</a>
-                <a href="">Term of Use</a>
-                <a href="">Privace Policy</a>
-            </div>
         </div>
 
     </body>

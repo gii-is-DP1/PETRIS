@@ -8,6 +8,8 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
 
+
+
 <petclinic:layout pageName="amigos">
 	<body style="background: url(/resources/images/bck-petris.png)">
 		<h2>Lista de tus amigos</h2>
@@ -34,8 +36,7 @@
                             <spring:url value="/users/{userId}/friends/search/{username}"
 								var="friendUrl">
 								<spring:param name="username" value="${amigo.username}" />
-							</spring:url> <a href="${fn:escapeXml(friendUrl)}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></td>
-
+							</spring:url> <a href="${fn:escapeXml(friendUrl)}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></td>							
                             
 					</tr>
 				</c:forEach>

@@ -164,6 +164,7 @@ public class UserController {
 		}
 		model.addAttribute("players", players);
 		model.addAttribute("res", res);
+		model.addAttribute("user", u);
 		return view;
 	}
 	@GetMapping("/users/{userId}/profile")
@@ -182,18 +183,23 @@ public class UserController {
     }
 
 	@GetMapping("/users/{userId}")
-    public String userInterface(){
-        return "/users/userUI";
+    public String userInterface(ModelMap model){
+		String view = "/users/userUI";
+		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User u = UserService.getUser(ud.getUsername()).get();
+		model.addAttribute("user", u);
+        return view;
     }
 
 	
 	@GetMapping(value = "/users/{userId}/friends")
-	public String initFindForm(ModelMap modelMap) {
+	public String initFriendForm(ModelMap modelMap) {
 		String vista = "users/friendsUI";
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User user = userService.getUser(ud.getUsername()).get();
 		List<User> amigos = userService.findAmigos(user.getUsername());
 		modelMap.addAttribute("amigos", amigos);
+		modelMap.addAttribute("user", user);
 		return vista;
 	}
 
@@ -220,7 +226,10 @@ public class UserController {
 	
 
 	@GetMapping(value = "/users/{userId}/find")
-	public String initFindForm(Map<String, Object> model) {
+	public String initFindForm(ModelMap model) {
+		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = this.userService.getUserByName(ud.getUsername());
+		model.addAttribute("user",user);
 		model.put("user", new User());
 		String vista = "users/findUsers";
 		return vista;

@@ -208,13 +208,16 @@ public class UserController {
 
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User user = userService.getUser(ud.getUsername()).get();
+		modelMap.addAttribute("user", user);
 		userService.borrarAmigo(user, username);
 		return "redirect:/users/{userId}/friends";
 	}
 
 	@GetMapping("/users/{userId}/friends/search/{username}")
 	public String friendDetails(@PathVariable("username") String username, ModelMap modelMap) {
-		
+		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User u = UserService.getUser(ud.getUsername()).get();
+		modelMap.addAttribute("user", u);
 		User friend = this.userService.getUserByName(username);
 		modelMap.addAttribute("friend", friend);
 		Double wr = friend.winrate();

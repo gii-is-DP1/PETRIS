@@ -108,23 +108,7 @@ input:-moz-placeholder {
 </style>
 
 <petclinic:layout pageName="users">
-<!--
-    <h2>Find Users</h2>
-
-    <h1 class="h1">Encontrar usuario</h1>
-		        <div class="flexsearch">
-			        <div class="flexsearch--wrapper">
-				        <form class="flexsearch--form" action="/users/{userId}/findAll" method="get">
-				        <div class="flexsearch--input-wrapper">
-				        <input class="flexsearch--input" type="search" placeholder="search" path="username" size="30" maxlength="80">
-						
-				        </div>
-				        <input class="flexsearch--submit" type="submit" value="&#10140;"/>
-				        </form>
-			        </div>
-		        </div>
--->
-<h1 class="h1">Encontrar usuario</h1>
+<h2 class="h2">Encontrar usuario</h2>
 	<div class="flexsearch">
 	<div class="flexsearch--wrapper">
     <form:form modelAttribute="user" action="/users/{userId}/findAll" method="get" class="form-horizontal"
@@ -149,17 +133,5 @@ input:-moz-placeholder {
 
 	
 </petclinic:layout>
-
-<!--<h3 class="h3">Encontrar usuario</h3>
-		        <div class="flexsearch">
-			        <div class="flexsearch--wrapper">
-				        <form class="flexsearch--form" action="/users/{userId}/find" method="get">
-				        <div class="flexsearch--input-wrapper">
-				        <input class="flexsearch--input" type="search" placeholder="search">
-				        </div>
-				        <input class="flexsearch--submit" type="submit" value="&#10140;"/>
-				        </form>
-			        </div>
-		        </div>-->
 
 

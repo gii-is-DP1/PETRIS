@@ -3,11 +3,11 @@ package org.springframework.samples.petclinic.player;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-
+import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.token.Colour;
 import org.springframework.samples.petclinic.user.User;
@@ -22,10 +22,8 @@ import lombok.Setter;
 @Table(name = "players")
 public class Player extends BaseEntity{
 
-    @NotNull
     private boolean turn;
 
-    @NotNull
     @ManyToOne
     private Colour colour;
 
@@ -41,11 +39,22 @@ public class Player extends BaseEntity{
     private Integer points;
 
     @ManyToOne
-    @NotNull
     @JoinColumn(name="user_id")
     private User user;
 
+    @OneToOne
+    @JoinColumn(name = "game_id")
+    private Game game;
 
+    public Player(Integer usedBacteria,Integer usedSarcinas,Integer contaminationPoints, User user){
+      this.usedBacteria = usedBacteria;
+      this.usedSarcinas = usedSarcinas;
+      this.contaminationPoints = contaminationPoints;
+      this.user = user;
+    }
+
+    public Player() {
+    }
 
     /*
      * public Token getTokenwithIdDifferent(Object type, Integer id) {

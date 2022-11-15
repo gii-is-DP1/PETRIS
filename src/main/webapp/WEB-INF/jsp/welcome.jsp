@@ -84,9 +84,9 @@
                 
                 
                 
-                <form action="/login"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 65%;">Iniciar sesion</button></form>
-                <form action="/users/new"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 55%;">Registrarse</button></form>
-                <form action="/video"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 45%;">Como jugar</button></form>
+                <form action="/login"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 65%;">Log in</button></form>
+                <form action="/users/new"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 55%;">Sign in</button></form>
+                <form action="/video"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 45%;">How to play</button></form>
                 <img src="https://2tomatoesgames.com/wp-content/uploads/2020/07/petris-logo.png" style="height: 150px; position: absolute; right: 35%; bottom: 80%;">
 
 

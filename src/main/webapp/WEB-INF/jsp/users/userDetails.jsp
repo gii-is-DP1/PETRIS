@@ -36,7 +36,7 @@
     <spring:url value="{ownerId}/pets/new" var="addUrl">
         <spring:param name="userId" value="${user.username}"/>
     </spring:url>
-    <a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Invite To Friends</a>
+    <a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Add Friend</a>
 
 
     

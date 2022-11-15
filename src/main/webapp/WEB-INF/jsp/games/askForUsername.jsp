@@ -1,19 +1,16 @@
-<!DOCTYPE html>
+<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
-<html>
+<petclinic:layout pageName="joinGame">
     <head>
         <title>Form login</title>
     <style>
-* {
-    margin: 0px;
-    padding: 0px;
-}
 body{
-    height: 850px;
     background-image: url('https://fondosmil.com/fondo/3585.jpg');
     background-repeat: no-repeat;
     background-position: center;
-    background-size: cover;       
+    background-size: cover;
+    background-attachment: fixed; 
+          
 }
 #contenedor1{
     background: #f9f7f7;
@@ -21,6 +18,7 @@ body{
     height: 370px;
     margin: auto;
     margin-top: 100px;
+    background-attachment: fixed; 
 }
 #form1{
     width: 100%;
@@ -72,11 +70,9 @@ img{
             <form id="form1" name='f' action="/games/playingGame" method='POST'>
                 <img src="https://www.avante.es/wp-content/uploads/2018/03/471a1ad342659289433e05a611d206f8.png" width="40px" height="38px" alt=""/>
                 <input type="text" name="username" placeholder="Enter opponent's name"/>
-                <img src="https://www.avante.es/wp-content/uploads/2018/03/471a1ad342659289433e05a611d206f8.png" width="40px" height="45px" alt=""/>
-                <input type="text" name="username" placeholder="Enter your name"/>
                 <input type="submit" name="submit" value="Join">
                 <hr>
             </form>
         </div>
     </body>
-</html>
+</petclinic:layout>

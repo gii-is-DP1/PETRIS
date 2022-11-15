@@ -109,7 +109,10 @@ class PetServiceTests {
             } catch (DuplicatedPetNameException ex) {
                 Logger.getLogger(PetServiceTests.class.getName()).log(Level.SEVERE, null, ex);
             }
-		this.ownerService.saveOwner(owner6);
+			/*
+			 * 
+			 this.ownerService.saveOwner(owner6);
+			 */
 
 		owner6 = this.ownerService.findOwnerById(6);
 		assertThat(owner6.getPets().size()).isEqualTo(found + 1);

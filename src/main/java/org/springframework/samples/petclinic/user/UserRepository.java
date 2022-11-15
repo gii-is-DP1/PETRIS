@@ -19,6 +19,9 @@ public interface UserRepository extends  CrudRepository<User, String>{
     @Query("SELECT user FROM User user WHERE user.username = ?1")
 	public User findByName(String username);
 
+    @Query("SELECT u.friends FROM User u where u.username = :username")
+	public List<List<User>> findFriends(@Param("username") String username);
+
     @Query("SELECT DISTINCT user FROM User user WHERE user.username LIKE :username%")
 	public Collection<User> findByUsername(@Param("username") String username);
     

@@ -15,9 +15,16 @@
  */
 package org.springframework.samples.petclinic.user;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.game.Game;
+import org.springframework.samples.petclinic.game.GameService;
+import org.springframework.samples.petclinic.player.Player;
+import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -42,10 +49,14 @@ public class UserController {
 	private static final String VIEWS_OWNER_CREATE_FORM = "users/createOwnerForm";
 
 	private final UserService userService;
+	private final PlayerService playerService;
+	private final GameService gameService;
 
 	@Autowired
-	public UserController(UserService clinicService) {
+	public UserController(UserService clinicService, PlayerService playerService, GameService gameService) {
 		this.userService = clinicService;
+		this.playerService = playerService;
+		this.gameService = gameService;
 	}
 
 	@InitBinder
@@ -111,6 +122,25 @@ public class UserController {
 		model.addAttribute("wr", wr);
 		return view;
 
+	}
+
+	@GetMapping("/users/{userId}/record")
+	public String record(ModelMap model) {
+		String view = "users/userRecord";
+		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User u = UserService.getUser(ud.getUsername()).get();
+		List<Player> players = userService.getPlayersByUser(u.getUsername());
+		List<Game> games = gameService.getAllGames();
+		List<Game> res = new ArrayList<Game>();
+		for(Game g : games) {
+			 for(Player p : players) {
+				 if(p.equals(g.getPlayer1()) || p.equals(g.getPlayer2()))
+				 res.add(g);
+				}
+		}
+		model.addAttribute("players", players);
+		model.addAttribute("res", res);
+		return view;
 	}
 
 	@GetMapping("/login")

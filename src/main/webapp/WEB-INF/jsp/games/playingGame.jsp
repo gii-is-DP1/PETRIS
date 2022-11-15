@@ -19,12 +19,12 @@
             <style> 
                body
                {
-                height: 400px;
+
                 background-image: url('https://img.freepik.com/vector-gratis/fondo-abstracto-blanco_23-2148833155.jpg?w=2000');
                 background-repeat: no-repeat;
                 background-position: center;
                 background-size: cover;
-            
+                background-attachment: fixed;
                 
                }
                h1

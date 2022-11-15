@@ -31,19 +31,19 @@
 				<petclinic:menuItem active="${name eq 'owners'}" url="/users/userId/personalStatistics"
 					title="personal statistics">
 					<span class="glyphicon glyphicon-signal" aria-hidden="true"></span>
-					<span>Estadisticas</span>
+					<span>Statistics</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'owners'}" url="/users/userId/historial"
+				<petclinic:menuItem active="${name eq 'owners'}" url="/users/userId/record"
 					title="historial">
 					<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-					<span>Historial</span>
+					<span>Game History</span>
 				</petclinic:menuItem>
 
 				<petclinic:menuItem active="${name eq 'owners'}" url="/users/userId/friends"
 					title="friends">
 					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-					<span>Amigos</span>
+					<span>Friends</span>
 				</petclinic:menuItem>
 			</ul>
 
@@ -92,10 +92,6 @@
 											<p class="text-left">
 												<strong><sec:authentication property="name" /></strong>
 											</p>
-											<p class="text-left">
-												<a href="<c:url value="/logout" />"
-													class="btn btn-primary btn-block btn-sm">Logout</a>
-											</p>
 										</div>
 									</div>
 								</div>
@@ -110,8 +106,8 @@
 									<div class="row">
 										<div class="col-lg-12">
 											<p>
-												<a href="<c:url value="/users/userId/profile" />" class="btn btn-primary btn-block">Mi perfil</a>
-												<a href="#" class="btn btn-danger btn-block">Change Password</a>
+												<a href="<c:url value="/users/userId/profile" />" class="btn btn-primary btn-block">My profile</a>
+												<a href="<c:url value="/logout" />" class="btn btn-danger btn-block">Logout</a>
 											</p>
 										</div>
 									</div>

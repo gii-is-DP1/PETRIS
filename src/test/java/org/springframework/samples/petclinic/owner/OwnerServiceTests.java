@@ -116,7 +116,10 @@ class OwnerServiceTests {
 		String newLastName = oldLastName + "X";
 
 		owner.setLastName(newLastName);
-		this.ownerService.saveOwner(owner);
+		/*
+		 * 
+		 this.ownerService.saveOwner(owner);
+		 */
 
 		// retrieving new name from database
 		owner = this.ownerService.findOwnerById(1);

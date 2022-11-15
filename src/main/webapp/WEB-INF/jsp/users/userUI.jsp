@@ -14,11 +14,11 @@
             <style> 
                body
                {
-                height: 800px;
                 background-image: url('https://c4.wallpaperflare.com/wallpaper/458/849/290/nintendo-super-mario-nintendo-entertainment-system-controllers-wallpaper-preview.jpg');
                 background-repeat: no-repeat;
                 background-position: center;
                 background-size: cover;
+                background-attachment: fixed;
                }
                h1
                {
@@ -173,9 +173,9 @@ input:-moz-placeholder {
             </tr>
         </c:forEach>
 
-                <form action="/games"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 65%;">Jugar una partida</button></form>
-                <form action=""><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 45%;">Espectador</button></form>
-                <form action="/video"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 55%;">Como Jugar</button></form>
+                <form action="/games"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 65%;">Play</button></form>
+                <form action=""><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 45%;">Spectate</button></form>
+                <form action="/video"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 55%;">How to play</button></form>
                 <!-- <img src="https://2tomatoesgames.com/wp-content/uploads/2020/07/petris-logo.png" style="height: 150px; position: absolute; right: 35%; bottom: 80%;">-->
                 
 

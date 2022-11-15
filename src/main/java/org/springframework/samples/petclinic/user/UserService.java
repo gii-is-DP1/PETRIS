@@ -22,6 +22,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.player.Player;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,27 +44,32 @@ public class UserService {
 	public UserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
-	
-	 
-	@Transactional
-	public void saveUser(User user) throws DataAccessException {
-        user.setEnabled(true);
-		userRepository.save(user);
-        authoritiesService.saveAuthorities(user.getUsername(), "admin");
-	}
-
     public User getUserByName(String username) {
-		return userRepository.findByName(username);
+		return userRepository.findUserByUsername(username);
 	}
 
 	@Transactional(readOnly = true)
-	public Collection<User> findUserByUsername(String username) throws DataAccessException {
+	public Collection<User> getUserByUsername(String username) throws DataAccessException {
 		return userRepository.findByUsername(username);
+	}
+
+	public List<Player> getPlayersByUser(String username) {
+		return userRepository.findByName(username).getPlayers();
 	}
 	
 	@Transactional
 	public static Optional<User> getUser(String username) {
 		return userRepository.findById(username);
+	}
+	@Transactional
+	public void saveUser(User user) throws DataAccessException, DuplicatedUserNameException{
+		if (userRepository.findByName(user.getUsername()) == null){
+			user.setEnabled(true);
+			userRepository.save(user);
+			authoritiesService.saveAuthorities(user.getUsername(), "admin");
+		}else{
+			throw new DuplicatedUserNameException();
+		}
 	}
 
 	@Transactional

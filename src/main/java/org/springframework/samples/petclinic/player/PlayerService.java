@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.player;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.user.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,15 +21,20 @@ public class PlayerService {
         return playerRepository.findPlayerByUserId(userName);
     }
 
+    public List<Player> getPlayersFromUserId(String username) {
+        return playerRepository.findAllPlayersFromAUser(username);
+    }
+
 
     @Transactional(readOnly = true)
     public List<Player> getAll(){
         return playerRepository.findAll();
     }
-
-    @Transactional
-    public void save(Player p){
-        playerRepository.save(p);
+    public List<Player> getPlayersByUser(String username){
+        return playerRepository.findPlayersByUser(username);
     }
-    
+    @Transactional
+    public Player save(Player p){
+        return playerRepository.save(p);
+    }
 }

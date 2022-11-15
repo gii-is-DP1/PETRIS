@@ -109,7 +109,7 @@ public class UserController {
 	public String personalStatistics(ModelMap model) {
 		String view = "users/pStatistics";
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User u = UserService.findUser(ud.getUsername()).get();
+		User u = UserService.getUser(ud.getUsername()).get();
 		model.addAttribute("user", u);
 		return view;
 

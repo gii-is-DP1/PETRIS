@@ -12,7 +12,7 @@
 	
 
 <nav class="navbar navbar-default" role="navigation">
-	<div class="container2" style="padding-left: 200px; padding-right: 200px;">
+	<div class="container2" style="padding-left: 100px; padding-right: 100px;">
 		<div class="navbar-header">
 			<a class="navbar-brand2" href="/users/userId"><img src="https://2tomatoesgames.com/wp-content/uploads/2020/07/petris-logo.png" style="width: 170px;"></a>
                     <button2 class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

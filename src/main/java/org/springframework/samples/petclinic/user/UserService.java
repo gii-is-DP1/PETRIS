@@ -57,10 +57,14 @@ public class UserService {
 		return userRepository.findById(username);
 	}
 	@Transactional
-	public void saveUser(User user) throws DataAccessException {
-		user.setEnabled(true);
-		userRepository.save(user);
-		authoritiesService.saveAuthorities(user.getUsername(), "admin");
+	public void saveUser(User user) throws DataAccessException, DuplicatedUserNameException{
+		if (userRepository.findByName(user.getUsername()) == null){
+			user.setEnabled(true);
+			userRepository.save(user);
+			authoritiesService.saveAuthorities(user.getUsername(), "admin");
+		}else{
+			throw new DuplicatedUserNameException();
+		}
 	}
 
 	@Transactional

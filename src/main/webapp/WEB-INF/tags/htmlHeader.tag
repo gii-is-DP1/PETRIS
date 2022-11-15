@@ -14,7 +14,7 @@ PetClinic :: a Spring Framework demonstration
     <spring:url value="/resources/images/petris-logo.png" var="petris-logo"/>
     <link rel="shortcut icon" type="image/x-icon" href="${petris-logo}">
 
-    <title>PetClinic :: a Spring Framework demonstration</title>
+    <title>PETRIS - The game | L1-5</title>
 
     <%-- CSS generated from LESS --%>
     <spring:url value="/resources/css/petclinic.css" var="petclinicCss"/>

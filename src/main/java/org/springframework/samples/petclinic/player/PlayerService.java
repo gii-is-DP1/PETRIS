@@ -30,10 +30,11 @@ public class PlayerService {
     public List<Player> getAll(){
         return playerRepository.findAll();
     }
-
-    @Transactional
-    public void save(Player p){
-        playerRepository.save(p);
+    public List<Player> getPlayersByUser(String username){
+        return playerRepository.findPlayersByUser(username);
     }
-    
+    @Transactional
+    public Player save(Player p){
+        return playerRepository.save(p);
+    }
 }

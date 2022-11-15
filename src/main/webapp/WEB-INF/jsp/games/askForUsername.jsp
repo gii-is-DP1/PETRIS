@@ -72,8 +72,6 @@ img{
             <form id="form1" name='f' action="/games/playingGame" method='POST'>
                 <img src="https://www.avante.es/wp-content/uploads/2018/03/471a1ad342659289433e05a611d206f8.png" width="40px" height="38px" alt=""/>
                 <input type="text" name="username" placeholder="Enter opponent's name"/>
-                <img src="https://www.avante.es/wp-content/uploads/2018/03/471a1ad342659289433e05a611d206f8.png" width="40px" height="45px" alt=""/>
-                <input type="text" name="username" placeholder="Enter your name"/>
                 <input type="submit" name="submit" value="Join">
                 <hr>
             </form>

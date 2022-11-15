@@ -129,6 +129,5 @@ public class GameServiceTest {
 
         boolean move4 = this.gameService.isMovementAllowed(player, space1, space4,2);
         assertThat(move4).isEqualTo(true);
-
     }
 }

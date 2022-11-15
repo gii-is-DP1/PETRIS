@@ -14,6 +14,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.samples.petclinic.player.Player;
 
 import lombok.Getter;
@@ -55,7 +56,16 @@ public class User{
 	@ManyToMany(cascade = CascadeType.ALL)
 	private List<User> friends;
 
-	Double winrate() {
+	public User(String username, String email, String password){
+		this.username = username;
+		this.email = email;
+		this.password = password;
+	}
+
+	public User() {
+    }
+
+    Double winrate() {
 		return wonGames*1.0/playedGames;
 	}
 

@@ -17,6 +17,9 @@ package org.springframework.samples.petclinic.user;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -25,6 +28,7 @@ import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.game.GameService;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerService;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -33,8 +37,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+
 
 /**
  * @author Juergen Hoeller
@@ -52,11 +59,15 @@ public class UserController {
 	private final PlayerService playerService;
 	private final GameService gameService;
 
+	
+	private final UserRepository userRepository;
+
 	@Autowired
-	public UserController(UserService clinicService, PlayerService playerService, GameService gameService) {
+	public UserController(UserService clinicService, PlayerService playerService, GameService gameService, UserRepository userRepository) {
 		this.userService = clinicService;
 		this.playerService = playerService;
 		this.gameService = gameService;
+		this.userRepository = userRepository;
 	}
 
 	@InitBinder
@@ -96,20 +107,33 @@ public class UserController {
     }
 
     @PostMapping(value = "/users/new")
-    public ModelAndView processCreationForm(@Valid User user, BindingResult result) {
+    public ModelAndView processCreationForm(@Valid User user, BindingResult result) throws DataAccessException, DuplicatedUserNameException {
         ModelAndView mav;
         if (result.hasErrors()) {
             mav = new ModelAndView(VIEWS_USER_CREATE_FORM);
             mav.addObject("user", user);
         } else {
-            this.userService.saveUser(user);
-            mav = new ModelAndView("welcome");
-			mav.addObject("message", "User saved succesfully!");
-			
-			
+			try {
+				this.userService.saveUser(user);
+				mav = new ModelAndView("welcome");
+				mav.addObject("message", "User saved succesfully!");
+				
+			} catch (Exception DuplicatedUserNameException) {
+
+            	mav = new ModelAndView(VIEWS_USER_CREATE_FORM);
+				mav.addObject("message", "This name is already in use");
+			}
         }
         return mav;
     }
+/* 
+	@GetMapping(value = "/users/{userId}/friends/{friendId}")
+	public ModelAndView processFindUser(@PathVariable("friendId") String username, BindingResult result){
+		ModelAndView mav = new ModelAndView("users/userDetails");
+		mav.addObject(this.userService.findUserByName(username));
+		return mav;
+	} 
+	*/
 
 
 	@GetMapping("/users/{userId}/personalStatistics")
@@ -142,6 +166,15 @@ public class UserController {
 		model.addAttribute("res", res);
 		return view;
 	}
+	@GetMapping("/users/{userId}/profile")
+	public String profile(ModelMap model) {
+		String view = "users/profile";
+		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User u = UserService.getUser(ud.getUsername()).get();
+		model.addAttribute("user", u);
+		return view;
+
+	}
 
 	@GetMapping("/login")
     public String login(){
@@ -153,13 +186,85 @@ public class UserController {
         return "/users/userUI";
     }
 
-	/*
-	@GetMapping("/users/${userId}/friends")
-	public String getFriends(){
-
-
-
+	
+	@GetMapping(value = "/users/{userId}/friends")
+	public String initFindForm(ModelMap modelMap) {
+		String vista = "users/friendsUI";
+		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User user = userService.getUser(ud.getUsername()).get();
+		List<User> amigos = userService.findAmigos(user.getUsername());
+		modelMap.addAttribute("amigos", amigos);
+		return vista;
 	}
-	*/
+
+	@GetMapping(path = "users/{userId}/friends/delete/{username}")
+	public String eliminarAmigo(@PathVariable("username") String username, ModelMap modelMap) {
+
+		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User user = userService.getUser(ud.getUsername()).get();
+		userService.borrarAmigo(user, username);
+		return "redirect:/users/{userId}/friends";
+	}
+
+	@GetMapping("/users/{userId}/friends/search/{username}")
+	public String friendDetails(@PathVariable("username") String username, ModelMap modelMap) {
+		
+		User friend = this.userService.getUserByName(username);
+		modelMap.addAttribute("friend", friend);
+		Double wr = friend.winrate();
+		modelMap.addAttribute("wr", wr);
+		String view = "users/friendDetails";
+		return view;
+	}
+
+	
+
+	@GetMapping(value = "/users/{userId}/find")
+	public String initFindForm(Map<String, Object> model) {
+		model.put("user", new User());
+		String vista = "users/findUsers";
+		return vista;
+	}
+
+	@GetMapping(value = "/users/{userId}/findAll")
+	public String processFindForm(User user, BindingResult result, Map<String, Object> model) {
+
+		// allow parameterless GET request for /owners to return all records
+		if (user.username == null) {
+			user.setUsername(""); // empty string signifies broadest possible search
+		}
+
+		// find owners by last name
+		Collection<User> results = this.userService.getUserByUsername(user.username);
+		if (results.isEmpty()) {
+			// no owners found
+			result.rejectValue("lastName", "notFound", "not found");
+			return "owners/findOwners";
+		}
+		else if (results.size() == 1) {
+			// 1 owner found
+			user = results.iterator().next();
+			return "redirect:/users/{userId}/" + user.getUsername();
+		}
+		else {
+			// multiple owners found
+			model.put("selections", results);
+			return "/users/searchUsers";
+		}
+	}
+
+	@GetMapping("/users/{userId}/{username}")
+	public ModelAndView showUser(@PathVariable("username") String username) {
+		ModelAndView mav = new ModelAndView("users/userDetails");
+		mav.addObject(this.userService.getUserByName(username));
+		return mav;
+	}
+
+
+
+	
+
+
+	
 
 }

@@ -22,10 +22,8 @@ import lombok.Setter;
 @Table(name = "players")
 public class Player extends BaseEntity{
 
-    @NotNull
     private boolean turn;
 
-    @NotNull
     @ManyToOne
     private Colour colour;
 
@@ -41,7 +39,6 @@ public class Player extends BaseEntity{
     private Integer points;
 
     @ManyToOne
-    @NotNull
     @JoinColumn(name="user_id")
     private User user;
 
@@ -49,7 +46,15 @@ public class Player extends BaseEntity{
     @JoinColumn(name = "game_id")
     private Game game;
 
+    public Player(Integer usedBacteria,Integer usedSarcinas,Integer contaminationPoints, User user){
+      this.usedBacteria = usedBacteria;
+      this.usedSarcinas = usedSarcinas;
+      this.contaminationPoints = contaminationPoints;
+      this.user = user;
+    }
 
+    public Player() {
+    }
 
     /*
      * public Token getTokenwithIdDifferent(Object type, Integer id) {

@@ -10,7 +10,7 @@
         <html>
             <head>
             <meta charset="utf-8">
-            <title>Play Game</title>
+            <title>PETRIS - Play Game</title>
             <style> 
                body
                {
@@ -63,8 +63,8 @@
             </head>
             <body>
 
-                <form action="/games/create/{username}"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 65%;">Crear partida</button></form>
-                <form action="/games/join"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 55%;">Unirse</button></form>
+                <form action="/games/create/{username}"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 65%;">Create game</button></form>
+                <form action="/games/join"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 55%;">Join game</button></form>
 
             </body>
             

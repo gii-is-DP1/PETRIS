@@ -30,7 +30,7 @@
 					<span>Estadisticas</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'owners'}" url="/users/userId/historial"
+				<petclinic:menuItem active="${name eq 'owners'}" url="/users/userId/record"
 					title="historial">
 					<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
 					<span>Historial</span>

@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.user;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
@@ -17,5 +18,9 @@ public interface UserRepository extends  CrudRepository<User, String>{
 	
     @Query("SELECT user FROM User user WHERE user.username LIKE :username%")
 	public User findByName(@Param("username") String username);
+
+    @Query("SELECT DISTINCT user FROM User user WHERE user.username LIKE :username%")
+	public Collection<User> findByUsername(@Param("username") String username);
+    
 
 }

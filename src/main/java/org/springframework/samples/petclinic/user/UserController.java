@@ -35,7 +35,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 
 
 
@@ -53,9 +56,13 @@ public class UserController {
 
 	private final UserService userService;
 
+	
+	private final UserRepository userRepository;
+
 	@Autowired
-	public UserController(UserService clinicService) {
+	public UserController(UserService clinicService, UserRepository userRepository) {
 		this.userService = clinicService;
+		this.userRepository = userRepository;
 	}
 
 	@InitBinder
@@ -181,5 +188,55 @@ public class UserController {
 		String view = "users/friendDetails";
 		return view;
 	}
+
+	
+
+	@GetMapping(value = "/users/{userId}/find")
+	public String initFindForm(Map<String, Object> model) {
+		model.put("user", new User());
+		String vista = "users/findUsers";
+		return vista;
+	}
+
+	@GetMapping(value = "/users/{userId}/findAll")
+	public String processFindForm(User user, BindingResult result, Map<String, Object> model) {
+
+		// allow parameterless GET request for /owners to return all records
+		if (user.username == null) {
+			user.setUsername(""); // empty string signifies broadest possible search
+		}
+
+		// find owners by last name
+		Collection<User> results = this.userService.getUserByUsername(user.username);
+		if (results.isEmpty()) {
+			// no owners found
+			result.rejectValue("lastName", "notFound", "not found");
+			return "owners/findOwners";
+		}
+		else if (results.size() == 1) {
+			// 1 owner found
+			user = results.iterator().next();
+			return "redirect:/users/{userId}/" + user.getUsername();
+		}
+		else {
+			// multiple owners found
+			model.put("selections", results);
+			return "/users/searchUsers";
+		}
+	}
+
+	@GetMapping("/users/{userId}/{username}")
+	public ModelAndView showUser(@PathVariable("username") String username) {
+		ModelAndView mav = new ModelAndView("users/userDetails");
+		mav.addObject(this.userService.getUserByName(username));
+		return mav;
+	}
+
+
+
+	
+
+
+	
 
 }

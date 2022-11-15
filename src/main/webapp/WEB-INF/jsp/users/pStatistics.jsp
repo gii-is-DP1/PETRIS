@@ -106,32 +106,32 @@
 
 <petclinic:layout pageName="statistics">
     
-    <h1 style = "width: 500px; position: absolute; right: 28%;">Estadisticas personales</h1>
+    <h1 style = "width: 500px; position: absolute; right: 28%;">Personal statistics</h1>
 
     <table id="personalStatistics" class="table table-striped">
         <thead>
         </thead>
         <tbody>
             <tr>
-                <th  style = "width: 500px; position: absolute; right: 36%; bottom: 72%;">Partidas jugadas </th>
+                <th  style = "width: 500px; position: absolute; right: 36%; bottom: 72%;">Played games</th>
                 <td style = "position: absolute; right: 36%;bottom: 72%">
                     <c:out value="${user.playedGames}"/>
                 </td>
             </tr>
             <tr>
-                <th style = "width: 500px; position: absolute; right: 36%; bottom: 67%">Partidas ganadas </th>
+                <th style = "width: 500px; position: absolute; right: 36%; bottom: 67%">Won games</th>
                 <td style = "position: absolute; right: 36%; bottom: 67%">
                     <c:out value="${user.wonGames}"/>
                 </td>
             </tr>
             <tr>
-                <th style = "width: 500px; position: absolute; right: 36%; bottom: 62%">Partidas perdidas </th>
+                <th style = "width: 500px; position: absolute; right: 36%; bottom: 62%">Lost games </th>
                 <td style = "position: absolute; right: 36%; bottom: 62%">
                     <c:out value="${user.lostGames}"/>
                 </td>
             </tr>
             <tr>
-                <th style = "width: 500px; position: absolute; right: 36%; bottom: 57%">Puntos totales </th>
+                <th style = "width: 500px; position: absolute; right: 36%; bottom: 57%">Total points</th>
                 <td style = "position: absolute; right: 36%; bottom: 57%">
                     <c:out value="${user.points}"/>
                 </td>

@@ -1,4 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="sec"
@@ -6,9 +9,10 @@
 <!--  >%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%-->
 <%@ attribute name="name" required="true" rtexprvalue="true"
 	description="Name of the active menu: home, owners, vets or error"%>
+	
 
 <nav class="navbar navbar-default" role="navigation">
-	<div class="container">
+	<div class="container2" style="padding-left: 200px; padding-right: 200px;">
 		<div class="navbar-header">
 			<a class="navbar-brand2" href="/users/userId"><img src="https://2tomatoesgames.com/wp-content/uploads/2020/07/petris-logo.png" style="width: 170px;"></a>
                     <button2 class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,20 +45,37 @@
 					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 					<span>Amigos</span>
 				</petclinic:menuItem>
-
 			</ul>
 
-
-
+			
 
 			<ul class="nav navbar-nav navbar-right">
+
+				<li>
+				<form:form class="navbar-form" style="margin-top: 20px; right: 5px;" modelAttribute="user" action="/users/{userId}/findAll" method="get" 
+                  id="search-owner-form">
+				<div class="form-group input-group">
+				<div class="control-group" id="username">
+      			<form:input class="form-control" path="username" size="30" maxlength="80" placeholder="Search"/>
+				<div class="input-group-btn">
+      			<button class="btn btn-outline-success my-2 my-sm-0"  type="submit"><span class="glyphicon glyphicon-search"></span></button>
+    			</div>
+				</div>
+				</div>
+				</form:form>
+				</li>
+
+				
+
+				
+
 				<sec:authorize access="!isAuthenticated()">
 					<li><a href="<c:url value="/login" />">Login</a></li>
 					<li><a href="<c:url value="/users/new" />">Register</a></li>
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span>�
+						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span>
 							<strong><sec:authentication property="name" /></strong> <span
 							class="glyphicon glyphicon-chevron-down"></span>
 					</a>
@@ -79,7 +100,11 @@
 									</div>
 								</div>
 							</li>
-							<li class="divider"></li>							
+							<li class="divider"></li>
+
+							
+
+
                             <li> 
 								<div class="navbar-login navbar-login-session">
 									<div class="row">

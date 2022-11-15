@@ -154,8 +154,12 @@ public class UserController {
     }
 
 	@GetMapping("/users/{userId}")
-    public String userInterface(){
-        return "/users/userUI";
+    public String userInterface(ModelMap model){
+		String view = "/users/userUI";
+		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User u = UserService.getUser(ud.getUsername()).get();
+		model.addAttribute("user", u);
+        return view;
     }
 
 	
@@ -166,6 +170,7 @@ public class UserController {
 		User user = userService.getUser(ud.getUsername()).get();
 		List<User> amigos = userService.findAmigos(user.getUsername());
 		modelMap.addAttribute("amigos", amigos);
+		modelMap.addAttribute("user", user);
 		return vista;
 	}
 

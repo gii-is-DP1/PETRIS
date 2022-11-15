@@ -20,6 +20,11 @@
 			</thead>
 			<tbody>
 				<c:forEach items="${res}" var="res">
+					<thead>
+						<tr>
+							<th style="width: 150px;">Partida: </th>
+						</tr>
+					</thead>
 					<tr>
 						<th style = "width: 1300px; right: 15%">Id de la partida </th>
 						<td style = " position: absolute; right: 15%" >

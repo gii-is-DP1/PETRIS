@@ -1,5 +1,11 @@
+<%@ page session="false" trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
-<layout pageName="home">
+
+<petclinic:layout pageName="games">
     <div class="inicio">
         <html>
             <head>
@@ -8,13 +14,11 @@
             <style> 
                body
                {
-                height: 400px;
                 background-image: url('https://fondosmil.com/fondo/3585.jpg');
                 background-repeat: no-repeat;
                 background-position: center;
                 background-size: cover;
-            
-                
+                background-attachment: fixed;
                }
                h1
                {
@@ -61,8 +65,6 @@
 
                 <form action="/games/create/{username}"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 65%;">Crear partida</button></form>
                 <form action="/games/join"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 55%;">Unirse</button></form>
-                <img src="https://2tomatoesgames.com/wp-content/uploads/2020/07/petris-logo.png" style="height: 150px; position: absolute; right: 35%; bottom: 80%;">
-
 
             </body>
             
@@ -76,4 +78,4 @@
 
       </div>
 
-</layout>
+</petclinic:layout>

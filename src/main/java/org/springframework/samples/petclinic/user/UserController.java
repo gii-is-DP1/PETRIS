@@ -15,16 +15,14 @@
  */
 package org.springframework.samples.petclinic.user;
 
-import java.util.Map;
-
-import javax.validation.Valid;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -35,10 +33,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 
 
 
@@ -102,17 +97,22 @@ public class UserController {
     }
 
     @PostMapping(value = "/users/new")
-    public ModelAndView processCreationForm(@Valid User user, BindingResult result) {
+    public ModelAndView processCreationForm(@Valid User user, BindingResult result) throws DataAccessException, DuplicatedUserNameException {
         ModelAndView mav;
         if (result.hasErrors()) {
             mav = new ModelAndView(VIEWS_USER_CREATE_FORM);
             mav.addObject("user", user);
         } else {
-            this.userService.saveUser(user);
-            mav = new ModelAndView("welcome");
-			mav.addObject("message", "User saved succesfully!");
-			
-			
+			try {
+				this.userService.saveUser(user);
+				mav = new ModelAndView("welcome");
+				mav.addObject("message", "User saved succesfully!");
+				
+			} catch (Exception DuplicatedUserNameException) {
+
+            	mav = new ModelAndView(VIEWS_USER_CREATE_FORM);
+				mav.addObject("message", "This name is already in use");
+			}
         }
         return mav;
     }
@@ -207,7 +207,7 @@ public class UserController {
 		}
 
 		// find owners by last name
-		Collection<User> results = this.userService.findUserByUsername(user.username);
+		Collection<User> results = this.userService.getUserByUsername(user.username);
 		if (results.isEmpty()) {
 			// no owners found
 			result.rejectValue("lastName", "notFound", "not found");

@@ -246,7 +246,7 @@ public class UserController {
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User u = UserService.getUser(ud.getUsername()).get();
 		modelMap.addAttribute("user", u);
-		User friend = this.userService.getUserByName(username);
+		User friend = this.userService.getUser(username).get();
 		modelMap.addAttribute("friend", friend);
 		Double wr = friend.winrate();
 		modelMap.addAttribute("wr", wr);
@@ -259,7 +259,7 @@ public class UserController {
 	@GetMapping(value = "/users/{userId}/find")
 	public String initFindForm(ModelMap model) {
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = this.userService.getUserByName(ud.getUsername());
+        User user = this.userService.getUser(ud.getUsername()).get();
 		model.addAttribute("user",user);
 		model.put("user", new User());
 		String vista = "users/findUsers";
@@ -297,7 +297,7 @@ public class UserController {
 	@GetMapping("/users/{userId}/{username}")
 	public ModelAndView showUser(@PathVariable("username") String username) {
 		ModelAndView mav = new ModelAndView("users/userDetails");
-		mav.addObject(this.userService.getUserByName(username));
+		mav.addObject(this.userService.getUser(username).get());
 		return mav;
 	}
 

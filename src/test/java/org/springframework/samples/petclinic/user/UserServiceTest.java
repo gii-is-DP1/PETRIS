@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -22,28 +22,24 @@ public class UserServiceTest {
     
     @Test
     void shouldFindUserByName(){
-        User user = this.userService.getUserByName("gonriblun");
+        User user = this.userService.getUser("gonriblun").get();
         assertThat(user.getPassword()).isEqualTo("1");
     }
 
     @Test
-    void shouldFindUserByUserame(){
-        Collection<User> user = this.userService.getUserByUsername("g");
-        assertThat(user.size() >= 1);
-    }
+	void shouldFindUsersByLetter() {
+		Collection<User> users = this.userService.getUserByUsername("p");
+		assertThat(users.size()).isEqualTo(2);
+
+		users = this.userService.getUserByUsername("hola");
+		assertThat(users.isEmpty()).isTrue();
+	}
 
     @Test
     void shouldFindPlayerByUserame(){
         List<Player> players = this.userService.getPlayersByUser("gonriblun");
-        assertThat(players.size() >= 1);
+        assertThat(players.size()).isEqualTo(4);
     }
-    /*
-     * @Test
-    void shouldFindUser(){
-        Optional<User> user = this.userService.getUser("gonriblun");
-        assertThat(user.stream().anyMatch(user.get().getPassword() == "1"));
-    }
-     */
 
     @Test
 	public void saveUserTest() throws DataAccessException, DuplicatedUserNameException {
@@ -54,5 +50,60 @@ public class UserServiceTest {
         userService.saveUser(u);
 
 	}
+
+    @Test
+    void shouldFindFriends(){
+        List<User> friends = this.userService.findAmigos("raumerbas");
+        assertThat(friends.size()).isEqualTo(2);
+
+        friends = this.userService.findAmigos("lucantdel");
+        assertThat(friends.isEmpty());
+    }
+
+    @Test
+    void shouldDeleteFriend(){
+        User friend = this.userService.getUser("dancorfon").get();
+
+        List<User> friends = this.userService.findAmigos("raumerbas");
+        friends.remove(friend);
+        assertThat(friends.size()).isEqualTo(1);
+    }
+
+    @Test
+    void shouldThrowExceptionSavingUserWithShortPassword(){
+        User u = new User();
+		u.setUsername("jaimegg17");
+		u.setEmail("jaimegg@gmail.com");
+		u.setPassword("a");
+
+        Assertions.assertThrows(Exception.class, () ->{
+			userService.saveUser(u);
+		});
+    }
+
+    @Test
+    void shouldThrowExceptionSavingUserWithWrongEmail(){
+        User u = new User();
+		u.setUsername("jaimegg17");
+		u.setEmail("jaimegg");
+		u.setPassword("aaaaa");
+
+        Assertions.assertThrows(Exception.class, () ->{
+			userService.saveUser(u);
+		});
+    }
+
+    @Test
+    void shouldThrowExceptionSavingUserWithDuplicatedUsername(){
+        User u = new User();
+		u.setUsername("raumerbas");
+		u.setEmail("jaimegg");
+		u.setPassword("aaaaa");
+
+        Assertions.assertThrows(Exception.class, () ->{
+			userService.saveUser(u);
+		});
+    }
+    
     
 }

@@ -8,35 +8,16 @@
     
     <h1 style = "width: 500px; position: absolute; right: 20%;">My profile</h1>
 
-    <table id="profile" class="table table-striped">
-        <thead>
-        </thead>
-        <tbody>
-            <tr>
-                <th  style = "width: 500px; position: absolute; right: 36%; bottom: 72%;">Username </th>
-                <td style = "position: absolute; right: 36%;bottom: 72%">
-                    <c:out value="${user.username}"/>
-                </td>
-                <petclinic:inputField label="Email" name="email"/>
-                <petclinic:inputField label="Username" name="username"/>
-                <petclinic:inputField label="Password" name="password"/>
-            </tr>
-            <tr>
-                <th style = "width: 500px; position: absolute; right: 36%; bottom: 67%">Email </th>
-                <td style = "position: absolute; right: 36%; bottom: 67%">
-                    <c:out value="${user.email}"/>
-                </td>
-            </tr>
-            <tr>
-                <th style = "width: 500px; position: absolute; right: 36%; bottom: 62%">Password </th>
-                <td style = "position: absolute; right: 36%; bottom: 62%">
-                    <c:out value="${user.password}"/>
-                </td>
-            </tr>
-            <tr>
-                <th style = "width: 500px; position: absolute; right: 36%; bottom: 59.6%"></th>
-            </tr>
-        </tbody>
-    </table>
-    <div><form action="/users/userId/editProfile" style="height: 70px; width: 500px; position: absolute; right: 19%; bottom: 50%;"><button class="button">Confirm</button></form></div>
+    <form:form modelAttribute="user" class="form-horizontal" id="update-user-form">
+        <div class="form-group has-feedback">
+            <petclinic:inputField label="Email" name="user.email"/>
+            <petclinic:inputField label="Username" name="user.username"/>
+            <petclinic:inputField label="Password" name="user.password"/>
+        </div>
+        <div class="form-group" style="bottom: 50%;">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button class="btn btn-default" action="/users/{userId}/edit" method="POST" type="submit" style="height: 45px; width: 100px; position: absolute; right: 66%;">Confirm</button>
+            </div>
+        </div>
+    </form:form>
 </petclinic:layout>

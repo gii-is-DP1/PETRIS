@@ -22,8 +22,8 @@ public class GameService {
     public Game getGameById(Integer id){
         return gameRepository.findGameByid(id);        
     }
-    public List<Game> getAllActiveGames(){
-        return gameRepository.findAllActiveGames();
+    public List<Game> getAllPublicActiveEmptyGames(){
+        return gameRepository.findAllPublicActiveEmptyGames();
     }
     public Game getActiveGameByPlayer(String username){
         return gameRepository.findActiveGameByPlayer(username);

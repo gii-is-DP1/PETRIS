@@ -27,37 +27,38 @@
 					</thead>
 					<tr>
 						<th style = "width: 1300px; right: 15%">Game Id </th>
-						<td style = " position: absolute; right: 15%" >
+						<td style = " position: absolute; right: 19%" >
 							<c:out value="${res.id}"/>
 						</td>
 					</tr>
 					<tr>
 						<th>Winner </th>
-						<td style = "position: absolute; right: 15%">
+						<td style = "position: absolute; right: 19%">
 							<c:out value="${res.winner}"/>
 						</td>
 					</tr>
 					<tr>
 						<th>Duration </th>
-						<td style = "position: absolute; right: 15%">
+						<td style = "position: absolute; right: 19%">
 							<c:out value="${res.time}"/>
 						</td>
 					</tr>
 					<tr>
 						<th>Final round </th>
-						<td style = "position: absolute; right: 15%">
+						<td style = "position: absolute; right: 19%">
 							<c:out value="${res.round}"/>
 						</td>
 					</tr>
 					<tr>
 						<th>Player A </th>
-						<td style = "position: absolute; right: 15%">
+						<td style = "position: absolute; right: 19%">
 							<c:out value="${res.player1.user.username}"/>
 						</td>
 					</tr>
 					<tr>
+
 						<th>Player B </th>
-						<td style = "position: absolute; right: 15%">
+						<td style = "position: absolute; right: 19%">
 							<c:out value="${res.player2.user.username}"/>
 						</td>
 					</tr>

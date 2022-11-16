@@ -34,9 +34,7 @@
                 &nbsp;
                 <td>
                 <a href="${fn:escapeXml(userUrl)}"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
-                </td>
-               
-                
+                </td>    
             </tr>
         </c:forEach>
         </tbody>

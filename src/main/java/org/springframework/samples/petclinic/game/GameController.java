@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.samples.petclinic.Colour.Colour;
 import org.springframework.samples.petclinic.Colour.ColourService;
 import org.springframework.samples.petclinic.player.Player;
@@ -35,7 +36,7 @@ public class GameController {
 
     private static final String GAME_VIEW = "games/showGameInit";
     private static final String CREATE_GAME = "games/createGame";
-    //private static final String GAME_LISTING = "games/gameListing";
+    private static final String GAME_LISTING = "games/gameListing";
     private static final String CURRENT_GAME = "games/playingGame";
     private static final String JOIN_BY_CODE = "games/joinByCode";
 
@@ -95,13 +96,13 @@ public class GameController {
             Game createdGame = this.gameService.save(newGame);
 		    
             model.addAttribute("code", code);
+            model.addAttribute("game", createdGame);
             model.put("message", "game created successfully!. The game code is:" + createdGame.getCode());
             return CURRENT_GAME;
         }
     }
-    
-    @GetMapping("/join")
-    public String joinGame(String gameCode,  ModelMap model){
+    @GetMapping("/join/private")
+    public String joinPrivateGame(String gameCode,  ModelMap model){
 
         try {
             UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -113,8 +114,6 @@ public class GameController {
             String player1Colour = game.getPlayer1().getColour().getName();
             Colour randomColour = this.colourService.getOtherColoursExcept(player1Colour).get(0);
 
-
-            
             if (game.getPlayer2()==null){
                 
                 Player player2 = new Player(randomColour, 0,0,0, user);
@@ -125,23 +124,42 @@ public class GameController {
                 return activeGame(model, game.getId());
 
             }else{
-                model.put("message", "it doesn't exist any game" );
+                model.put("message", "This game is full" );
                 return JOIN_BY_CODE;
-            }
-
-            
+            }   
         } catch (Exception e) {
             model.put("message", "invalid code   " + gameCode);
             return JOIN_BY_CODE;
         }
+    }
+    @GetMapping("/join/{gameCode}")
+    public String joinGameByCode(@PathVariable("gameCode") String gameCode,  ModelMap model){
+        return joinPrivateGame(gameCode, model);
 
     }
-    
-    @GetMapping("/playing")
+    @GetMapping("/join/public")
+    public String joinPublicGame(ModelMap model){
+
+        try {
+            UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User user = this.userService.getUserByName(ud.getUsername());
+            model.addAttribute("user",user);
+
+            List<Game> games = this.gameService.getAllPublicActiveEmptyGames();
+            model.addAttribute("games",games);
+            return GAME_LISTING;
+            
+        } catch (Exception e) {
+            model.put("message", "invalid code   ");
+            return JOIN_BY_CODE;
+        }
+    }
+    @GetMapping("/{gameId}")
     public String activeGame(ModelMap model, Integer gameId){
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = this.userService.getUser(ud.getUsername()).get();
         model.addAttribute("user",user);
+    
         Game activeGame= this.gameService.getGameById(gameId);    
         model.put("game", activeGame);
         return CURRENT_GAME;

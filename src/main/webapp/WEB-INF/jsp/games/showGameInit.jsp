@@ -64,7 +64,8 @@
             <body>
 
                 <form action="/games/create/{username}"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 65%;">Create game</button></form>
-                <form action="/games/join"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 55%;">Join game</button></form>
+                <form action="/games/join/private"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 55%;">Join private game</button></form>
+                <form action="/games/join/public"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 45%;">Join public game</button></form>
 
             </body>
             

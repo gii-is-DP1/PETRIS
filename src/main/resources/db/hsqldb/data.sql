@@ -1,9 +1,9 @@
 
 INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('raumerbas','soygod',TRUE,'top1delmundo@email.com',100,28,27,1);
 INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('gonriblun','1',TRUE,'top2delmundo@email.com',100,25,25,0);
-INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('lucantdel','soysemigod',TRUE,'top3delmundo@email.com',100,28,24,4);
-INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('dancorfon','soysemigod',TRUE,'top4delmundo@email.com',100,24,21,3);
-INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('jaigargar1','soysemigod',TRUE,'top5delmundo@email.com',100,25,20,5);
+INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('lucantdel','soysemigod',TRUE,'top3delmundo@email.com',30,28,24,4);
+INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('dancorfon','soysemigod',TRUE,'top4delmundo@email.com',150,24,21,3);
+INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('jaigargar1','soysemigod',TRUE,'top5delmundo@email.com',80,25,20,5);
 INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('player1','soysemigod',TRUE,'top5delmundo@email.com',100,25,20,5);
 INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('player2','soysemigod',TRUE,'player2@email.com',0,0,0,0);
 
@@ -103,7 +103,12 @@ INSERT INTO players(id, turn , colour_id, used_bacteria, used_sarcinas, contamin
 INSERT INTO players(id, turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (5, FALSE , 2 , 0,0,0,0,'raumerbas');
 INSERT INTO players(id, turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (6, FALSE , 2 , 0,0,0,0,'gonriblun');
 INSERT INTO players(id, turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (7, FALSE , 2 , 0,0,0,0,'raumerbas');
-INSERT INTO players(id, turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (8, FALSE , 2 , 0,0,0,0,'gonriblun');
+INSERT INTO players(id, turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (8, FALSE , 2 , 0,0,0,0,'raumerbas');
+INSERT INTO players(id, turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (9, FALSE , 2 , 0,0,0,0,'lucantdel');
+INSERT INTO players(id, turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (10, FALSE , 2 , 0,0,0,0,'dancorfon');
+INSERT INTO players(id, turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (11, FALSE , 2 , 0,0,0,0,'jaigargar1');
+
+
 
 INSERT INTO phase_types(id, name) VALUES (1,'Spread');
 INSERT INTO phase_types(id, name) VALUES (2,'Contamination');
@@ -114,6 +119,10 @@ INSERT INTO games(id, loser, round, time, winner, phase_type_id, player1_id, pla
 INSERT INTO games(id, loser, round, time, winner, phase_type_id, player1_id, player2_id, is_active, is_public, code) VALUES (2,'B', 3, 30, 'A', 2, 3, 4, TRUE, FALSE, 'CoDE2');
 INSERT INTO games(id, loser, round, time, winner, phase_type_id, player1_id, player2_id, is_active, is_public, code) VALUES (3,'A', 4, 25, 'B', 2, 5, 6, FALSE, TRUE, 'CoDE3');
 INSERT INTO games(id, loser, round, time, winner, phase_type_id, player1_id, player2_id, is_active, is_public, code) VALUES (4,'B', 1, 45, 'A', 2, 7, 8, FALSE, FALSE, 'CoDE4');
+INSERT INTO games(id, loser, round, time, winner, phase_type_id, player1_id, player2_id, is_active, is_public, code) VALUES (5,'B', 1, 45, 'A', 2, 9, null, TRUE, TRUE, 'CoDE5');
+INSERT INTO games(id, loser, round, time, winner, phase_type_id, player1_id, player2_id, is_active, is_public, code) VALUES (6,'B', 1, 45, 'A', 2, 10, null, TRUE, TRUE, 'CoDE6');
+INSERT INTO games(id, loser, round, time, winner, phase_type_id, player1_id, player2_id, is_active, is_public, code) VALUES (7,'B', 1, 45, 'A', 2, 11, null, TRUE, TRUE, 'CoDE7');
+
 
 
 INSERT INTO spaces(id, position, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas, game_id) VALUES (1, 1, 0,0,0,0,1);

@@ -70,7 +70,7 @@ public class GameController {
             return CREATE_GAME;
         }else{
             UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            User user = this.userService.getUserByName(ud.getUsername());
+            User user = this.userService.getUser(ud.getUsername()).get();
             model.addAttribute("user", user);
             
             List<Player> playersList = this.playerService.getPlayersByUser(user.getUsername());
@@ -105,7 +105,7 @@ public class GameController {
 
         try {
             UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            User user = this.userService.getUserByName(ud.getUsername());
+            User user = this.userService.getUser(ud.getUsername()).get();
             
             model.addAttribute("user",user);
 
@@ -140,7 +140,7 @@ public class GameController {
     @GetMapping("/playing")
     public String activeGame(ModelMap model, Integer gameId){
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = this.userService.getUserByName(ud.getUsername());
+        User user = this.userService.getUser(ud.getUsername()).get();
         model.addAttribute("user",user);
         Game activeGame= this.gameService.getGameById(gameId);    
         model.put("game", activeGame);

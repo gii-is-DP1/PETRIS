@@ -25,6 +25,9 @@ public class GameService {
     public List<Game> getAllActiveGames(){
         return gameRepository.findAllActiveGames();
     }
+    public Game getActiveGameByPlayer(String username){
+        return gameRepository.findActiveGameByPlayer(username);
+    }
 
     public Game save(Game g){
         return gameRepository.save(g);

@@ -1,11 +1,15 @@
+<%@ page session="false" trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<petclinic:layout pageName="joingames">
 
-<petclinic:layout pageName="joinGame">
     <head>
         <title>Form login</title>
     <style>
 body{
-    background-image: url('https://fondosmil.com/fondo/3585.jpg');
+    height: 850px;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -65,14 +69,14 @@ img{
     </style>
     </head>
     <body>
-        <div id="contenedor1">
-            <h1>Join Game</h1>
-            <form id="form1" name='f' action="/games/playingGame" method='POST'>
-                <img src="https://www.avante.es/wp-content/uploads/2018/03/471a1ad342659289433e05a611d206f8.png" width="40px" height="38px" alt=""/>
-                <input type="text" name="username" placeholder="Enter opponent's name"/>
-                <input type="submit" name="submit" value="Join">
-                <hr>
-            </form>
+        <div class="form-group has-feedback">
+            Type your opponent username:
+            <input type="text" name="opponentUserName">
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-0 ">
+                <button class="btn btn-default" type="submit">Join Game</button>
+            </div>
         </div>
     </body>
 </petclinic:layout>

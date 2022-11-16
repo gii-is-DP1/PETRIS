@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.token;
+package org.springframework.samples.petclinic.Colour;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

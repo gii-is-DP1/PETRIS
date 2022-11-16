@@ -13,6 +13,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.player.Player;
@@ -44,6 +45,10 @@ public class Game extends BaseEntity{
 
     @Column(name = "isActive")
     private boolean isActive;
+
+    @NotNull
+    @Column(name = "isPublic")
+    private boolean isPublic;
 
     @ManyToOne
     @JoinColumn(name = "phase_type_id")

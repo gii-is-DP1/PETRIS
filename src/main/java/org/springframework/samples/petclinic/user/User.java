@@ -14,7 +14,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.samples.petclinic.achievements.Achievement;
 import org.springframework.samples.petclinic.player.Player;
 
 import lombok.Builder;
@@ -53,6 +53,9 @@ public class User{
 	@Size(min = 5)
 	String password;
 
+	@ManyToMany
+	private Set<Achievement> achievements;
+
 	boolean enabled;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
@@ -80,5 +83,13 @@ public class User{
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private Set<Authorities> authorities;
+
+	public Set<Achievement> getAchievements() {
+		return achievements;
+	}
+
+	public void setAchievements(Set<Achievement> achievements) {
+		this.achievements = achievements;
+	}
 	
 }

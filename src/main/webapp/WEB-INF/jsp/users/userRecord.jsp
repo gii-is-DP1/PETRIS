@@ -15,48 +15,49 @@
         <tbody>
             <thead>
 				<tr>
-					<th style="width: 150px;">Paridas Jugadas</th>
+					<th style="width: 150px;">Played games</th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach items="${res}" var="res">
 					<thead>
 						<tr>
-							<th style="width: 150px;">Partida: </th>
+							<th style="width: 150px;">Game: </th>
 						</tr>
 					</thead>
 					<tr>
-						<th style = "width: 1300px; right: 15%">Id de la partida </th>
+						<th style = "width: 1300px; right: 15%">Game Id </th>
 						<td style = " position: absolute; right: 19%" >
 							<c:out value="${res.id}"/>
 						</td>
 					</tr>
 					<tr>
-						<th>Ganador de la partida </th>
+						<th>Winner </th>
 						<td style = "position: absolute; right: 19%">
 							<c:out value="${res.winner}"/>
 						</td>
 					</tr>
 					<tr>
-						<th>Tiempo de la partida </th>
+						<th>Duration </th>
 						<td style = "position: absolute; right: 19%">
 							<c:out value="${res.time}"/>
 						</td>
 					</tr>
 					<tr>
-						<th>Ronda final de la partida </th>
+						<th>Final round </th>
 						<td style = "position: absolute; right: 19%">
 							<c:out value="${res.round}"/>
 						</td>
 					</tr>
 					<tr>
-						<th>Jugador A </th>
+						<th>Player A </th>
 						<td style = "position: absolute; right: 19%">
 							<c:out value="${res.player1.user.username}"/>
 						</td>
 					</tr>
 					<tr>
-						<th>Jugador B </th>
+
+						<th>Player B </th>
 						<td style = "position: absolute; right: 19%">
 							<c:out value="${res.player2.user.username}"/>
 						</td>

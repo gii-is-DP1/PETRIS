@@ -44,9 +44,6 @@ public class UserService {
 	public UserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
-    public User getUserByName(String username) {
-		return userRepository.findUserByUsername(username);
-	}
 
 	@Transactional(readOnly = true)
 	public Collection<User> getUserByUsername(String username) throws DataAccessException {

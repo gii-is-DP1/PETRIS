@@ -12,7 +12,7 @@
 	
 
 <nav class="navbar navbar-default" role="navigation">
-	<div class="container2" style="padding-left: 100px; padding-right: 100px;">
+	<div class="container2" style="padding-left: 70px; padding-right: 70px;">
 		<div class="navbar-header">
 			<a class="navbar-brand2" href="/users/userId"><img src="https://2tomatoesgames.com/wp-content/uploads/2020/07/petris-logo.png" style="width: 170px;"></a>
                     <button2 class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,6 +34,20 @@
 					<span>Statistics</span>
 				</petclinic:menuItem>
 
+				<petclinic:menuItem active="${name eq 'owners'}" url="/users/userId/achievements"
+					title="Achievements" dropdown="${true}">
+					<ul class="dropdown-menu">
+							<li>
+								<a href="<c:url value="/achievements/" />"><span class="glyphicon glyphicon-certificate" aria-hidden="true"></span> Achievements List</a>		
+							</li>
+							<li class="divider"></li>
+							<li>								
+								<a href="<c:url value="/achievements/userId" />"><span class="glyphicon glyphicon-certificate" aria-hidden="true"></span> My Achievements </a>		
+
+							</li>
+						</ul>	
+				</petclinic:menuItem>
+
 				<petclinic:menuItem active="${name eq 'owners'}" url="/users/userId/record"
 					title="historial">
 					<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
@@ -51,21 +65,12 @@
 
 			<ul class="nav navbar-nav navbar-right">
 
-				<li>
-				<form:form class="navbar-form" style="margin-top: 20px; right: 5px;" modelAttribute="user" action="/users/{userId}/findAll" method="get" 
-                  id="search-owner-form">
-				<div class="form-group input-group">
-				<div class="control-group" id="username">
-      			<form:input class="form-control" path="username" size="30" maxlength="80" placeholder="Search"/>
-				<div class="input-group-btn">
-      			<button class="btn btn-outline-success my-2 my-sm-0"  type="submit"><span class="glyphicon glyphicon-search"></span></button>
-    			</div>
-				</div>
-				</div>
-				</form:form>
-				</li>
 
-				
+				<petclinic:menuItem active="${name eq 'owners'}" url="/users/{userId}/findAll"
+					title="friends">
+					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+					<span>Friends</span>
+				</petclinic:menuItem>
 
 				
 
@@ -106,7 +111,7 @@
 									<div class="row">
 										<div class="col-lg-12">
 											<p>
-												<a href="<c:url value="/users/userId/profile" />" class="btn btn-primary btn-block">My profile</a>
+												<a href="<c:url value="/users/{userId}/profile" />" class="btn btn-primary btn-block">My profile</a>
 												<a href="<c:url value="/logout" />" class="btn btn-danger btn-block">Logout</a>
 											</p>
 										</div>

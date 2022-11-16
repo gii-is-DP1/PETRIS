@@ -1,3 +1,4 @@
+/* 
 package org.springframework.samples.petclinic.achievements;
 
 import java.util.List;
@@ -34,9 +35,10 @@ public class AchievementService {
     public List<Achievement> getAchievementsByUser(String id) {
         return repo.findPlayerAchievements(id);
     }
-*/
+
     public Achievement getAchievementByName(String name){
         return repo.findByName(name);
     }
     
 }
+*/

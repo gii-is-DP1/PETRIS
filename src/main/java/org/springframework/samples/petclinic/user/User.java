@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -54,6 +55,7 @@ public class User{
 	private List<Player> players;
 
 	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "friends")
 	private List<User> friends;
 
 	public User(String username, String email, String password){
@@ -72,7 +74,6 @@ public class User{
 	public boolean isNew() {
 		return this.username == null;
 	}
-
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private Set<Authorities> authorities;

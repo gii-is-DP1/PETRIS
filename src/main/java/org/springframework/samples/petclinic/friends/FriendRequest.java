@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.friendRequest;
+package org.springframework.samples.petclinic.friends;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -18,10 +18,10 @@ import lombok.Setter;
 public class FriendRequest extends BaseEntity{
 
     @OneToOne()
-    @JoinColumn(name = "username1")
-    private User user1;
-    @OneToOne()
-    @JoinColumn(name = "username2")
-    private User user2;
+	@JoinColumn(name = "username1")
+	private User user1;
+	@OneToOne()
+	@JoinColumn(name = "username2")
+	private User user2;
 
 }

@@ -44,6 +44,7 @@ public class UserService {
 	public UserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
+
     public User getUserByName(String username) {
 		return userRepository.findUserByUsername(username);
 	}
@@ -61,6 +62,7 @@ public class UserService {
 	public static Optional<User> getUser(String username) {
 		return userRepository.findById(username);
 	}
+
 	@Transactional
 	public void saveUser(User user) throws DataAccessException, DuplicatedUserNameException{
 		if (userRepository.findByName(user.getUsername()) == null){
@@ -73,12 +75,12 @@ public class UserService {
 	}
 
 	@Transactional
-	public List<User> findAmigos(String user){
+	public List<User> findFriends(String user){
 		return userRepository.findByName(user).getFriends();
 	}
 
 	@Transactional
-	public void borrarAmigo(User user, String username) throws DataAccessException {
+	public void deleteFriend(User user, String username) throws DataAccessException {
 
 		List<User> friends = user.getFriends();
 		User friend = userRepository.findByName(username);

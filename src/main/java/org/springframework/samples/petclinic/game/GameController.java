@@ -101,11 +101,11 @@ public class GameController {
         try {
             UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             User userWhoJoins = this.userService.getUserByName(ud.getUsername());
+            model.addAttribute("user", userWhoJoins);
 
             User userWhoCreatedGame = this.userService.getUserByName(opponentUserName);
             Player playerWhoCreatedGame = this.playerService.getPlayersByUser(userWhoCreatedGame.getUsername()).get(-1);
-            
-            model.addAttribute("user",userWhoJoins);
+           
 
             Colour randomColour = this.colourService.getOtherColoursExcept(playerWhoCreatedGame.getColour().getName()).get(0);
             

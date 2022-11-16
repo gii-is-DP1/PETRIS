@@ -48,8 +48,8 @@ public class GameServiceTest {
 
 	}
     @Test
-	void shouldFindAllActiveGames() {
-		List<Game> games = this.gameService.getAllActiveGames();
+	void shouldFindAllPublicActiveEmptyGames() {
+		List<Game> games = this.gameService.getAllPublicActiveEmptyGames();
 		assertThat(games.size()).isEqualTo(3);
 
 	}

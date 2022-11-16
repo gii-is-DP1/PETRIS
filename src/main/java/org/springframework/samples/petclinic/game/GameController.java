@@ -142,7 +142,7 @@ public class GameController {
 
         try {
             UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            User user = this.userService.getUserByName(ud.getUsername());
+            User user = this.userService.getUser(ud.getUsername()).get();
             model.addAttribute("user",user);
 
             List<Game> games = this.gameService.getAllPublicActiveEmptyGames();

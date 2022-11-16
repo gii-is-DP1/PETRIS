@@ -54,6 +54,7 @@ public class UserController {
 
 	private static final String VIEWS_USER_CREATE_FORM = "users/createUserForm";
 	private static final String VIEWS_OWNER_CREATE_FORM = "users/createOwnerForm";
+	private static final String VIEWS_USER_EDIT_PROFILE = "users/editProfile";
 
 	private final UserService userService;
 	private final PlayerService playerService;
@@ -174,6 +175,33 @@ public class UserController {
 		User u = UserService.getUser(ud.getUsername()).get();
 		model.addAttribute("user", u);
 		return view;
+
+	}
+
+	@GetMapping(value = "/users/{userId}/edit")
+	public String editUser(ModelMap modelMap, @PathVariable("userId") String userId) {
+		String view = VIEWS_USER_EDIT_PROFILE;
+		User user = UserService.getUser(userId).get();
+		boolean edit = true;
+		modelMap.addAttribute("user", user);
+		modelMap.addAttribute("edit", edit);
+		return view;
+	}
+
+	@PostMapping(value = "/users/{userId}/edit")
+	public String processUpdateProfileForm(ModelMap modelMap, @PathVariable("userId") String userId, @Valid User user, BindingResult result) throws DuplicatedUserNameException{
+		if (result.hasErrors()) {
+			boolean edit = true;
+			modelMap.put("edit", edit);
+			return VIEWS_USER_EDIT_PROFILE;
+		} else {
+			User userEdited = userService.getUser(userId).get();
+			userEdited.setUsername(user.getUsername());
+			userEdited.setEmail(user.getEmail());
+			userEdited.setPassword(user.getPassword());
+			userService.saveUser(userEdited);
+			return "redirect:/myProfile";
+		}
 
 	}
 

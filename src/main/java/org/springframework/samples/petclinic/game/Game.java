@@ -62,6 +62,8 @@ public class Game extends BaseEntity{
     @JoinColumn(name = "player2_id")
     private Player player2;
 
+    private String code;
+
     @OneToMany(cascade = CascadeType.ALL)
     private List<Space> spaces;
 

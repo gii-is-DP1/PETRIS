@@ -1,5 +1,7 @@
 package org.springframework.samples.petclinic.game;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
@@ -70,7 +72,7 @@ public class GameController {
             UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             User user = this.userService.getUserByName(ud.getUsername());
             model.addAttribute("user", user);
-            /*
+            
             List<Player> playersList = this.playerService.getPlayersByUser(user.getUsername());
             for (Player player : playersList){
                 Game checkGame = this.gameService.getGameByPlayerId(player.getId());
@@ -78,12 +80,14 @@ public class GameController {
                     checkGame.setActive(false);
                 }
             }
-            */
+            
             Colour colour = this.colourService.getColourByName(colourName);
             Player player1 = new Player(colour,0,0,0, user);
             Player createdPlayer = this.playerService.save(player1);
-
+            
             Game newGame = new Game();
+            String code = this.gameService.generateCode();
+            game.setCode(code);
             game.setPublic(isPublic);
             game.setActive(true);
             game.setPlayer1(createdPlayer);
@@ -95,6 +99,7 @@ public class GameController {
             return CURRENT_GAME;
         }
     }
+    
     @GetMapping("/join")
     public String joinGame(String opponentUserName,  ModelMap model){
 

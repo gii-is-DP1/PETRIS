@@ -25,6 +25,6 @@ public class PlayerServiceTest {
 	void shouldFindPlayersByUser() {
         
 		List<Player> players = this.playerService.getPlayersByUser("raumerbas");
-		assertThat(players.size()).isNotNull();
+		assertThat(players.size()).isEqualTo(4);
 	}
 }

@@ -35,6 +35,18 @@ public class GameService {
     public Game getGameByPlayerId(Integer id){
         return gameRepository.getGameByPlayerId(id);
     }
+    public String generateCode(){
+        String banco = "1234567890abcdefghijqlmnñopqrstuvwxyzABCDEFGHIJQLMNÑOPQRSTUVWXYZ";
+        String code = "";
+        Integer lengthCode = 5;
+        while (lengthCode !=0){
+            Integer num = (int)(Math. random()*banco.length());
+            char newChar = banco.charAt(num);
+            code += newChar;     
+            lengthCode--;   
+        }
+        return code;
+    }
 
     //no puedes mover más bacterias de las que tienes en la casilla, ni mover a una casilla dejando mas de 5, ni dejando el mismo numero en algun disco
     public boolean permittedNumToMove(Space space1, Space space2, Integer numBacteriaToMove, String colour){

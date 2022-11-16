@@ -8,16 +8,13 @@
     
     <h1 style = "width: 500px; position: absolute; right: 20%;">My profile</h1>
 
-    <form:form modelAttribute="user" class="form-horizontal" id="update-user-form">
+    <form modelAttribute="user" class="form-horizontal" id="update-user-form" action="/users/{userId}/edit" method="POST">
         <div class="form-group has-feedback">
             <petclinic:inputField label="Email" name="user.email"/>
             <petclinic:inputField label="Username" name="user.username"/>
             <petclinic:inputField label="Password" name="user.password"/>
+            <input type="submit" name="submit" value="Confirmar">
         </div>
-        <div class="form-group" style="bottom: 50%;">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button class="btn btn-default" action="/users/{userId}/edit" method="POST" type="submit" style="height: 45px; width: 100px; position: absolute; right: 66%;">Confirm</button>
-            </div>
         </div>
-    </form:form>
+    </form>
 </petclinic:layout>

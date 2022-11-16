@@ -239,31 +239,32 @@ public class UserController {
 	}
 
 	@GetMapping(value = "/users/{userId}/findAll")
-	public String processFindForm(User user, BindingResult result, Map<String, Object> model) {
-
-		// allow parameterless GET request for /owners to return all records
+	public ModelAndView processFindForm(User user, BindingResult result, Map<String, Object> model) {
+		ModelAndView mav;
+		// allow parameterless GET request for /users to return all records
 		if (user.username == null) {
 			user.setUsername(""); // empty string signifies broadest possible search
 		}
 
-		// find owners by last name
+		
 		Collection<User> results = this.userService.getUserByUsername(user.username);
 		if (results.isEmpty()) {
-			// no owners found
-			result.rejectValue("lastName", "notFound", "not found");
-			return "owners/findOwners";
+			mav = new ModelAndView("users/userUI");
+			mav.addObject("message", "Username " + user.username + " not found");
+			
 		}
 		else if (results.size() == 1) {
-			// 1 owner found
 			user = results.iterator().next();
-			return "redirect:/users/{userId}/" + user.getUsername();
+			mav = new ModelAndView("redirect:/users/{userId}/" + user.getUsername());
 		}
 		else {
-			// multiple owners found
 			model.put("selections", results);
-			return "/users/searchUsers";
+			mav = new ModelAndView("/users/searchUsers");
+
 		}
+		return mav;
 	}
+
 
 	@GetMapping("/users/{userId}/{username}")
 	public ModelAndView showUser(@PathVariable("username") String username) {

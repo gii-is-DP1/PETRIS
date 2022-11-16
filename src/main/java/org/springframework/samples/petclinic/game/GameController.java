@@ -4,6 +4,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.Colour.Colour;
+import org.springframework.samples.petclinic.Colour.ColourService;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.samples.petclinic.user.User;
@@ -25,6 +27,8 @@ public class GameController {
     private final GameService gameService;
     private final PlayerService playerService;
     private final UserService userService;
+    private final ColourService colourService;
+
 
 
     private static final String GAME_VIEW = "games/showGameInit";
@@ -35,10 +39,11 @@ public class GameController {
 
 
     @Autowired
-	public GameController(GameService gameService,PlayerService playerService,UserService userService) {
+	public GameController(GameService gameService,PlayerService playerService,UserService userService,ColourService colourService) {
 		this.gameService = gameService;
         this.playerService =  playerService;
         this.userService =userService;
+        this.colourService =colourService;
 	}
 
     @GetMapping
@@ -52,7 +57,7 @@ public class GameController {
         return CREATE_GAME;
     }
     @PostMapping("/create/{username}")
-    public String saveNewGame( @Valid Game game, BindingResult bindingResult, @PathVariable("username") String userName,ModelMap model){
+    public String saveNewGame(String colourName, boolean isPublic, @Valid Game game, BindingResult bindingResult, @PathVariable("username") String userName,ModelMap model){
         if(bindingResult.hasErrors()){
             return CREATE_GAME;
         }else{
@@ -67,10 +72,12 @@ public class GameController {
                 }
             }
             */
-            Player player1 = new Player(0,0,0, user);
+            Colour colour = this.colourService.getColourByName(colourName);
+            Player player1 = new Player(colour,0,0,0, user);
             Player createdPlayer = this.playerService.save(player1);
 
             Game newGame = new Game();
+            game.setPublic(isPublic);
             game.setActive(true);
             game.setPlayer1(createdPlayer);
             BeanUtils.copyProperties(game, newGame, "id");
@@ -85,49 +92,37 @@ public class GameController {
 
         try {
             UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            User user = this.userService.getUserByName(ud.getUsername());
-            Player player2 = new Player(0,0,0, user);
-            Player createdPlayer = this.playerService.save(player2);
+            User userWhoJoins = this.userService.getUserByName(ud.getUsername());
 
-            User user1 = this.userService.getUserByName(opponentUserName);
-            Player player1 = this.playerService.getPlayersByUser(user1.getUsername()).get(-1);
-            Game game = this.gameService.getGameByPlayerId(player1.getId());
-            if (game.isActive() && game.getPlayer2()==null){
+            User userWhoCreatedGame = this.userService.getUserByName(opponentUserName);
+            Player playerWhoCreatedGame = this.playerService.getPlayersByUser(userWhoCreatedGame.getUsername()).get(-1);
+
+            Colour randomColour = this.colourService.getOtherColoursExcept(playerWhoCreatedGame.getColour().getName()).get(0);
+            
+            Player playerWhoJoins = new Player(randomColour, 0,0,0, userWhoJoins);
+            Player createdPlayer = this.playerService.save(playerWhoJoins);
+            
+            Game game = this.gameService.getActiveGameByPlayer(opponentUserName);
+            if (game.getPlayer2()==null){
                 game.setPlayer2(createdPlayer);
-                return CURRENT_GAME;
+                return activeGame(model, game.getId());
+
 
             }else{
                 model.put("message", "it doesn't exist any game" );
                 return JOIN_BY_USERNAME;
             }
+
             
         } catch (Exception e) {
             model.put("message", "invalid username" + opponentUserName);
             return JOIN_BY_USERNAME;
         }
+
     }
-/*
-    @GetMapping("/join")
-    public String joinGame1(String opponentUserName,  ModelMap model){
-        try {
-            Player player1 = this.playerService.getPlayerByUserId(opponentUserName);
-            Game game = this.gameService.getGameByPlayerId(player1.getId());
-            if (game.isActive()){
-                game.setPlayer2(player2);
-            }else{
-                model.put("message", "it doesn't exists any game" );
-                return JOIN_BY_USERNAME;
-            }
-            
-        } catch (Exception e) {
-            model.put("message", "invalid username");
-        }
-        return JOIN_BY_USERNAME;
-    }
-    */
     
     @GetMapping("/playing")
-    public String gameActive(ModelMap model, Integer gameId){
+    public String activeGame(ModelMap model, Integer gameId){
         Game activeGame= this.gameService.getGameById(gameId);    
         model.put("game", activeGame);
         return CURRENT_GAME;

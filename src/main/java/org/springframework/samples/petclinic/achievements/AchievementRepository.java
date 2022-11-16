@@ -1,3 +1,4 @@
+/*
 package org.springframework.samples.petclinic.achievements;
 
 import java.util.List;
@@ -18,3 +19,4 @@ public interface AchievementRepository extends CrudRepository<Achievement, Integ
     public Achievement findByName(String name);
     
 }
+*/

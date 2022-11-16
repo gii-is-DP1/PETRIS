@@ -69,14 +69,23 @@ img{
     </style>
     </head>
     <body>
-        <div class="form-group has-feedback">
-            Type your opponent username:
-            <input type="text" name="opponentUserName">
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-0 ">
-                <button class="btn btn-default" type="submit">Join Game</button>
+        <c:if test="${message != null}">
+            <div class="alert alert-success alert-dismissible fade show" role="alert" data-dismiss="alert">
+                 <button2 type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;
+                </span></button2>
+                <strong><c:out value="${message}"></c:out></strong><p style="font-size: 30px; position: absolute; right: 73.5%; bottom: -26%;"></p>
             </div>
-        </div>
+        </c:if>
+        <form >
+                    Type game code:
+                    <input type="text" name = "gameCode" value="">
+                <br>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-0 ">
+                        <button class="btn btn-default" type="submit">Join Game</button>
+                    </div>
+                </div>
+        </form>
     </body>
 </petclinic:layout>

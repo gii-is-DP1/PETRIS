@@ -193,7 +193,6 @@ public class UserController {
     public String userInterface(){
         return "/users/userUI";
     }
-
 	
 	@GetMapping(value = "/users/{userId}/friends")
 	public String initFindForm(ModelMap modelMap) {

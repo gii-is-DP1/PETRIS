@@ -29,6 +29,18 @@ public class GameServiceTest {
 
 	}
     @Test
+	void shouldFindGameByPlayerId() {
+		Game game = this.gameService.getGameByPlayerId(1);
+		assertThat(game.getWinner()).isEqualTo("B");
+
+	}
+    @Test
+	void shouldGenerateCode() {
+		String code = this.gameService.generateCode();
+        assertThat(code.length()).isEqualTo(5);
+
+	}
+    @Test
 	void shouldFindGameById() {
 		Game game = this.gameService.getGameById(1);
 		assertThat(game.getId()).isEqualTo(1);

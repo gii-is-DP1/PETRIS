@@ -10,7 +10,7 @@
     </h2>
     <form:form modelAttribute="game" class="form-horizontal" id="add-game-form">
         <div class="form-group has-feedback">
-            Wich colour do you prefer to play with?
+            Which colour do you prefer to play with?
             <br>
             <input type="radio" name="colourName" value="red">Red
             <br>

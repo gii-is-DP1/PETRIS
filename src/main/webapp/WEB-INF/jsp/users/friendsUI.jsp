@@ -12,11 +12,11 @@
 
 <petclinic:layout pageName="amigos">
 	<body style="background: url(/resources/images/bck-petris.png)">
-		<h2>Lista de tus amigos</h2>
+		<h2>Friends list</h2>
 		<table id="amigosTable" class="table table-striped">
 			<thead>
 				<tr>
-					<th style="width: 150px;">Nombre de usuario</th>
+					<th style="width: 150px;">Username</th>
 				</tr>
 			</thead>
 			<tbody>

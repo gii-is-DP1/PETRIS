@@ -28,12 +28,27 @@ public class GameService {
     public Game getActiveGameByPlayer(String username){
         return gameRepository.findActiveGameByPlayer(username);
     }
+    public Game getGameByCode(String gameCode) {
+        return gameRepository.findGameByCode(gameCode);
+    }
 
     public Game save(Game g){
         return gameRepository.save(g);
     }
     public Game getGameByPlayerId(Integer id){
         return gameRepository.getGameByPlayerId(id);
+    }
+    public String generateCode(){
+        String banco = "1234567890abcdefghijqlmnopqrstuvwxyzABCDEFGHIJQLMNOPQRSTUVWXYZ";
+        String code = "";
+        Integer lengthCode = 5;
+        while (lengthCode !=0){
+            Integer num = (int)(Math. random()*banco.length());
+            char newChar = banco.charAt(num);
+            code += newChar;     
+            lengthCode--;   
+        }
+        return code;
     }
 
     //no puedes mover más bacterias de las que tienes en la casilla, ni mover a una casilla dejando mas de 5, ni dejando el mismo numero en algun disco
@@ -81,5 +96,6 @@ public class GameService {
                         isNeighbour(space1, space2);
         return res;
     }
+   
     
 }

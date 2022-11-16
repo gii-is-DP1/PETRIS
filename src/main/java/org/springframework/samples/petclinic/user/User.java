@@ -17,6 +17,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.samples.petclinic.player.Player;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,16 +34,20 @@ public class User{
 	@Email
 	String email;
 
-	Integer points;
+	@Builder.Default
+	Integer points = 0;
 
 	@Column(name = "played_games")
-	Integer playedGames;
+	@Builder.Default
+	Integer playedGames = 0;
 
 	@Column(name = "won_games")
-	Integer wonGames;
+	@Builder.Default
+	Integer wonGames = 0;
 
 	@Column(name = "lost_games")
-	Integer lostGames;
+	@Builder.Default
+	Integer lostGames = 0;
 
 	@NotNull
 	@Size(min = 5)
@@ -72,7 +77,6 @@ public class User{
 	public boolean isNew() {
 		return this.username == null;
 	}
-
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private Set<Authorities> authorities;

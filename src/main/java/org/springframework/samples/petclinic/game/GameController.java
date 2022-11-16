@@ -37,7 +37,7 @@ public class GameController {
     private static final String CREATE_GAME = "games/createGame";
     //private static final String GAME_LISTING = "games/gameListing";
     private static final String CURRENT_GAME = "games/playingGame";
-    private static final String JOIN_BY_USERNAME = "games/askForUsername";
+    private static final String JOIN_BY_CODE = "games/joinByCode";
 
 
     @Autowired
@@ -94,44 +94,45 @@ public class GameController {
             BeanUtils.copyProperties(game, newGame, "id");
             Game createdGame = this.gameService.save(newGame);
 		    
-
-            model.put("message", "game with id " + createdGame.getId()+ " created successfully");
+            model.addAttribute("code", code);
+            model.put("message", "game created successfully!. The game code is:" + createdGame.getCode());
             return CURRENT_GAME;
         }
     }
     
     @GetMapping("/join")
-    public String joinGame(String opponentUserName,  ModelMap model){
+    public String joinGame(String gameCode,  ModelMap model){
 
         try {
             UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            User userWhoJoins = this.userService.getUserByName(ud.getUsername());
+            User user = this.userService.getUserByName(ud.getUsername());
+            
+            model.addAttribute("user",user);
 
-            User userWhoCreatedGame = this.userService.getUserByName(opponentUserName);
-            Player playerWhoCreatedGame = this.playerService.getPlayersByUser(userWhoCreatedGame.getUsername()).get(-1);
-            
-            model.addAttribute("user",userWhoJoins);
+            Game game = this.gameService.getGameByCode(gameCode);
+            String player1Colour = game.getPlayer1().getColour().getName();
+            Colour randomColour = this.colourService.getOtherColoursExcept(player1Colour).get(0);
 
-            Colour randomColour = this.colourService.getOtherColoursExcept(playerWhoCreatedGame.getColour().getName()).get(0);
+
             
-            Player playerWhoJoins = new Player(randomColour, 0,0,0, userWhoJoins);
-            Player createdPlayer = this.playerService.save(playerWhoJoins);
-            
-            Game game = this.gameService.getActiveGameByPlayer(opponentUserName);
             if (game.getPlayer2()==null){
+                
+                Player player2 = new Player(randomColour, 0,0,0, user);
+                Player createdPlayer = this.playerService.save(player2);
                 game.setPlayer2(createdPlayer);
+                Game createdGame = this.gameService.save(game);
+                model.addAttribute("code",gameCode);
                 return activeGame(model, game.getId());
-
 
             }else{
                 model.put("message", "it doesn't exist any game" );
-                return JOIN_BY_USERNAME;
+                return JOIN_BY_CODE;
             }
 
             
         } catch (Exception e) {
-            model.put("message", "invalid username" + opponentUserName);
-            return JOIN_BY_USERNAME;
+            model.put("message", "invalid code   " + gameCode);
+            return JOIN_BY_CODE;
         }
 
     }

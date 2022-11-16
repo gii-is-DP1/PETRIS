@@ -28,6 +28,9 @@ public class GameService {
     public Game getActiveGameByPlayer(String username){
         return gameRepository.findActiveGameByPlayer(username);
     }
+    public Game getGameByCode(String gameCode) {
+        return gameRepository.findGameByCode(gameCode);
+    }
 
     public Game save(Game g){
         return gameRepository.save(g);
@@ -36,7 +39,7 @@ public class GameService {
         return gameRepository.getGameByPlayerId(id);
     }
     public String generateCode(){
-        String banco = "1234567890abcdefghijqlmnñopqrstuvwxyzABCDEFGHIJQLMNÑOPQRSTUVWXYZ";
+        String banco = "1234567890abcdefghijqlmnopqrstuvwxyzABCDEFGHIJQLMNOPQRSTUVWXYZ";
         String code = "";
         Integer lengthCode = 5;
         while (lengthCode !=0){
@@ -93,5 +96,6 @@ public class GameService {
                         isNeighbour(space1, space2);
         return res;
     }
+   
     
 }

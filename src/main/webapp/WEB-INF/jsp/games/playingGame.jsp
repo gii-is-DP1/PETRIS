@@ -27,6 +27,19 @@
                 background-attachment: fixed;
                 
                }
+               u{
+                display: inline-block;
+                padding: 15px 25px;
+                font-size: 20px;
+                text-align: center;	
+                text-decoration: none;
+                outline: none;
+                color: #fff;
+                background-color: #4CAF50;
+                border: none;
+                border-radius: 15px;
+                box-shadow: 0 9px #999;
+               }
                h1
                {
                 color: black;
@@ -38,7 +51,7 @@
                {
                 display: inline-block;
                 padding: 15px 25px;
-                font-size: 24px;
+                font-size: 20px;
                 cursor: pointer;
                 text-align: center;	
                 text-decoration: none;
@@ -71,16 +84,18 @@
             </style>   
             </head>
             <body>
+
                     <br/>
                     <c:if test="${message != null}">
                     <div class="alert alert-success alert-dismissible fade show" role="alert" data-dismiss="alert">
                         <button2 type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;
                         </span></button2>
-                        <strong><c:out value="${message}"></c:out></strong><p style="font-size: 30px; position: absolute; right: 73.5%; bottom: -26%;">&#128516;</p>
+                        <strong><c:out value="${message}"></c:out></strong><p style="font-size: 30px; position: absolute; right: 73.5%; bottom: -26%;"></p>
                     </div>
                     </div>
                     </c:if>
                 
+                    <u class="button" style="height: 60px; width: 220px; position: absolute; right: 1%; bottom: 89%;"> Game code: ${code}</u>
                     <img src="https://cdn-icons-png.flaticon.com/512/32/32341.png" style="height: 150px; position: absolute; right: 65%; bottom: 50%;">
                     <img src="https://cdn-icons-png.flaticon.com/512/32/32341.png" style="height: 150px; position: absolute; right: 57%; bottom: 67%;">
                     <img src="https://cdn-icons-png.flaticon.com/512/32/32341.png" style="height: 150px; position: absolute; right: 47%; bottom: 67%;">

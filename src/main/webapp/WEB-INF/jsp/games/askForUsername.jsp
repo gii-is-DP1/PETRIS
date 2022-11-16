@@ -4,18 +4,17 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 <petclinic:layout pageName="joingames">
+
     <head>
         <title>Form login</title>
     <style>
-* {
-    margin: 0px;
-    padding: 0px;
-}
 body{
     height: 850px;
     background-repeat: no-repeat;
     background-position: center;
-    background-size: cover;       
+    background-size: cover;
+    background-attachment: fixed; 
+          
 }
 #contenedor1{
     background: #f9f7f7;
@@ -23,6 +22,7 @@ body{
     height: 370px;
     margin: auto;
     margin-top: 100px;
+    background-attachment: fixed; 
 }
 #form1{
     width: 100%;

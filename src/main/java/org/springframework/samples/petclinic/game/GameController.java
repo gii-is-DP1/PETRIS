@@ -48,12 +48,18 @@ public class GameController {
 
     @GetMapping
     public String showGameInterface(ModelMap model) {
+        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User u = UserService.getUser(ud.getUsername()).get();
+		model.addAttribute("user", u);
         return GAME_VIEW;
     }
 
     @GetMapping("/create/{userName}")
     public String createGame(ModelMap model){
         model.put("game", new Game());
+        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User u = UserService.getUser(ud.getUsername()).get();
+		model.addAttribute("user", u);
         return CREATE_GAME;
     }
     @PostMapping("/create/{username}")
@@ -63,6 +69,7 @@ public class GameController {
         }else{
             UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             User user = this.userService.getUserByName(ud.getUsername());
+            model.addAttribute("user", user);
             /*
             List<Player> playersList = this.playerService.getPlayersByUser(user.getUsername());
             for (Player player : playersList){
@@ -82,6 +89,7 @@ public class GameController {
             game.setPlayer1(createdPlayer);
             BeanUtils.copyProperties(game, newGame, "id");
             Game createdGame = this.gameService.save(newGame);
+		    
 
             model.put("message", "game with id " + createdGame.getId()+ " created successfully");
             return CURRENT_GAME;
@@ -96,6 +104,8 @@ public class GameController {
 
             User userWhoCreatedGame = this.userService.getUserByName(opponentUserName);
             Player playerWhoCreatedGame = this.playerService.getPlayersByUser(userWhoCreatedGame.getUsername()).get(-1);
+            
+            model.addAttribute("user",userWhoJoins);
 
             Colour randomColour = this.colourService.getOtherColoursExcept(playerWhoCreatedGame.getColour().getName()).get(0);
             
@@ -123,6 +133,9 @@ public class GameController {
     
     @GetMapping("/playing")
     public String activeGame(ModelMap model, Integer gameId){
+        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = this.userService.getUserByName(ud.getUsername());
+        model.addAttribute("user",user);
         Game activeGame= this.gameService.getGameById(gameId);    
         model.put("game", activeGame);
         return CURRENT_GAME;

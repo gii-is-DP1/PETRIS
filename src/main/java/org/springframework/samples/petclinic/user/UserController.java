@@ -187,13 +187,18 @@ public class UserController {
 	}
 
 	@PostMapping(value = "/users/{userId}/edit")
-	public String processUpdateOwnerForm(@Valid User user, BindingResult result,
+	public String processUpdateOwnerForm(ModelMap modelMap, @Valid User user, BindingResult result,
 			@PathVariable("userId") String userId) throws DataAccessException, DuplicatedUserNameException {
 		if (result.hasErrors()) {
-			return VIEWS_USER_EDIT_PROFILE;
+			return "/users/editProfile";
 		}
 		else {
-			this.userService.saveUser(user);
+			UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			User u = UserService.getUser(ud.getUsername()).get();
+			u.setEmail(user.getEmail());
+			u.setPassword(user.getPassword());
+			u.setUsername(user.getUsername());
+			userService.saveUser(u);
 			return "redirect:/users/{userId}";
 		}
 	}

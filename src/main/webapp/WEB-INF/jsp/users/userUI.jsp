@@ -165,23 +165,27 @@ input:-moz-placeholder {
             </style>   
             </head>
             <body>
-                <c:forEach items="${selections}" var="player">
-            <tr>
-                <td>
-                        <spring:param name="playerId" value="${player.id}"/>
-                </td>
 
-            </tr>
-        </c:forEach>
-
-
+              
 
 
                 <form action="/games"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 65%;">Play</button></form>
                 <form action=""><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 45%;">Spectate</button></form>
+                <form action="/users/{userId}/ranking"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 35%;">Ranking</button></form>
                 <form action="/video"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 55%;">How to play</button></form>
                 <!-- <img src="https://2tomatoesgames.com/wp-content/uploads/2020/07/petris-logo.png" style="height: 150px; position: absolute; right: 35%; bottom: 80%;">-->
+                <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
+
+                <script>
+                    window.setTimeout(function() {
+                        $(".alert").fadeTo(1500, 0).slideDown(1000, function(){
+                            $(this).remove();
+                        });
+                    }, 2000);
+                </script>
                 
 
             

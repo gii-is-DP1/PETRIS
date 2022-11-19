@@ -45,6 +45,7 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
+
 	@Transactional(readOnly = true)
 	public Collection<User> getUserByUsername(String username) throws DataAccessException {
 		return userRepository.findByUsername(username);
@@ -52,6 +53,11 @@ public class UserService {
 
 	public List<Player> getPlayersByUser(String username) {
 		return userRepository.findByName(username).getPlayers();
+	}
+
+	@Transactional
+	public static List<User> getBestPlayers(){
+		return userRepository.findBestPlayer();
 	}
 	
 	@Transactional

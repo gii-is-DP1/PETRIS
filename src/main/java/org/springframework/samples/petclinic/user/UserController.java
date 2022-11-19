@@ -189,17 +189,26 @@ public class UserController {
 	@PostMapping(value = "/users/{userId}/edit")
 	public String processUpdateOwnerForm(ModelMap modelMap, @Valid User user, BindingResult result,
 			@PathVariable("userId") String userId) throws DataAccessException, DuplicatedUserNameException {
+		String vista = "users/userUI";
 		if (result.hasErrors()) {
 			return "/users/editProfile";
-		}
-		else {
+		}else {
+			try {
 			UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			User u = UserService.getUser(ud.getUsername()).get();
 			u.setEmail(user.getEmail());
 			u.setPassword(user.getPassword());
-			u.setUsername(user.getUsername());
+			//u.setUsername(user.getUsername());
 			userService.saveUser(u);
-			return "redirect:/users/{userId}";
+			modelMap.put("message", "User " + user.username + " has been modified");
+			modelMap.put("messageType", "warning");
+				
+			} catch (DuplicatedUserNameException e) {
+				vista = "users/userUI";
+				modelMap.put("message", "User " + user.username + " has been modified");
+				modelMap.put("messageType", "warning");
+			}
+			return vista;
 		}
 	}
 
@@ -277,6 +286,7 @@ public class UserController {
 		if (results.isEmpty()) {
 			mav = new ModelAndView("users/userUI");
 			mav.addObject("message", "Username " + user.username + " not found");
+			mav.addObject("messageType", "danger");
 			
 		}
 		else if (results.size() == 1) {
@@ -297,6 +307,18 @@ public class UserController {
 		ModelAndView mav = new ModelAndView("users/userDetails");
 		mav.addObject(this.userService.getUser(username).get());
 		return mav;
+	}
+
+	@GetMapping("/users/{userId}/ranking")
+	public String showRanking(ModelMap modelMap){
+		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User u = this.userService.getUser(ud.getUsername()).get();
+		modelMap.addAttribute("user",u);
+		List<User> userTOP = userService.getBestPlayers();
+		modelMap.addAttribute("users", userTOP);
+		String vista = "/users/showRanking";
+		
+		return vista;
 	}
 
 

@@ -25,7 +25,7 @@ public class GameServiceTest {
     @Test
 	void shouldFindAllGames() {
 		List<Game> games = this.gameService.getAllGames();
-		assertThat(games.size()).isEqualTo(4);
+		assertThat(games.size()).isEqualTo(7);
 
 	}
     @Test

@@ -10,9 +10,10 @@
     
     <form:form modelAttribute="user" class="form-horizontal" id="add-user-form">
         <div class="form-group has-feedback">
-            <petclinic:inputField label="Username" name="username"/>
+            <input type="hidden" name="username" value="${user.username}"/>
             <petclinic:inputField label="Email" name="email"/>
-            <petclinic:inputField label="Password" name="password"/>      
+            <petclinic:inputField label="Password" name="password"/> 
+            <input type="hidden" name="enabled" value="${user.enabled}">     
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

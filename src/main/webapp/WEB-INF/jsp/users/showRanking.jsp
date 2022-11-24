@@ -25,7 +25,7 @@
             
 			</thead>
 			<tbody>
-				<c:forEach items="${users}" var="users">
+               <c:forEach items="${users}" var="users">
 					<tr>
 						<td>
 							<p>
@@ -39,11 +39,12 @@
                         </td>
                         <td>
                             <p>
-                                <c:out value="${users.wonGames/user.playedGames}"/>
+                                <c:out value="${users.wonGames/users.playedGames}"/>
                             </p>
+                         
                         </td>
 					</tr>
-				</c:forEach>
+            </c:forEach> 
 			</tbody>
 		</table>
 </petclinic:layout>

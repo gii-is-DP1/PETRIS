@@ -121,7 +121,7 @@ public class GameController {
                 game.setPlayer2(createdPlayer);
                 Game createdGame = this.gameService.save(game);
                 model.addAttribute("code",gameCode);
-                return activeGame(model, game.getId());
+                return "redirect:/games/" + game.getId();
 
             }else{
                 model.put("message", "This game is full" );

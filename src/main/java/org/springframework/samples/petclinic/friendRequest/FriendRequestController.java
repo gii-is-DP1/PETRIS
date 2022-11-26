@@ -23,27 +23,33 @@ public class FriendRequestController {
     @Autowired
     private UserService userService;
 
-    @GetMapping(path = "/friendRequest")
+
+    
+	@GetMapping(path = "/users/{userId}/friends/friendRequest")
     public String requestsList(ModelMap modelMap) {
 
-        String vista = "requests/requestsList";
+        String vista = "invitations/invitationList";
         UserDetails userDet = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.getUser(userDet.getUsername()).get();
+        modelMap.addAttribute("user", user);
         List<FriendRequest> request = friendRequestRepository.findRequestByUser2(user);
         modelMap.addAttribute("request", request);
 
         return vista;
     }
 
-    @PostMapping(path = "/friendRequest/{id}/accept")
+    @PostMapping(path = "/users/{userId}/friends/friendRequest/{id}/accept")
     public String accept(@PathVariable("id") int id, ModelMap modelMap) {
-
+        String vista = "invitations/invitationList";
         UserDetails userDet = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.getUser(userDet.getUsername()).get();
+        modelMap.addAttribute("user", user);
         String start = friendRequestService.acceptRequest(id, user);
+        
         return start;
     }
-@PostMapping(path = "/friendRequest/{id}/decline")
+    
+    @PostMapping(path = "/users/{userId}/friends/friendRequest/{id}/decline")
     public String decline(@PathVariable("id") int id, ModelMap modelMap) {
 
         UserDetails userDet = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -53,7 +59,7 @@ public class FriendRequestController {
         return start;
     }
 
-    @GetMapping(path = "/friendRequest/{username1}/{username2}/save")
+    @GetMapping(path = "/users/{userId}/friends/friendRequest/{username1}/{username2}/save")
     public String save(ModelMap modelMap, @PathVariable("username1") String username1, @PathVariable("username2") String username2) {
 
         User user1= userService.getUser(username1).get();
@@ -69,9 +75,10 @@ public class FriendRequestController {
             modelMap.addAttribute("message", "You are already friends");
             return "/error";
         }
+        
     }
 
-    @PostMapping(path = "/friendRequest/{user1}/{user2}/save")
+    @PostMapping(path = "users/{userId}/friends/friendRequest/{user1}/{user2}/save")
     public String save(ModelMap modelMap, @PathVariable("user1") User user1, @PathVariable("user2") User user2) {
 
         if (!user1.getFriends().contains(user2)) {
@@ -86,5 +93,6 @@ public class FriendRequestController {
             return "/error";
         }
     }
+
 
 }

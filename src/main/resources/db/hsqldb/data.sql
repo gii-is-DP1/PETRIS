@@ -12,6 +12,9 @@ INSERT INTO USERS_FRIENDS VALUES ('raumerbas', 'gonriblun');
 INSERT INTO USERS_FRIENDS VALUES ('gonriblun', 'raumerbas');
 INSERT INTO USERS_FRIENDS VALUES ('dancorfon', 'raumerbas');
 
+INSERT INTO invitacion_amigo(id,username1,username2) VALUES (0, 'dancorfon', 'player1');
+INSERT INTO invitacion_amigo(id,username1,username2) VALUES (1, 'player2', 'dancorfon');
+
 INSERT INTO users_friends(user_username, friends_username) VALUES ('dancorfon', 'raumerbas');
 INSERT INTO users_friends(user_username, friends_username) VALUES ('dancorfon', 'gonriblun');
 

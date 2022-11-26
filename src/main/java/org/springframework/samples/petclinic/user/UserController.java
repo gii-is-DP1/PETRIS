@@ -25,6 +25,9 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.friendRequest.FriendRequest;
+import org.springframework.samples.petclinic.friendRequest.FriendRequestRepository;
+import org.springframework.samples.petclinic.friendRequest.FriendRequestService;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.game.GameService;
 import org.springframework.samples.petclinic.player.Player;
@@ -60,16 +63,21 @@ public class UserController {
 	private final UserService userService;
 	private final PlayerService playerService;
 	private final GameService gameService;
+	private final FriendRequestService friendRequestService;
+	private final FriendRequestRepository friendRequestRepository;
 
+	
 	
 	private final UserRepository userRepository;
 
 	@Autowired
-	public UserController(UserService clinicService, PlayerService playerService, GameService gameService, UserRepository userRepository) {
+	public UserController(UserService clinicService, PlayerService playerService, GameService gameService, UserRepository userRepository, FriendRequestRepository friendRequestRepository, FriendRequestService friendRequestService) {
 		this.userService = clinicService;
 		this.playerService = playerService;
 		this.gameService = gameService;
 		this.userRepository = userRepository;
+		this.friendRequestRepository = friendRequestRepository;
+		this.friendRequestService = friendRequestService;
 	}
 
 	@InitBinder
@@ -267,8 +275,8 @@ public class UserController {
 	@GetMapping(value = "/users/{userId}/find")
 	public String initFindForm(ModelMap model) {
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = this.userService.getUser(ud.getUsername()).get();
-		model.addAttribute("user",user);
+        User user1 = this.userService.getUser(ud.getUsername()).get();
+		model.addAttribute("usuActual",user1);
 		model.put("user", new User());
 		String vista = "users/findUsers";
 		return vista;
@@ -277,6 +285,8 @@ public class UserController {
 	@GetMapping(value = "/users/{userId}/findAll")
 	public ModelAndView processFindForm(User user, BindingResult result, Map<String, Object> model) {
 		ModelAndView mav;
+		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User u = this.userService.getUser(ud.getUsername()).get();
 		// allow parameterless GET request for /users to return all records
 		if (user.username == null) {
 			user.setUsername(""); // empty string signifies broadest possible search
@@ -293,10 +303,12 @@ public class UserController {
 		else if (results.size() == 1) {
 			user = results.iterator().next();
 			mav = new ModelAndView("redirect:/users/{userId}/" + user.getUsername());
+			mav.addObject("usuActual", u);
 		}
 		else {
 			model.put("selections", results);
 			mav = new ModelAndView("/users/searchUsers");
+			mav.addObject("usuActual", u);
 
 		}
 		return mav;
@@ -306,7 +318,10 @@ public class UserController {
 	@GetMapping("/users/{userId}/{username}")
 	public ModelAndView showUser(@PathVariable("username") String username) {
 		ModelAndView mav = new ModelAndView("users/userDetails");
+		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User u = this.userService.getUser(ud.getUsername()).get();
 		mav.addObject(this.userService.getUser(username).get());
+		mav.addObject("usuActual",u);
 		return mav;
 	}
 
@@ -321,8 +336,6 @@ public class UserController {
 		
 		return vista;
 	}
-
-
 
 	
 

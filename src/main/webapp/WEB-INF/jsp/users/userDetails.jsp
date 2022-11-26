@@ -32,11 +32,14 @@
         </tr>
     </table>
 
+    <c:if test="${usuActual != user}">
 
-    <spring:url value="{ownerId}/pets/new" var="addUrl">
-        <spring:param name="userId" value="${user.username}"/>
-    </spring:url>
-    <a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Add Friend</a>
+		<td><spring:url value="/users/${usuActual.username}/friends/friendRequest/{username1}/{username2}/save" var="amigoUrl">
+			<spring:param name="username1" value="${usuActual.username}"/>
+			<spring:param name="username2" value="${user.username}"/>
+			</spring:url> <a href="${fn:escapeXml(amigoUrl)}" class="btn btn-default">Send invitation friend</a></td>
+		</c:if>
+
 
 
     

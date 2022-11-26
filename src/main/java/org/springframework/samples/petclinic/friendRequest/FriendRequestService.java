@@ -29,9 +29,9 @@ public class FriendRequestService {
     public String saveRequest(FriendRequest request) throws DataAccessException {
         if (request.getUser1() != request.getUser2()) {
             friendRequestRepository.save(request);
-            return "/welcome";
+            return "redirect:/users/{userId}/friends";
         }
-        return "/welcome";
+        return "redirect:/users/{userId}/friends";
     }
 @Transactional
     public String acceptRequest(int id, User userAutenticado) throws DataAccessException {
@@ -42,7 +42,7 @@ public class FriendRequestService {
             this.declineRequest(request, userAutenticado);
 
         }
-        return "redirect:/welcome";
+        return "redirect:/users/{userId}/friends";
     }
 
     @Transactional
@@ -50,7 +50,7 @@ public class FriendRequestService {
         if (request.getUser2() != request.getUser1()) {
             friendRequestRepository.delete(request);
         }
-        return "redirect:/welcome";
+        return "redirect:/users/{userId}/friends";
     }
 
     @Transactional

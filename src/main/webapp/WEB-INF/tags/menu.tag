@@ -14,7 +14,7 @@
 <nav class="navbar navbar-default" role="navigation">
 	<div class="container2" style="padding-left: 70px; padding-right: 70px;">
 		<div class="navbar-header">
-			<a class="navbar-brand2" href="/users/userId"><img src="https://2tomatoesgames.com/wp-content/uploads/2020/07/petris-logo.png" style="width: 170px;"></a>
+			<a class="navbar-brand2" href="/users/${user.username}"><img src="https://2tomatoesgames.com/wp-content/uploads/2020/07/petris-logo.png" style="width: 170px;"></a>
                     <button2 class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button2>
@@ -22,13 +22,13 @@
 		<div class="navbar-collapse collapse" id="main-navbar">
 			<ul class="nav navbar-nav">
 
-				<petclinic:menuItem active="${name eq 'home'}" url="/users/userId"
+				<petclinic:menuItem active="${name eq 'home'}" url="/users/${user.username}"
 					title="home page">
 					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
 					<span>Home</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'owners'}" url="/users/userId/personalStatistics"
+				<petclinic:menuItem active="${name eq 'owners'}" url="/users/${user.username}/personalStatistics"
 					title="personal statistics">
 					<span class="glyphicon glyphicon-signal" aria-hidden="true"></span>
 					<span>Statistics</span>
@@ -48,13 +48,13 @@
 						</ul>	
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'owners'}" url="/users/userId/record"
+				<petclinic:menuItem active="${name eq 'owners'}" url="/users/${user.username}/record"
 					title="historial">
 					<span class="glyphicon glyphicon-time" aria-hidden="true"></span>
 					<span>Game History</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'owners'}" url="/users/userId/friends"
+				<petclinic:menuItem active="${name eq 'owners'}" url="/users/${user.username}/friends"
 					title="friends">
 					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 					<span>Friends</span>
@@ -69,7 +69,7 @@
 				<ul class="nav navbar-nav navbar-right">
 
 				<li>
-				<form:form class="navbar-form" style="margin-top: 20px; right: 5px;" modelAttribute="user" action="/users/{userId}/findAll" method="get" 
+				<form:form class="navbar-form" style="margin-top: 20px; right: 5px;" modelAttribute="user" action="/users/${user.username}/findAll" method="get" 
                   id="search-owner-form">
 				<div class="form-group input-group">
 				<div class="control-group" id="username">
@@ -121,7 +121,7 @@
 									<div class="row">
 										<div class="col-lg-12">
 											<p>
-												<a href="<c:url value="/users/{userId}/profile" />" class="btn btn-primary btn-block">My profile</a>
+												<a href="<c:url value="/users/${user.username}/profile" />" class="btn btn-primary btn-block">My profile</a>
 												<a href="<c:url value="/logout" />" class="btn btn-danger btn-block">Logout</a>
 											</p>
 										</div>

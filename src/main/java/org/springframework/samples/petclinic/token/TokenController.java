@@ -36,16 +36,6 @@ public class TokenController {
 	public Collection<TokenType> populateTokenTypes() {
 		return this.tokenService.findTokenTypes();
 	}
-        
-        /*@ModelAttribute("pet")
-	public Pet findPet(@PathVariable("petId") Integer petId) {
-            Pet result=null;
-		if(petId!=null)
-                    result=this.clinicService.findPetById(petId);
-                else
-                    result=new Pet();
-            return result;
-	}*/
                 
 	@InitBinder("player")
 	public void initPlayerBinder(WebDataBinder dataBinder) {
@@ -56,34 +46,6 @@ public class TokenController {
 	public void initTokenBinder(WebDataBinder dataBinder) {
 		dataBinder.setValidator(new TokenValidator());
 	}
-	/*
-	 * @GetMapping(value = "/tokens/new")
-	public String initCreationForm(Player player, ModelMap model) {
-		Token token = new Token();
-		player.addToken(token);
-		model.put("token", token);
-		return VIEWS_TOKEN_CREATE_OR_UPDATE_FORM;
-	}
-
-	@PostMapping(value = "/token/new")
-	public String processCreationForm(Player player, @Valid Token token, BindingResult result, ModelMap model) {		
-		if (result.hasErrors()) {
-			model.put("token", token);
-			return VIEWS_TOKEN_CREATE_OR_UPDATE_FORM;
-		}
-		else {
-			try{
-				player.addToken(token);
-				this.tokenService.saveToken(token);
-			}catch(DuplicatedPetNameException ex){
-				result.rejectValue("name", "duplicate", "already exists");
-				return VIEWS_TOKEN_CREATE_OR_UPDATE_FORM;
-			}
-			return "redirect:/players/{playerId}";
-		}
-	}
-
-	 */
 
 	@GetMapping(value = "/tokens/{tokenId}/edit")
 	public String initUpdateForm(@PathVariable("tokenId") int tokenId, ModelMap model) {

@@ -78,6 +78,7 @@ public class Game extends BaseEntity{
             newSpace.setNumRedBacteria(0);
             newSpace.setNumRedSarcinas(0);
             spacesToAdd.add(newSpace);
+            numSpaces--;
         }
         this.spaces = spacesToAdd;
     }

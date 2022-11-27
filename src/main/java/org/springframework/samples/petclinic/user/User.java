@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.user;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Set;
 
@@ -74,7 +75,7 @@ public class User{
     }
 
     Double winrate() {
-		return wonGames*1.0/playedGames;
+		return (double) Math.round(wonGames*1.0/playedGames);
 	}
 
 	public boolean isNew() {

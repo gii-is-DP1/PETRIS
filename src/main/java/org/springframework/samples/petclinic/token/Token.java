@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.samples.petclinic.Colour.Colour;
 import org.springframework.samples.petclinic.model.BaseEntity;
+import org.springframework.samples.petclinic.model.PetrisBoard;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.space.Space;
 
@@ -33,5 +34,11 @@ public class Token extends BaseEntity{
 	@ManyToOne
 	@NotNull
 	private Player player;
+
+	@ManyToOne
+	private PetrisBoard board;
+
+	private Integer xPosition;
+	private Integer yPosition;
 
 }

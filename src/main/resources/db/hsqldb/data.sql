@@ -140,3 +140,4 @@ INSERT INTO tokens(id, token_type_id , colour_id, space_id, player_id) VALUES (4
 
 INSERT INTO statistics(id, init_time, end_time, final_round, winner, used_bacteries, used_sarcines, game_points, game_id) VALUES (1,'13:20:32','13:15:45', 2, TRUE, 16, 2, 13, 1);
 
+INSERT INTO petris_board(id,height,width,background) VALUES (1, 800, 800,'../resources/images/fondo.png');

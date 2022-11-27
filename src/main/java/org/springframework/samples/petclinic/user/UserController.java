@@ -142,7 +142,7 @@ public class UserController {
 	public String personalStatistics(ModelMap model) {
 		String view = "users/pStatistics";
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User u = UserService.getUser(ud.getUsername()).get();
+		User u = this.userService.getUser(ud.getUsername()).get();
 		Double wr = u.winrate();
 		model.addAttribute("user", u);
 		model.addAttribute("wr", wr);
@@ -154,7 +154,7 @@ public class UserController {
 	public String record(ModelMap model) {
 		String view = "users/userRecord";
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User u = UserService.getUser(ud.getUsername()).get();
+		User u = this.userService.getUser(ud.getUsername()).get();
 		List<Player> players = userService.getPlayersByUser(u.getUsername());
 		List<Game> games = gameService.getAllGames();
 		List<Game> res = new ArrayList<Game>();
@@ -173,7 +173,7 @@ public class UserController {
 	public String profile(ModelMap model) {
 		String view = "users/profile";
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User u = UserService.getUser(ud.getUsername()).get();
+		User u = this.userService.getUser(ud.getUsername()).get();
 		model.addAttribute("user", u);
 		return view;
 
@@ -182,7 +182,7 @@ public class UserController {
 	@GetMapping(value = "/users/{userId}/edit")
 	public String initUpdateUserForm(@PathVariable("userId") String userId, ModelMap model) {
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User u = UserService.getUser(ud.getUsername()).get();
+		User u = this.userService.getUser(ud.getUsername()).get();
 		model.addAttribute("user", u);
 		return VIEWS_USER_EDIT_PROFILE;
 	}
@@ -196,7 +196,7 @@ public class UserController {
 		}else {
 			try {
 			UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			User u = UserService.getUser(ud.getUsername()).get();
+			User u = this.userService.getUser(ud.getUsername()).get();
 			u.setEmail(user.getEmail());
 			u.setPassword(user.getPassword());
 			//u.setUsername(user.getUsername());
@@ -222,7 +222,7 @@ public class UserController {
     public String userInterface(ModelMap model){
 		String view = "/users/userUI";
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User u = UserService.getUser(ud.getUsername()).get();
+		User u = this.userService.getUser(ud.getUsername()).get();
 		model.addAttribute("user", u);
         return view;
     }
@@ -252,7 +252,7 @@ public class UserController {
 	@GetMapping("/users/{userId}/friends/search/{username}")
 	public String friendDetails(@PathVariable("username") String username, ModelMap modelMap) {
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User u = UserService.getUser(ud.getUsername()).get();
+		User u = this.userService.getUser(ud.getUsername()).get();
 		modelMap.addAttribute("user", u);
 		User friend = this.userService.getUser(username).get();
 		modelMap.addAttribute("friend", friend);

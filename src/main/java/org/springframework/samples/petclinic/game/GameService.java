@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.player.Player;
+import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.samples.petclinic.space.Space;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +12,13 @@ import org.springframework.stereotype.Service;
 public class GameService {
 
     private final GameRepository gameRepository;
+
+    private final PlayerService playerService;
     
     @Autowired
-	public GameService(GameRepository gameRepository) {
+	public GameService(GameRepository gameRepository,PlayerService playerService) {
 		this.gameRepository = gameRepository;
+        this.playerService = playerService;
 	}
     public List<Game> getAllGames(){
         return gameRepository.findAll();
@@ -37,6 +41,15 @@ public class GameService {
     }
     public Game getGameByPlayerId(Integer id){
         return gameRepository.getGameByPlayerId(id);
+    }
+    public void setActiveGamesToFalse(String username){
+        List<Player> playersList = this.playerService.getPlayersByUser(username);
+            for (Player player : playersList){
+                Game checkGame = this.getGameByPlayerId(player.getId());
+                if (checkGame.isActive()){
+                    checkGame.setActive(false);
+                }
+            }
     }
     public String generateCode(){
         String banco = "1234567890abcdefghijqlmnopqrstuvwxyzABCDEFGHIJQLMNOPQRSTUVWXYZ";

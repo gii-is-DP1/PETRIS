@@ -26,10 +26,10 @@ public class PetrisBoard extends BaseEntity{
 
     public PetrisBoard(){
         this.background="../resources/images/fondo.png";
-        this.width=800;
-        this.height=800;
+        this.width=1000;
+        this.height=1000;
     }
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "board",fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "petrisBoard",fetch = FetchType.EAGER)
     List<Token> tokens; 
 }

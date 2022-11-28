@@ -16,6 +16,9 @@
     <div class="row">
         <div class="col-md-12">
             <game:board petrisBoard="${petrisBoard}">
+                <c:forEach items="${petrisBoard.tokens}" var="token">
+            	    <game:token size="100" token="${token}"/>            	
+                </c:forEach>
             </game:board>
         </div>
     </div>

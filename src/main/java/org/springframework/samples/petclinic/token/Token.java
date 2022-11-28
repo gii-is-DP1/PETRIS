@@ -31,14 +31,54 @@ public class Token extends BaseEntity{
 	@ManyToOne(optional = true)
 	private Space space;
 
+	private Integer positionInSpace;
+
 	@ManyToOne
 	@NotNull
 	private Player player;
 
 	@ManyToOne
-	private PetrisBoard board;
+	private PetrisBoard petrisBoard;
 
-	private Integer xPosition;
-	private Integer yPosition;
-
+	public Integer getXPosition(){
+		Integer x = 0;
+		Integer numSpace = this.space.getPosition();
+		if (numSpace == 1) {
+			x = 50;
+		}else if(numSpace == 2 || numSpace == 6){
+			x = 250;
+		}else if(numSpace == 3 || numSpace == 5){
+			x = 420;
+		}else if(numSpace == 4){
+			x = 560;
+		}else if(numSpace == 7){
+			x = 770;
+		}
+		return x + this.getPositionInSpace() * 20;
+	}
+	public Integer getYPosition(){
+		Integer y = 0;
+		Integer numSpace = this.space.getPosition();
+		String colourName = this.colour.getName();
+		if ((numSpace == 2 || numSpace ==3)) {
+			if( colourName.equals("red")){
+				y = 185;
+			}else{
+				y = 250;
+			}
+		}else if(numSpace == 1 || numSpace == 4 || numSpace == 7){
+			if( colourName.equals("red")){
+				y = 400;
+			}else{
+				y = 475;
+			}
+		}else if((numSpace == 5 || numSpace ==6)){
+			if( colourName.equals("red")){
+				y = 650;
+			}else{
+				y = 730;
+			}
+		}
+		return y;
+	}
 }

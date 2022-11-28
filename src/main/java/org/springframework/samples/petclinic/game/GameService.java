@@ -68,7 +68,7 @@ public class GameService {
     public boolean permittedNumToMove(Space space1, Space space2, Integer numBacteriaToMove, String colour){
 
         boolean res = false;
-        if (colour =="red"){
+        if (colour.equals("red")){
             res = space1.getNumRedBacteria()>=numBacteriaToMove && 
                             space2.getNumRedBacteria() + numBacteriaToMove <6 &&
                             (space1.getNumRedBacteria() + space1.getNumRedSarcinas()*5 - numBacteriaToMove) != (space1.getNumBlackBacteria() + space1.getNumBlackSarcinas() *5) &&

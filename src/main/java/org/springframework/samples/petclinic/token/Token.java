@@ -43,18 +43,34 @@ public class Token extends BaseEntity{
 	public Integer getXPosition(){
 		Integer x = 0;
 		Integer numSpace = this.space.getPosition();
-		if (numSpace == 1) {
-			x = 50;
-		}else if(numSpace == 2 || numSpace == 6){
-			x = 250;
-		}else if(numSpace == 3 || numSpace == 5){
-			x = 420;
-		}else if(numSpace == 4){
-			x = 560;
-		}else if(numSpace == 7){
-			x = 770;
+		if (this.tokenType.getName().equals("bacterium")){
+			if (numSpace == 1) {
+				x = 40;
+			}else if(numSpace == 2 || numSpace == 6){
+				x = 240;
+			}else if(numSpace == 3 || numSpace == 5){
+				x = 410;
+			}else if(numSpace == 4){
+				x = 550;
+			}else if(numSpace == 7){
+				x = 760;
+			}
+			return x + this.getPositionInSpace() * 25;
+		}else{
+			if (numSpace == 1) {
+				x = 60;
+			}else if(numSpace == 2 || numSpace == 6){
+				x = 260;
+			}else if(numSpace == 3 || numSpace == 5){
+				x = 430;
+			}else if(numSpace == 4){
+				x = 580;
+			}else if(numSpace == 7){
+				x = 790;
+			}
+			return x ;
+
 		}
-		return x + this.getPositionInSpace() * 20;
 	}
 	public Integer getYPosition(){
 		Integer y = 0;

@@ -1,14 +1,21 @@
 package org.springframework.samples.petclinic.game;
 
+import java.util.Collection;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.Colour.Colour;
 import org.springframework.samples.petclinic.Colour.ColourService;
+
+import org.springframework.samples.petclinic.chat.Chat;
+import org.springframework.samples.petclinic.chat.ChatService;
+
 import org.springframework.samples.petclinic.model.PetrisBoard;
+
 import org.springframework.samples.petclinic.model.PetrisBoardService;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerService;
@@ -33,7 +40,7 @@ public class GameController {
     private final UserService userService;
     private final ColourService colourService;
     private final PetrisBoardService petrisBoardService;
-
+    private final ChatService chatService;
 
 
     private static final String GAME_VIEW = "games/showGameInit";
@@ -44,12 +51,13 @@ public class GameController {
 
 
     @Autowired
-	public GameController(GameService gameService,PlayerService playerService,UserService userService,ColourService colourService,PetrisBoardService petrisBoardService) {
+	public GameController(GameService gameService,PlayerService playerService,UserService userService,ColourService colourService,PetrisBoardService petrisBoardService, ChatService chatService) {
 		this.gameService = gameService;
         this.playerService =  playerService;
         this.userService =userService;
         this.colourService =colourService;
         this.petrisBoardService = petrisBoardService;
+        this.chatService = chatService;
 	}
 
     @GetMapping
@@ -153,7 +161,7 @@ public class GameController {
         }
     }
     @GetMapping("/{gameId}")
-    public String activeGame(ModelMap model, @PathVariable("gameId") Integer gameId){
+    public String activeGame(ModelMap model, @PathVariable("gameId") Integer gameId, HttpServletResponse response){
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = this.userService.getUser(ud.getUsername()).get();
         model.addAttribute("user",user);
@@ -161,7 +169,19 @@ public class GameController {
         Game activeGame= this.gameService.getGameById(gameId);    
         model.addAttribute("code",activeGame.getCode());
         model.put("game", activeGame);
-        model.put("petrisBoard", this.petrisBoardService.getByGameId(activeGame.getId()));
+
+       model.put("petrisBoard", this.petrisBoardService.getByGameId(activeGame.getId()));
+
+
+      response.addHeader("Refresh", "12");
+      Collection<Chat> res;
+
+      res = this.chatService.getChatsById(activeGame.getId());
+      model.addAttribute("chats", res);
+
+      model.addAttribute("NuevoMensaje", new Chat());
+
         return CURRENT_GAME;
     }
+
 }

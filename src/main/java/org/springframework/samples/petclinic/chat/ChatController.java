@@ -37,7 +37,7 @@ public class ChatController {
 
     @GetMapping(path = "/games/{gameId}/chat")
 	public String listadoChats(ModelMap modelMap, @PathVariable("gameId") int gameId, HttpServletResponse response) {
-		String vista = "chats/chat";
+		String vista = "games/{gameId}";
 		response.addHeader("Refresh", "12");
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String username = ud.getUsername();
@@ -46,6 +46,7 @@ public class ChatController {
 
 		modelMap.addAttribute("user", user);
 		Collection<Chat> res;
+
 		res = this.chatService.getChatsById(game.getId());
 		modelMap.addAttribute("chats", res);
 

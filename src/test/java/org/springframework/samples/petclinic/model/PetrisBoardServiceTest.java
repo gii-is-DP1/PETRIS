@@ -18,6 +18,12 @@ public class PetrisBoardServiceTest {
     void shouldGetById(){
         Integer id = 1;
         PetrisBoard board = this.petrisBoardService.getById(id).get();
-        assertThat(board.getHeight()).isEqualTo(800);
+        assertThat(board.getHeight()).isEqualTo(1000);
+    }
+    @Test
+    void shouldGetByGameId(){
+        Integer id = 6;
+        PetrisBoard board = this.petrisBoardService.getByGameId(id);
+        assertThat(board.getHeight()).isEqualTo(1000);
     }
 }

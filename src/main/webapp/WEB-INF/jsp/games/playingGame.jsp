@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="game" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <!-- %@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %-->  
 
@@ -55,12 +55,12 @@
 					<div class="col-md-4" style="margin-left: 50px;">
 						<c:choose>
 							<c:when test="${chat.user eq user }">
-								<h2 style="color: green;">${user.username}:
-									${chat.text}</h2>
+								<h1 style="color: green;">${user.username}:
+									${chat.text}</h1>
 							</c:when>
 							<c:otherwise>
-								<h2 style="color: red;">${chat.user.username}:
-									${chat.text}</h2>
+								<h1 style="color: red;">${chat.user.username}:
+									${chat.text}</h1>
 
 							</c:otherwise>
 						</c:choose>
@@ -80,7 +80,7 @@
 				id="add-user-form" action="/games/${gameId}/chat/save">
 
 				<div class="col-md-10">
-					<game:inputField label="Escribe un nuevo mensaje" name="text" />
+					<petclinic:inputField label="Escribe un nuevo mensaje" name="text" />
 				</div>
 				<div class="col-md-2">
 					<button class="btn btn-default" type="submit">

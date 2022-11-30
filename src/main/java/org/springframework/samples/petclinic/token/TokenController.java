@@ -31,7 +31,7 @@ public class TokenController {
 	public TokenController(TokenService tokenService) {
 		this.tokenService = tokenService;
 	}
-
+	/* 
 	@ModelAttribute("types")
 	public Collection<TokenType> populateTokenTypes() {
 		return this.tokenService.findTokenTypes();
@@ -53,7 +53,7 @@ public class TokenController {
 		model.put("token", token);
 		return VIEWS_TOKEN_CREATE_OR_UPDATE_FORM;
 	}
-
+	
     /**
      *
      * @param token
@@ -63,7 +63,7 @@ public class TokenController {
      * @param player
      * @param model
      * @return
-     */
+     
         @PostMapping(value = "/tokens/{tokenId}/edit")
 	public String processUpdateForm(@Valid Token token, BindingResult result, Player player,@PathVariable("tokenId") int tokenId, ModelMap model) {
 		if (result.hasErrors()) {
@@ -73,8 +73,10 @@ public class TokenController {
 		else {
 			Token tokenToUpdate=this.tokenService.findTokenById(tokenId);
 			BeanUtils.copyProperties(token, tokenToUpdate, "id","player");                                                                                  
-			this.tokenService.saveToken(tokenToUpdate);
+			this.tokenService.save(tokenToUpdate);
 			return "redirect:/players/{playerId}";
 		}
 	}
+	*/
+	
 }

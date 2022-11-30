@@ -32,6 +32,7 @@ public class GameController {
     private final ChatService chatService;
 
 
+
     private static final String GAME_VIEW = "games/showGameInit";
     private static final String CREATE_GAME = "games/createGame";
     private static final String GAME_LISTING = "games/gameListing";
@@ -146,5 +147,4 @@ public class GameController {
 
         return CURRENT_GAME;
     }
-
 }

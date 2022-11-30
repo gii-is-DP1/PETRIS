@@ -40,11 +40,11 @@ public class PetrisBoardService {
 		return petrisBoardRepository.findByGameId(gameId);
 	}
 
-	public void save(PetrisBoard petrisBoard){
-		petrisBoardRepository.save(petrisBoard);
+	public PetrisBoard save(PetrisBoard petrisBoard){
+		return petrisBoardRepository.save(petrisBoard);
 	}
 
-	public void createBoard(Game game){
+	public PetrisBoard createBoard(Game game){
 		
 		PetrisBoard newBoard = new PetrisBoard();
 
@@ -80,6 +80,7 @@ public class PetrisBoardService {
 		}
 		newBoard.setGame(game);
 		newBoard.setTokens(listTokenToAdd);
-		this.save(newBoard);
+		PetrisBoard createdBoard = this.save(newBoard);
+		return createdBoard;
     }
 }

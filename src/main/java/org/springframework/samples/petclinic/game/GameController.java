@@ -8,6 +8,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.Colour.Colour;
 import org.springframework.samples.petclinic.Colour.ColourService;
+import org.springframework.samples.petclinic.chat.Chat;
+import org.springframework.samples.petclinic.chat.ChatService;
 import org.springframework.samples.petclinic.model.PetrisBoard;
 import org.springframework.samples.petclinic.model.PetrisBoardService;
 import org.springframework.samples.petclinic.player.Player;
@@ -91,10 +93,6 @@ public class GameController {
             game.createSpaces();
             BeanUtils.copyProperties(game, newGame, "id");
             Game createdGame = this.gameService.save(newGame);
-
-            PetrisBoard newBoard = new PetrisBoard();
-            newBoard.setGame(createdGame);
-            this.petrisBoardService.save(newBoard);
 		    
             model.put("message", "game created successfully!. The game code is:" + createdGame.getCode());
             return "redirect:/games/" + createdGame.getId();
@@ -119,6 +117,9 @@ public class GameController {
                 Player createdPlayer = this.playerService.save(player2);
                 game.setPlayer2(createdPlayer);
                 Game createdGame = this.gameService.save(game);
+
+                this.petrisBoardService.createBoard(createdGame);
+                
                 return "redirect:/games/" + createdGame.getId();
 
             }else{
@@ -157,11 +158,21 @@ public class GameController {
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = this.userService.getUser(ud.getUsername()).get();
         model.addAttribute("user",user);
-        
+                    
         Game activeGame= this.gameService.getGameById(gameId);    
         model.addAttribute("code",activeGame.getCode());
         model.put("game", activeGame);
+     
         model.put("petrisBoard", this.petrisBoardService.getByGameId(activeGame.getId()));
+
+        /* 
+        response.addHeader("Refresh", "12");
+        Collection<Chat> res;
+        res = this.chatService.getChatsById(activeGame.getId());
+        model.addAttribute("chats", res);
+        model.addAttribute("NuevoMensaje", new Chat());
+        */
+
         return CURRENT_GAME;
     }
 }

@@ -20,18 +20,22 @@ public class PlayerService {
         return playerRepository.findPlayerByUserId(userName);
     }
 
-    public List<Player> getPlayersFromUserId(String username) {
-        return playerRepository.findAllPlayersFromAUser(username);
-    }
+
     @Transactional(readOnly = true)
     public List<Player> getAll(){
         return playerRepository.findAll();
     }
+
     public List<Player> getPlayersByUser(String username){
         return playerRepository.findPlayersByUser(username);
     }
+
     @Transactional
     public Player save(Player p){
         return playerRepository.save(p);
+    }
+
+    public List<Player> getPlayersOfGame(Integer id){
+        return playerRepository.findPlayersOfGame(id);
     }
 }

@@ -38,17 +38,4 @@ public class PetrisBoard extends BaseEntity{
         this.height=1000;
     }
 
-    /*
-    public void createTokens(Colour colour){
-        Integer numSarcina = 0;
-        Integer numBacteria = 20; 
-        List<Token> listTokenToAdd = new ArrayList<>();
-        TokenType tokenType = this.tokenService
-        while(numBacteria!=0){
-            Token newToken = new Token(); 
-            newToken.setColour(colour);
-            newToken.setTokenType(null);
-        }
-    }
-    */
 }

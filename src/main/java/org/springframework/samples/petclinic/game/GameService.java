@@ -2,23 +2,32 @@ package org.springframework.samples.petclinic.game;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.Colour.Colour;
+import org.springframework.samples.petclinic.Colour.ColourService;
+import org.springframework.samples.petclinic.model.PetrisBoardService;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.samples.petclinic.space.Space;
+import org.springframework.samples.petclinic.user.User;
 import org.springframework.stereotype.Service;
 
 @Service
 public class GameService {
 
     private final GameRepository gameRepository;
-
     private final PlayerService playerService;
+    private final ColourService colourService;
+    private final PetrisBoardService petrisBoardService;
+
     
     @Autowired
-	public GameService(GameRepository gameRepository,PlayerService playerService) {
+	public GameService(GameRepository gameRepository,PlayerService playerService,ColourService colourService,PetrisBoardService petrisBoardService) {
 		this.gameRepository = gameRepository;
         this.playerService = playerService;
+        this.colourService = colourService;
+        this.petrisBoardService = petrisBoardService;
 	}
     public List<Game> getAllGames(){
         return gameRepository.findAll();
@@ -62,6 +71,50 @@ public class GameService {
             lengthCode--;   
         }
         return code;
+    }
+    public Game createGame(Game game, User user, String colourName, boolean isPublic){
+
+            this.setActiveGamesToFalse(user.getUsername());
+            
+            Colour colour = this.colourService.getColourByName(colourName);
+            Player player1 = new Player(colour,0,0,0, user);
+            Player createdPlayer = this.playerService.save(player1);
+            
+            Game newGame = new Game();
+            game.setCode(this.generateCode());
+            game.setPublic(isPublic);
+            game.setActive(true);
+            game.setPlayer1(createdPlayer);
+            game.createSpaces();
+            BeanUtils.copyProperties(game, newGame, "id");
+            Game createdGame = this.save(newGame);
+            createdPlayer.setGame(createdGame);
+            this.playerService.save(createdPlayer);
+
+            return createdGame;
+    }
+
+    public String fillGame(Game game, User user) throws FullGameException{
+
+            String player1Colour = game.getPlayer1().getColour().getName();
+            Colour randomColour = this.colourService.getOtherColoursExcept(player1Colour).get(0);
+
+            if (game.getPlayer2()==null){
+                
+                Player player2 = new Player(randomColour, 0,0,0, user);
+                Player createdPlayer = this.playerService.save(player2);
+                game.setPlayer2(createdPlayer);
+                Game createdGame = this.save(game);
+                createdPlayer.setGame(createdGame);
+                this.playerService.save(createdPlayer);
+
+                this.petrisBoardService.createBoard(createdGame);
+                
+                return "redirect:/games/" + createdGame.getId();
+
+            }else{
+                throw new FullGameException();
+            } 
     }
 
     //no puedes mover más bacterias de las que tienes en la casilla, ni mover a una casilla dejando mas de 5, ni dejando el mismo numero en algun disco

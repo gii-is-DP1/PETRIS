@@ -14,8 +14,10 @@
             <br>
             <input type="radio" name="colourName" value="red">Red
             <br>
-            <input type="radio" name="colourName" value="black" checked>Black
-            <br><br>
+            <input type="radio" name="colourName" value="black" checked>Blue
+            <br>
+            <input type="radio" name="colourName" value="yellow" checked>Yellow
+            <br>
             Do you want this game to be public?
             <input type="checkbox"  name="isPublic" />
         </div>

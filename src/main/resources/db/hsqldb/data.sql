@@ -23,8 +23,8 @@ INSERT INTO authorities(id,username,authority) VALUES (2,'gonriblun','admin');
 INSERT INTO authorities(id,username,authority) VALUES (3,'lucantdel','admin');
 INSERT INTO authorities(id,username,authority) VALUES (4,'dancorfon','admin');
 INSERT INTO authorities(id,username,authority) VALUES (5,'jaigargar1','admin');
-INSERT INTO authorities(id,username,authority) VALUES (6,'player1','owner');
-INSERT INTO authorities(id,username,authority) VALUES (7,'player2','owner');
+INSERT INTO authorities(id,username,authority) VALUES (6,'player1','player');
+INSERT INTO authorities(id,username,authority) VALUES (7,'player2','player');
 
 
 INSERT INTO vets(id, first_name,last_name) VALUES (1, 'James', 'Carter');
@@ -129,7 +129,6 @@ INSERT INTO games(id, loser, round, time, winner, phase_type_id, player1_id, pla
 INSERT INTO games(id, loser, round, time, winner, phase_type_id, player1_id, player2_id, is_active, is_public, code) VALUES (7,'B', 1, 45, 'A', 2, 11, null, TRUE, TRUE, 'CoDE7');
 
 
-
 INSERT INTO spaces(id, position, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas, game_id) VALUES (1, 1, 0,0,0,0,1);
 INSERT INTO spaces(id, position, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas, game_id) VALUES (2, 2, 0,0,0,0,1);
 INSERT INTO spaces(id, position, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas, game_id) VALUES (3, 3, 0,0,0,0,1);
@@ -140,7 +139,7 @@ INSERT INTO spaces(id, position, num_black_bacteria, num_red_bacteria, num_black
 
 INSERT INTO statistics(id, init_time, end_time, final_round, winner, used_bacteries, used_sarcines, game_points, game_id) VALUES (1,'13:20:32','13:15:45', 2, TRUE, 16, 2, 13, 1);
 
-INSERT INTO petris_board(id,height,width,background) VALUES (1, 1000, 1000,'../resources/images/fondo.png');
+INSERT INTO petris_board(id,height,width,background,game_id) VALUES (1, 1000, 1000,'../resources/images/fondo.png',6);
 
 INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id) VALUES (1, 1, 1, 6, 1, 1, 1);
 INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id) VALUES (2, 1, 1, 6, 2, 1, 1);

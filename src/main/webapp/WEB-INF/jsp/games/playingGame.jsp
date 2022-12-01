@@ -60,12 +60,12 @@
     <h2><fmt:message key="welcome"/></h2>
     
     <p>	
-
-    <div class="row">
+        
+        <div class="row">
         <div class="col-md-12">
             <game:board petrisBoard="${petrisBoard}">
                 <c:forEach items="${petrisBoard.tokens}" var="token">
-            	    <game:token size="100" token="${token}"/>            	
+                    <game:token size="100" token="${token}"/>            	
                 </c:forEach>
             </game:board>
         </div>
@@ -75,5 +75,6 @@
 
     
         
+        <h1 class="h1" style="height: 62px; width: 200px; position: absolute; right: 3%; bottom: 80%; font-size: 26px;text-align:center ;">Game Code: ${code}</h1>
     </body>
 </game:layout>

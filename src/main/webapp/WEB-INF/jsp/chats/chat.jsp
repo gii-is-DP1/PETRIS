@@ -16,9 +16,10 @@
 				<div class="col-md-12">
 					<div class="col-md-4"></div>
 					<div class="col-md-4" style="margin-left: 50px;">
+                        
 						<c:choose>
-							<c:when test="${chat.player.username eq user.username }">
-								<h1 style="color: green;">${chat.player1.username}:
+							<c:when test="${chat.user eq user}">
+								<h1 style="color: green;">${chat.user.username}:
 									${chat.text}</h1>
 							</c:when>
 							<c:otherwise>

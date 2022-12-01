@@ -43,6 +43,11 @@ public class ChatController {
 		String username = ud.getUsername();
 		User user = userService.getUser(username).get();
 		Game game = gameService.getGameById(gameId);
+        User player1 = game.getPlayer1().getUser();
+        User player2 = game.getPlayer2().getUser();
+        modelMap.addAttribute("player1", player1);
+        modelMap.addAttribute("player2", player2);
+
 
 		modelMap.addAttribute("user", user);
 		Collection<Chat> res;
@@ -54,14 +59,22 @@ public class ChatController {
 	}
 
     @PostMapping("/games/{gameId}/chat/save")
-    public String saveChat(@Valid Chat chat, @PathVariable("gameId") Integer gameId, ModelMap model){
+    public String saveChat(@Valid Chat chat, @PathVariable("gameId") Integer gameId,ModelMap model){
+        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username = ud.getUsername();
         Game game = gameService.getGameById(gameId);
         chat.setGame(game);
         User user1 = game.getPlayer1().getUser();
         User user2 = game.getPlayer2().getUser();
-        chat.setUser(user1);
-        chat.setUser(user2);
+        if(username.equals(user1.getUsername())){
+            chat.setUser(user1);
+        }else if(username.equals(user2.getUsername())){
+            chat.setUser(user2);
+        }
         chatService.saveChat(chat);
-        return "redirect:/games/" + game.getId();
+        return "redirect:/games/" + game.getId() + "/chat";
     }
+
+
+
 }

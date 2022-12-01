@@ -10,5 +10,7 @@ public interface ChatRepository extends CrudRepository<Chat, Integer>{
 
     @Query("SELECT chat FROM Chat chat WHERE chat.game.id = ?1")
     Collection<Chat> findChatsById(@Param("id") Integer id);
+
+
     
 }

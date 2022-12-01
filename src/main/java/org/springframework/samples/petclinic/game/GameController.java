@@ -38,6 +38,7 @@ public class GameController {
     private static final String GAME_LISTING = "games/gameListing";
     private static final String CURRENT_GAME = "games/playingGame";
     private static final String JOIN_BY_CODE = "games/joinByCode";
+    private static final String GAMES_IN_PROGRESS = "games/gamesInProgress";
 
 
     @Autowired
@@ -64,6 +65,7 @@ public class GameController {
 		model.addAttribute("user", u);
         return CREATE_GAME;
     }
+    
     @PostMapping("/create/{username}")
     public String saveNewGame(String colourName, boolean isPublic, @Valid Game game, BindingResult bindingResult, @PathVariable("username") String userName,ModelMap model){
         
@@ -79,6 +81,7 @@ public class GameController {
             return "redirect:/games/" + createdGame.getId();
         }
     }
+    
     @GetMapping("/join/private")
     public String joinPrivateGame(String gameCode,  ModelMap model){
 
@@ -104,11 +107,13 @@ public class GameController {
             return JOIN_BY_CODE;
         }
     }
+    
     @GetMapping("/join/{gameCode}")
     public String joinGameByCode(@PathVariable("gameCode") String gameCode,  ModelMap model){
         return joinPrivateGame(gameCode, model);
 
     }
+    
     @GetMapping("/join/public")
     public String joinPublicGame(ModelMap model){
 
@@ -126,6 +131,7 @@ public class GameController {
             return JOIN_BY_CODE;
         }
     }
+    
     @GetMapping("/{gameId}")
     public String activeGame(ModelMap model, @PathVariable("gameId") Integer gameId, HttpServletResponse response){
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -147,4 +153,21 @@ public class GameController {
 
         return CURRENT_GAME;
     }
+
+    @GetMapping("/playing")
+    public String listAllPlayingGames(ModelMap model){
+
+        String vista = GAMES_IN_PROGRESS;
+
+        List<Game> listGames = gameService.getAllPlayingGames();
+        model.addAttribute("listGames", listGames);
+
+        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username = ud.getUsername();
+		User user = userService.getUser(username).get();
+        model.addAttribute("user", user);
+
+        return vista;
+    }
+
 }

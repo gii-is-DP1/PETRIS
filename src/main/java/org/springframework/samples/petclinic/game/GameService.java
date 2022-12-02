@@ -37,6 +37,10 @@ public class GameService {
         return gameRepository.findAllPlayingGames();
     }
 
+    public List<Game> getAllFinishedGames(){
+        return gameRepository.findAllPlayingGamesFinished();
+    }
+
     public Game getGameById(Integer id){
         return gameRepository.findGameByid(id);        
     }

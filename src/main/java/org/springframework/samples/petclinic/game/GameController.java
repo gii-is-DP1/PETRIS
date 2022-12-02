@@ -167,4 +167,19 @@ public class GameController {
         return vista;
     }
 
+    @GetMapping("/finished")
+    public String listAllFinishedGames(ModelMap model){
+        String vista = "games/finishedGames";
+
+        List<Game> listGames = gameService.getAllFinishedGames();
+        model.addAttribute("listGames", listGames);
+
+        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username = ud.getUsername();
+		User user = userService.getUser(username).get();
+        model.addAttribute("user", user);
+
+        return vista;
+    }
+
 }

@@ -12,7 +12,7 @@
         <tbody>
             <thead>
 				<tr>
-					<th style="width: 150px;">Games in progress</th>
+					<th style="width: 150px;">Games finished</th>
 				</tr>
 			</thead>
 			<tbody>

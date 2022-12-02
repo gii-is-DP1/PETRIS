@@ -170,6 +170,7 @@ input:-moz-placeholder {
               <c:if test="${au.authority == 'admin'}">
                 <form action="/games/playing"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 25%;">Games in progress</button></form>
                 <form action="/games/finished"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 15%;">Finished games</button></form>
+                <form action="/registeredUser"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 5%;">Registered users</button></form>
               </c:if>
 
 

@@ -55,6 +55,10 @@ public class UserService {
 		return userRepository.findByName(username).getPlayers();
 	}
 
+	public List<User> getAllRegisteredUsers(){
+		return userRepository.findAllUsers();
+	}
+
 	@Transactional
 	public List<User> getBestPlayers(){
 		return userRepository.findBestPlayer();

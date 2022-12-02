@@ -23,4 +23,7 @@ public interface UserRepository extends  CrudRepository<User, String>{
     @Query( value = "SELECT * FROM USERS ORDER BY points DESC LIMIT 3" , nativeQuery = true)
     public List<User> findBestPlayer();
 
+    @Query(value = "SELECT * FROM USERS", nativeQuery = true)
+    public List<User> findAllUsers();
+
 }

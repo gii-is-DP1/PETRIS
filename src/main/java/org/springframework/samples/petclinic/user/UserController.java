@@ -341,6 +341,18 @@ public class UserController {
 		return vista;
 	}
 
+	@GetMapping("/registeredUser")
+	public String showRegisteredUser(ModelMap model){
+		String vista = "users/registeredUser";
+		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User u = this.userService.getUser(ud.getUsername()).get();
+		model.addAttribute("user",u);
+		List<User> users = userService.getAllRegisteredUsers();
+		model.addAttribute("users", users);
+
+		return vista;
+	}
+
 	
 
 

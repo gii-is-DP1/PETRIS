@@ -50,4 +50,36 @@ public class Space extends BaseEntity{
 
         return newSpace;
     }
+
+
+    public void move(boolean isSource, String colour, Integer numBacteriaToMove) {
+       
+        if(!isSource){
+            if (colour.equals("red")){
+
+                this.numRedBacteria += numBacteriaToMove;
+
+                if (this.numRedBacteria>5){
+                    this.numRedBacteria -= 5;
+                    this.numRedSarcinas += 1;
+                }
+            }else{
+                this.numBlackBacteria += numBlackBacteria;
+
+                if (this.numBlackBacteria>5){
+                    this.numBlackBacteria -= 5;
+                    this.numBlackSarcinas += 1;
+                }
+            }
+        }else{
+            if (colour.equals("red")){
+
+                this.numRedBacteria -= numBacteriaToMove;
+
+            }else{
+                this.numBlackBacteria -= numBlackBacteria;
+
+            }
+        }
+    }
 }

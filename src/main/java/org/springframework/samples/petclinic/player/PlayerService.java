@@ -38,4 +38,14 @@ public class PlayerService {
     public List<Player> getPlayersOfGame(Integer id){
         return playerRepository.findPlayersOfGame(id);
     }
+
+    public boolean isPlayerOfUser(Integer id, String username) {
+        Player player =  playerRepository.findUserOfPlayer(id, username);
+        if (player!=null){
+            return true;
+            
+        }else{
+            return false;
+        }
+    }
 }

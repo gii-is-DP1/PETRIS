@@ -70,18 +70,57 @@ public class Game extends BaseEntity{
     @OneToMany(cascade = CascadeType.ALL)
     private List<Space> spaces;
 
+    public Space getFirstSpace(){
+        Space spaceToReturn = null;
+        for (Space space : this.spaces){
+            if (space.getPosition()==1){
+                spaceToReturn = space;
+            }
+        }
+        return spaceToReturn;
+    }
+    public Space getFourthSpace(){
+        Space spaceToReturn = null;
+        for (Space space : this.spaces){
+            if (space.getPosition()==4){
+                spaceToReturn = space;
+            }
+        }
+        return spaceToReturn;
+    }
+
     public void createSpaces(){
         Integer numSpaces = 7;
         List<Space> spacesToAdd = new ArrayList<>();
         while(numSpaces!=0){
-            Space newSpace = new Space();
-            newSpace.setPosition(numSpaces);
-            newSpace.setNumBlackBacteria(0);
-            newSpace.setNumBlackSarcinas(0);
-            newSpace.setNumRedBacteria(0);
-            newSpace.setNumRedSarcinas(0);
-            spacesToAdd.add(newSpace);
-            numSpaces--;
+            if (numSpaces == 1){
+                Space newSpace = new Space();
+                newSpace.setPosition(numSpaces);
+                newSpace.setNumBlackBacteria(0);
+                newSpace.setNumBlackSarcinas(0);
+                newSpace.setNumRedBacteria(1);
+                newSpace.setNumRedSarcinas(0);
+                spacesToAdd.add(newSpace);
+                numSpaces--;
+            }else if(numSpaces == 4){
+                Space newSpace = new Space();
+                newSpace.setPosition(numSpaces);
+                newSpace.setNumBlackBacteria(1);
+                newSpace.setNumBlackSarcinas(0);
+                newSpace.setNumRedBacteria(0);
+                newSpace.setNumRedSarcinas(0);
+                spacesToAdd.add(newSpace);
+                numSpaces--;
+            }else{
+                Space newSpace = new Space();
+                newSpace.setPosition(numSpaces);
+                newSpace.setNumBlackBacteria(0);
+                newSpace.setNumBlackSarcinas(0);
+                newSpace.setNumRedBacteria(0);
+                newSpace.setNumRedSarcinas(0);
+                spacesToAdd.add(newSpace);
+                numSpaces--;
+            }
         }
         this.spaces = spacesToAdd;
     }
@@ -169,4 +208,6 @@ public class Game extends BaseEntity{
         this.winner = winnerColour;
         return winnerColour + "player is the winner";
     }
+
+
 }

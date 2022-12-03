@@ -1,15 +1,16 @@
 package org.springframework.samples.petclinic.game;
 
-import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.samples.petclinic.Colour.Colour;
 import org.springframework.samples.petclinic.Colour.ColourService;
 import org.springframework.samples.petclinic.chat.Chat;
+
 import org.springframework.samples.petclinic.chat.ChatService;
 import org.springframework.samples.petclinic.model.PetrisBoardService;
 import org.springframework.samples.petclinic.player.PlayerService;
@@ -27,14 +28,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/games")
-public class GameController {
+public class GameController{
     
     private final GameService gameService;
     private final UserService userService;
     private final PetrisBoardService petrisBoardService;
     private final ChatService chatService;
-
-
 
     private static final String GAME_VIEW = "games/showGameInit";
     private static final String CREATE_GAME = "games/createGame";
@@ -93,20 +92,18 @@ public class GameController {
             User user = this.userService.getUser(ud.getUsername()).get();
             
             model.addAttribute("user",user);
-
-            Game game = this.gameService.getGameByCode(gameCode);
             
-            try{
+            return this.gameService.fillGame(gameCode, user);
 
-                return this.gameService.fillGame(game, user);
+        }catch(FullGameException e){
+            model.put("message", "This game is full");
+            return JOIN_BY_CODE;
 
-            }catch(FullGameException e){
-                model.put("message", "This game is full");
-                return JOIN_BY_CODE;
-            }
+        }catch(InvalidCodeException e){
+            model.put("message", "Invalid code");
+            return JOIN_BY_CODE;
 
-        } catch (Exception e) {
-            model.put("message", "Invalid Code");
+        }catch (Exception e) {
             return JOIN_BY_CODE;
         }
     }
@@ -136,20 +133,45 @@ public class GameController {
     }
     
     @GetMapping("/{gameId}")
-    public String activeGame(ModelMap model, @PathVariable("gameId") Integer gameId,  HttpServletResponse response){
+    public String activeGame(ModelMap model, @PathVariable("gameId") Integer gameId, Integer space1Id, Integer space2Id, Integer numBacteriaToMove,  HttpServletResponse response){
+
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = this.userService.getUser(ud.getUsername()).get();
         model.addAttribute("user",user);
                     
-        Game activeGame= this.gameService.getGameById(gameId);    
+        Game activeGame= this.gameService.getGameById(gameId);
+        if (activeGame.getPlayer2()!=null && space1Id!=null && space2Id!=null)   {
+            this.gameService.makeMove(user.getUsername(), activeGame, space1Id, space2Id, numBacteriaToMove);
+        }
+
         model.addAttribute("code",activeGame.getCode());
         model.put("game", activeGame);
         model.put("petrisBoard", this.petrisBoardService.getById(1).get());
 
         
 
+        /*
+        response.addHeader("Refresh", "12");
+        Collection<Chat> res;
+        res = this.chatService.getChatsById(activeGame.getId());
+        model.addAttribute("chats", res);
+        model.addAttribute("NuevoMensaje", new Chat());
+
+        */
         return CURRENT_GAME;
     }
+    @GetMapping("/{gameId}/endTurn")
+    public String changeTurn(ModelMap model,@PathVariable("gameId") Integer gameId){
+        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = this.userService.getUser(ud.getUsername()).get();
+        model.addAttribute("user",user);
+
+        Game activeGame= this.gameService.getGameById(gameId);
+        this.gameService.changeTurn(user.getUsername(), activeGame);
+
+        return "redirect:/games/" + gameId;
+    }
+
 
     @GetMapping("/playing")
     public String listAllPlayingGames(ModelMap model){

@@ -22,7 +22,7 @@ import lombok.Setter;
 @Table(name = "players")
 public class Player extends BaseEntity{
 
-    private boolean turn;
+    private boolean isTurn;
 
     @ManyToOne
     private Colour colour;
@@ -57,18 +57,5 @@ public class Player extends BaseEntity{
     public Player() {
     }
 
-    /*
-     * public Token getTokenwithIdDifferent(Object type, Integer id) {
-        type = ((String) type).toLowerCase();
-		for (Token token : getTokensInternal()) {
-			String compType = (String) token.getType();
-			compType = compType.toLowerCase();
-			if (compType.equals(type) && token.getId()!=id) {
-				return token;
-			}
-		}
-		return null;
-    }
-     */
 
 }

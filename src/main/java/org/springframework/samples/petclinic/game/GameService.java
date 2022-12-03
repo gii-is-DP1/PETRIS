@@ -10,6 +10,7 @@ import org.springframework.samples.petclinic.model.PetrisBoardService;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.samples.petclinic.space.Space;
+import org.springframework.samples.petclinic.space.SpaceService;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +21,16 @@ public class GameService {
     private final PlayerService playerService;
     private final ColourService colourService;
     private final PetrisBoardService petrisBoardService;
+    private final SpaceService spaceService;
 
     
     @Autowired
-	public GameService(GameRepository gameRepository,PlayerService playerService,ColourService colourService,PetrisBoardService petrisBoardService) {
+	public GameService(GameRepository gameRepository,PlayerService playerService,ColourService colourService,PetrisBoardService petrisBoardService,SpaceService spaceService) {
 		this.gameRepository = gameRepository;
         this.playerService = playerService;
         this.colourService = colourService;
         this.petrisBoardService = petrisBoardService;
+        this.spaceService = spaceService;
 	}
     public List<Game> getAllGames(){
         return gameRepository.findAll();
@@ -50,16 +53,27 @@ public class GameService {
     public Game getActiveGameByPlayer(String username){
         return gameRepository.findActiveGameByPlayer(username);
     }
-    public Game getGameByCode(String gameCode) {
-        return gameRepository.findGameByCode(gameCode);
+    
+    public Game getGameByCode(String gameCode) throws Exception {
+        Game game = gameRepository.findGameByCode(gameCode);
+        if(gameCode==null){
+            throw new Exception();
+        }else if(game!=null){
+            return game;
+        } else  {
+            throw new InvalidCodeException();
+        }
+        
     }
 
     public Game save(Game g){
         return gameRepository.save(g);
     }
+
     public Game getGameByPlayerId(Integer id){
         return gameRepository.getGameByPlayerId(id);
     }
+
     public void setActiveGamesToFalse(String username){
         List<Player> playersList = this.playerService.getPlayersByUser(username);
             for (Player player : playersList){
@@ -69,6 +83,7 @@ public class GameService {
                 }
             }
     }
+
     public String generateCode(){
         String banco = "1234567890abcdefghijqlmnopqrstuvwxyzABCDEFGHIJQLMNOPQRSTUVWXYZ";
         String code = "";
@@ -81,6 +96,7 @@ public class GameService {
         }
         return code;
     }
+
     public Game createGame(Game game, User user, String colourName, boolean isPublic){
 
             this.setActiveGamesToFalse(user.getUsername());
@@ -98,12 +114,15 @@ public class GameService {
             BeanUtils.copyProperties(game, newGame, "id");
             Game createdGame = this.save(newGame);
             createdPlayer.setGame(createdGame);
+            createdPlayer.setTurn(true);
             this.playerService.save(createdPlayer);
 
             return createdGame;
     }
 
-    public String fillGame(Game game, User user) throws FullGameException{
+    public String fillGame(String gameCode, User user) throws Exception{
+
+            Game game = this.getGameByCode(gameCode);
 
             String player1Colour = game.getPlayer1().getColour().getName();
             Colour randomColour = this.colourService.getOtherColoursExcept(player1Colour).get(0);
@@ -159,17 +178,60 @@ public class GameService {
     public boolean moveToSpaceWithoutSarcine(String colour, Space space){
 
         boolean res =   (colour == "red" && space.getNumRedSarcinas()<1) || 
-                        (colour == "black" && space.getNumBlackSarcinas()<1);
+                        (colour != "red" && space.getNumBlackSarcinas()<1);
         return res;
     }
     //comprobar si un jugador puede mover unas bacterias de una casilla a otra
     public boolean isMovementAllowed(Player player, Space space1, Space space2, Integer numBacteriaToMove){
         String colour = player.getColour().getName();
 
-        boolean res =  moveToSpaceWithoutSarcine(colour, space2) && 
+        boolean res =  player.isTurn() &&
+                        moveToSpaceWithoutSarcine(colour, space2) && 
                         permittedNumToMove(space1, space2, numBacteriaToMove, colour) && 
                         isNeighbour(space1, space2);
         return res;
+    }
+   
+   
+    public void makeMove(String userName, Game activeGame, Integer space1Id, Integer space2Id, Integer numBacteriaToMove) {
+        boolean isUserPlayer1 = this.playerService.isPlayerOfUser(activeGame.getPlayer1().getId(), userName);
+        boolean isUserPlayer2 = this.playerService.isPlayerOfUser(activeGame.getPlayer2().getId(), userName);
+        boolean isMovementAllowed = false; 
+        Space space1 = this.spaceService.findSpaceById(space1Id);
+        Space space2 = this.spaceService.findSpaceById(space2Id);
+
+        if (isUserPlayer1){
+            isMovementAllowed = isMovementAllowed(activeGame.getPlayer1(), space1, space2, numBacteriaToMove);
+
+        }else if (isUserPlayer2){
+            isMovementAllowed = isMovementAllowed(activeGame.getPlayer2(), space1, space2, numBacteriaToMove);
+        }
+
+        if (isMovementAllowed){
+            space1.move(true, activeGame.getPlayer1().getColour().getName(), numBacteriaToMove);
+            space2.move(false, activeGame.getPlayer2().getColour().getName(), numBacteriaToMove);
+            this.spaceService.save(space1);
+            this.spaceService.save(space2);
+
+        }
+
+    }
+    public void changeTurn( String userName, Game activeGame) {
+        boolean isUserPlayer1 = this.playerService.isPlayerOfUser(activeGame.getPlayer1().getId(), userName);
+        boolean isUserPlayer2 = this.playerService.isPlayerOfUser(activeGame.getPlayer2().getId(), userName);
+
+        if (isUserPlayer1){
+            if(activeGame.getPlayer1().isTurn()){
+                activeGame.getPlayer1().setTurn(false);
+                activeGame.getPlayer2().setTurn(true);
+            }
+        }else if(isUserPlayer2){
+            if(activeGame.getPlayer2().isTurn()){
+                activeGame.getPlayer2().setTurn(false);
+                activeGame.getPlayer1().setTurn(true);
+            }
+        }
+        this.save(activeGame);
     }
    
     

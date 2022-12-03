@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerService;
+import org.springframework.samples.petclinic.space.Space;
 import org.springframework.samples.petclinic.token.Token;
 import org.springframework.samples.petclinic.token.TokenService;
 import org.springframework.samples.petclinic.token.TokenType;
@@ -53,6 +54,9 @@ public class PetrisBoardService {
         TokenType bacterium = this.tokenTypeService.getTokenTypeByName("bacterium");
         TokenType sarcina = this.tokenTypeService.getTokenTypeByName("sarcina");
 		List<Player> players = this.playerService.getPlayersOfGame(game.getId());
+		Space space1 = game.getFirstSpace();
+		Space space4 = game.getFourthSpace();
+
 
 		for (Player player : players){
 
@@ -60,13 +64,38 @@ public class PetrisBoardService {
         	Integer numBacteria = 20; 
 
 			while(numBacteria!=0){
-				Token newToken = new Token(); 
-				newToken.setColour(player.getColour());
-				newToken.setTokenType(bacterium);
-				newToken.setPlayer(player);
-				Token createdToken = this.tokenService.save(newToken);
-				listTokenToAdd.add(createdToken);
-				numBacteria--;
+
+				if(numBacteria == 20 && player.getColour().getName().equals("red")){
+					Token newToken = new Token(); 
+					newToken.setColour(player.getColour());
+					newToken.setTokenType(bacterium);
+					newToken.setPlayer(player);
+					newToken.setSpace(space1);
+					newToken.setPositionInSpace(1);
+					Token createdToken = this.tokenService.save(newToken);
+					listTokenToAdd.add(createdToken);
+					numBacteria--;
+				}else if (numBacteria == 20 && !player.getColour().getName().equals("red")){
+					Token newToken = new Token(); 
+					newToken.setColour(player.getColour());
+					newToken.setTokenType(bacterium);
+					newToken.setPlayer(player);
+					newToken.setSpace(space4);
+					newToken.setPositionInSpace(1);
+					Token createdToken = this.tokenService.save(newToken);
+					listTokenToAdd.add(createdToken);
+					numBacteria--;
+				}else{
+					Token newToken = new Token(); 
+					newToken.setColour(player.getColour());
+					newToken.setTokenType(bacterium);
+					newToken.setPlayer(player);
+					Token createdToken = this.tokenService.save(newToken);
+					listTokenToAdd.add(createdToken);
+					numBacteria--;
+
+				}
+				
 			}
 			while(numSarcina!=0){
 				Token newToken = new Token(); 
@@ -81,6 +110,7 @@ public class PetrisBoardService {
 		newBoard.setGame(game);
 		newBoard.setTokens(listTokenToAdd);
 		PetrisBoard createdBoard = this.save(newBoard);
+		this.tokenService.saveAll(createdBoard);
 		return createdBoard;
     }
 }

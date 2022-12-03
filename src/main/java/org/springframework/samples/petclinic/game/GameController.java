@@ -6,8 +6,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.samples.petclinic.Colour.Colour;
+import org.springframework.samples.petclinic.Colour.ColourService;
+import org.springframework.samples.petclinic.chat.Chat;
+
 import org.springframework.samples.petclinic.chat.ChatService;
 import org.springframework.samples.petclinic.model.PetrisBoardService;
+import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,10 +40,11 @@ public class GameController{
     private static final String GAME_LISTING = "games/gameListing";
     private static final String CURRENT_GAME = "games/playingGame";
     private static final String JOIN_BY_CODE = "games/joinByCode";
+    private static final String GAMES_IN_PROGRESS = "games/gamesInProgress";
 
 
     @Autowired
-	public GameController(GameService gameService,UserService userService,PetrisBoardService petrisBoardService, ChatService chatService) {
+	public GameController(GameService gameService, PlayerService playerService,UserService userService,ColourService colourService,PetrisBoardService petrisBoardService, ChatService chatService) {
 		this.gameService = gameService;
         this.userService =userService;
         this.petrisBoardService = petrisBoardService;
@@ -60,6 +67,7 @@ public class GameController{
 		model.addAttribute("user", u);
         return CREATE_GAME;
     }
+    
     @PostMapping("/create/{username}")
     public String saveNewGame(String colourName, boolean isPublic, @Valid Game game, BindingResult bindingResult, @PathVariable("username") String userName,ModelMap model){
         
@@ -75,6 +83,7 @@ public class GameController{
             return "redirect:/games/" + createdGame.getId();
         }
     }
+    
     @GetMapping("/join/private")
     public String joinPrivateGame(String gameCode,  ModelMap model){
 
@@ -98,11 +107,13 @@ public class GameController{
             return JOIN_BY_CODE;
         }
     }
+    
     @GetMapping("/join/{gameCode}")
     public String joinGameByCode(@PathVariable("gameCode") String gameCode,  ModelMap model){
         return joinPrivateGame(gameCode, model);
 
     }
+    
     @GetMapping("/join/public")
     public String joinPublicGame(ModelMap model){
 
@@ -120,8 +131,10 @@ public class GameController{
             return JOIN_BY_CODE;
         }
     }
+    
     @GetMapping("/{gameId}")
     public String activeGame(ModelMap model, @PathVariable("gameId") Integer gameId, Integer space1Id, Integer space2Id, Integer numBacteriaToMove,  HttpServletResponse response){
+
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = this.userService.getUser(ud.getUsername()).get();
         model.addAttribute("user",user);
@@ -133,8 +146,9 @@ public class GameController{
 
         model.addAttribute("code",activeGame.getCode());
         model.put("game", activeGame);
+        model.put("petrisBoard", this.petrisBoardService.getById(1).get());
 
-        model.put("petrisBoard", this.petrisBoardService.getByGameId(activeGame.getId()));
+        
 
         /*
         response.addHeader("Refresh", "12");
@@ -158,5 +172,36 @@ public class GameController{
         return "redirect:/games/" + gameId;
     }
 
+
+    @GetMapping("/playing")
+    public String listAllPlayingGames(ModelMap model){
+
+        String vista = GAMES_IN_PROGRESS;
+
+        List<Game> listGames = gameService.getAllPlayingGames();
+        model.addAttribute("listGames", listGames);
+
+        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username = ud.getUsername();
+		User user = userService.getUser(username).get();
+        model.addAttribute("user", user);
+
+        return vista;
+    }
+
+    @GetMapping("/finished")
+    public String listAllFinishedGames(ModelMap model){
+        String vista = "games/finishedGames";
+
+        List<Game> listGames = gameService.getAllFinishedGames();
+        model.addAttribute("listGames", listGames);
+
+        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username = ud.getUsername();
+		User user = userService.getUser(username).get();
+        model.addAttribute("user", user);
+
+        return vista;
+    }
 
 }

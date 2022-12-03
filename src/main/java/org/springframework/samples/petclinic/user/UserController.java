@@ -65,19 +65,21 @@ public class UserController {
 	private final GameService gameService;
 	private final FriendRequestService friendRequestService;
 	private final FriendRequestRepository friendRequestRepository;
+	private final AuthoritiesRepository authoritiesRepository;
 
 	
 	
 	private final UserRepository userRepository;
 
 	@Autowired
-	public UserController(UserService clinicService, PlayerService playerService, GameService gameService, UserRepository userRepository, FriendRequestRepository friendRequestRepository, FriendRequestService friendRequestService) {
+	public UserController(UserService clinicService, PlayerService playerService, GameService gameService, UserRepository userRepository, FriendRequestRepository friendRequestRepository, FriendRequestService friendRequestService, AuthoritiesRepository authoritiesRepository) {
 		this.userService = clinicService;
 		this.playerService = playerService;
 		this.gameService = gameService;
 		this.userRepository = userRepository;
 		this.friendRequestRepository = friendRequestRepository;
 		this.friendRequestService = friendRequestService;
+		this.authoritiesRepository = authoritiesRepository;
 	}
 
 	@InitBinder
@@ -232,6 +234,8 @@ public class UserController {
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User u = this.userService.getUser(ud.getUsername()).get();
 		model.addAttribute("user", u);
+		Authorities au = authoritiesRepository.findByName(u.username);
+		model.addAttribute("au", au);
         return view;
     }
 
@@ -334,6 +338,18 @@ public class UserController {
 		modelMap.addAttribute("users", userTOP);
 		String vista = "/users/showRanking";
 		
+		return vista;
+	}
+
+	@GetMapping("/registeredUser")
+	public String showRegisteredUser(ModelMap model){
+		String vista = "users/registeredUser";
+		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User u = this.userService.getUser(ud.getUsername()).get();
+		model.addAttribute("user",u);
+		List<User> users = userService.getAllRegisteredUsers();
+		model.addAttribute("users", users);
+
 		return vista;
 	}
 

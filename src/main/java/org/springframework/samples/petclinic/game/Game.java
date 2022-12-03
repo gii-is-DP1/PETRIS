@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.game;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +50,8 @@ public class Game extends BaseEntity{
     @NotNull
     @Column(name = "isPublic")
     private boolean isPublic;
+
+    private LocalTime startGameTime = LocalTime.now();
 
     @ManyToOne
     @JoinColumn(name = "phase_type_id")

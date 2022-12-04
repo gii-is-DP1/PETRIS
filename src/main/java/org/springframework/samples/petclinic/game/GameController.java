@@ -6,11 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.samples.petclinic.Colour.Colour;
 import org.springframework.samples.petclinic.Colour.ColourService;
-import org.springframework.samples.petclinic.chat.Chat;
-
 import org.springframework.samples.petclinic.chat.ChatService;
 import org.springframework.samples.petclinic.model.PetrisBoardService;
 import org.springframework.samples.petclinic.player.PlayerService;
@@ -34,6 +30,8 @@ public class GameController{
     private final UserService userService;
     private final PetrisBoardService petrisBoardService;
     private final ChatService chatService;
+    private final PlayerService playerService;
+
 
     private static final String GAME_VIEW = "games/showGameInit";
     private static final String CREATE_GAME = "games/createGame";
@@ -47,6 +45,7 @@ public class GameController{
 	public GameController(GameService gameService, PlayerService playerService,UserService userService,ColourService colourService,PetrisBoardService petrisBoardService, ChatService chatService) {
 		this.gameService = gameService;
         this.userService =userService;
+        this.playerService = playerService;
         this.petrisBoardService = petrisBoardService;
         this.chatService = chatService;
 	}
@@ -133,31 +132,32 @@ public class GameController{
     }
     
     @GetMapping("/{gameId}")
-    public String activeGame(ModelMap model, @PathVariable("gameId") Integer gameId, Integer space1Id, Integer space2Id, Integer numBacteriaToMove,  HttpServletResponse response){
+    public String activeGame(ModelMap model, @PathVariable("gameId") Integer gameId, Integer space1Position, Integer space2Position, Integer numBacteriaToMove, HttpServletResponse response){
 
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = this.userService.getUser(ud.getUsername()).get();
         model.addAttribute("user",user);
                     
         Game activeGame= this.gameService.getGameById(gameId);
-        if (activeGame.getPlayer2()!=null && space1Id!=null && space2Id!=null)   {
-            this.gameService.makeMove(user.getUsername(), activeGame, space1Id, space2Id, numBacteriaToMove);
+        try {
+            this.gameService.makeMove(user.getUsername(), activeGame, space1Position, space2Position, numBacteriaToMove);
+        }catch (isPlayer1Exception e) {
+            model.put("message", "movement allowed 1");
+        }catch (isPlayer2Exception e) {
+            model.put("message", "movement allowed 2");
         }
+        catch (movementIsAllowedException e) {
+            model.put("message", "entra");
+        }
+        catch (Exception e) {
+            model.put("message", e);
+        }
+        
 
         model.addAttribute("code",activeGame.getCode());
         model.put("game", activeGame);
         model.put("petrisBoard", this.petrisBoardService.getByGameId(activeGame.getId()));
 
-        
-
-        /*
-        response.addHeader("Refresh", "12");
-        Collection<Chat> res;
-        res = this.chatService.getChatsById(activeGame.getId());
-        model.addAttribute("chats", res);
-        model.addAttribute("NuevoMensaje", new Chat());
-
-        */
         return CURRENT_GAME;
     }
     @GetMapping("/{gameId}/endTurn")
@@ -171,7 +171,24 @@ public class GameController{
 
         return "redirect:/games/" + gameId;
     }
+    /* 
+    @GetMapping("/{gameId}/move")
+    public String move(ModelMap model,@PathVariable("gameId") Integer gameId, Integer space1Id, Integer space2Id, Integer numBacteriaToMove){
+        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = this.userService.getUser(ud.getUsername()).get();
+        model.addAttribute("user",user);
 
+        try{
+            Game activeGame= this.gameService.getGameById(gameId);
+            this.gameService.makeMove(user.getUsername(), activeGame, space1Id, space2Id, numBacteriaToMove);
+
+        }catch(Exception e){
+            model.put("message", e);
+        }
+
+        return "redirect:/games/" + gameId;
+    }
+*/
 
     @GetMapping("/playing")
     public String listAllPlayingGames(ModelMap model){

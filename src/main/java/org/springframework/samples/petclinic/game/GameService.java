@@ -116,6 +116,10 @@ public class GameService {
             createdPlayer.setGame(createdGame);
             createdPlayer.setTurn(true);
             this.playerService.save(createdPlayer);
+            for(Space space: createdGame.getSpaces()){
+                space.setGame(createdGame);
+                this.spaceService.save(space);
+            }
 
             return createdGame;
     }
@@ -152,13 +156,17 @@ public class GameService {
         if (colour.equals("red")){
             res = space1.getNumRedBacteria()>=numBacteriaToMove && 
                             space2.getNumRedBacteria() + numBacteriaToMove <6 &&
-                            (space1.getNumRedBacteria() + space1.getNumRedSarcinas()*5 - numBacteriaToMove) != (space1.getNumBlackBacteria() + space1.getNumBlackSarcinas() *5) &&
-                            (space2.getNumRedBacteria() + space2.getNumRedSarcinas()*5 + numBacteriaToMove) != (space2.getNumBlackBacteria() + space2.getNumBlackSarcinas() *5) ;
+                            ((space1.getNumRedBacteria() + space1.getNumRedSarcinas()*5 - numBacteriaToMove)==0 || 
+                                (space1.getNumRedBacteria() + space1.getNumRedSarcinas()*5 - numBacteriaToMove)!= (space1.getNumBlackBacteria() + space1.getNumBlackSarcinas() *5)) &&
+                            ((space2.getNumRedBacteria() + space2.getNumRedSarcinas()*5 + numBacteriaToMove)==0 ||
+                                (space2.getNumRedBacteria() + space2.getNumRedSarcinas()*5 + numBacteriaToMove)!= (space2.getNumBlackBacteria() + space2.getNumBlackSarcinas() *5)) ;
         }else {
             res =  space1.getNumBlackBacteria()>=numBacteriaToMove  && 
                             space2.getNumBlackBacteria() + numBacteriaToMove <6 &&
-                            (space1.getNumBlackBacteria() + space1.getNumBlackSarcinas()*5 - numBacteriaToMove) != (space1.getNumRedBacteria() + space1.getNumRedSarcinas() *5) &&
-                            (space2.getNumBlackBacteria() + space2.getNumBlackSarcinas()*5 + numBacteriaToMove) != (space2.getNumRedBacteria() + space2.getNumRedSarcinas() *5) ;
+                            ((space1.getNumBlackBacteria() + space1.getNumBlackSarcinas()*5 - numBacteriaToMove)==0 ||
+                                (space1.getNumBlackBacteria() + space1.getNumBlackSarcinas()*5 - numBacteriaToMove) != (space1.getNumRedBacteria() + space1.getNumRedSarcinas() *5)) &&
+                            ((space2.getNumBlackBacteria() + space2.getNumBlackSarcinas()*5 + numBacteriaToMove)==0 ||
+                                (space2.getNumBlackBacteria() + space2.getNumBlackSarcinas()*5 + numBacteriaToMove)!= (space2.getNumRedBacteria() + space2.getNumRedSarcinas() *5)) ;
         }
         return res;
     }
@@ -193,32 +201,49 @@ public class GameService {
     }
    
    
-    public void makeMove(String userName, Game activeGame, Integer space1Id, Integer space2Id, Integer numBacteriaToMove) {
+    public void makeMove(String userName, Game activeGame, Integer space1Position, Integer space2Position, Integer numBacteriaToMove) throws  isPlayer1Exception, isPlayer2Exception, movementIsAllowedException {
         boolean isUserPlayer1 = this.playerService.isPlayerOfUser(activeGame.getPlayer1().getId(), userName);
         boolean isUserPlayer2 = this.playerService.isPlayerOfUser(activeGame.getPlayer2().getId(), userName);
         boolean isMovementAllowed = false; 
-        Space space1 = this.spaceService.findSpaceById(space1Id);
-        Space space2 = this.spaceService.findSpaceById(space2Id);
+        Space space1 = null;
+        Space space2 = null;
+
+        for (Space space : activeGame.getSpaces()){
+            if (space.getPosition() == space1Position){
+                space1 = space;
+
+            }else if(space.getPosition() == space2Position){
+                space2 = space;
+            }
+        }
 
         if (isUserPlayer1){
             isMovementAllowed = isMovementAllowed(activeGame.getPlayer1(), space1, space2, numBacteriaToMove);
-
+            
+            if (isMovementAllowed){
+                space1.move(true, activeGame.getPlayer1().getColour().getName(), numBacteriaToMove);
+                space2.move(false, activeGame.getPlayer1().getColour().getName(), numBacteriaToMove);
+                this.spaceService.save(space1);
+                this.spaceService.save(space2);
+    
+            }
         }else if (isUserPlayer2){
             isMovementAllowed = isMovementAllowed(activeGame.getPlayer2(), space1, space2, numBacteriaToMove);
+            if (isMovementAllowed){
+                space1.move(true, activeGame.getPlayer2().getColour().getName(), numBacteriaToMove);
+                space2.move(false, activeGame.getPlayer2().getColour().getName(), numBacteriaToMove);
+                this.spaceService.save(space1);
+                this.spaceService.save(space2);
+    
+            }
         }
 
-        if (isMovementAllowed){
-            space1.move(true, activeGame.getPlayer1().getColour().getName(), numBacteriaToMove);
-            space2.move(false, activeGame.getPlayer2().getColour().getName(), numBacteriaToMove);
-            this.spaceService.save(space1);
-            this.spaceService.save(space2);
-
-        }
 
     }
     public void changeTurn( String userName, Game activeGame) {
         boolean isUserPlayer1 = this.playerService.isPlayerOfUser(activeGame.getPlayer1().getId(), userName);
         boolean isUserPlayer2 = this.playerService.isPlayerOfUser(activeGame.getPlayer2().getId(), userName);
+
 
         if (isUserPlayer1){
             if(activeGame.getPlayer1().isTurn()){

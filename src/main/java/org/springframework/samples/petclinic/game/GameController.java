@@ -146,7 +146,7 @@ public class GameController{
 
         model.addAttribute("code",activeGame.getCode());
         model.put("game", activeGame);
-        model.put("petrisBoard", this.petrisBoardService.getById(1).get());
+        model.put("petrisBoard", this.petrisBoardService.getByGameId(activeGame.getId()));
 
         
 

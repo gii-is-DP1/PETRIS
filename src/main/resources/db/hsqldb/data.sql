@@ -1,5 +1,5 @@
 
-INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('raumerbas','soygod',TRUE,'top1delmundo@email.com',100,28,27,1);
+INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('raumerbas','2',TRUE,'top1delmundo@email.com',100,28,27,1);
 INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('gonriblun','1',TRUE,'top2delmundo@email.com',100,25,25,0);
 INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('lucantdel','soysemigod',TRUE,'top3delmundo@email.com',30,28,24,4);
 INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('dancorfon','soysemigod',TRUE,'top4delmundo@email.com',150,24,21,3);
@@ -137,11 +137,13 @@ INSERT INTO spaces(id, position, num_black_bacteria, num_red_bacteria, num_black
 INSERT INTO spaces(id, position, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas, game_id) VALUES (6, 6, 0,0,0,0,1);
 INSERT INTO spaces(id, position, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas, game_id) VALUES (7, 7, 0,0,0,0,1);
 
+
 INSERT INTO statistics(id, init_time, end_time, final_round, winner, used_bacteries, used_sarcines, game_points, game_id) VALUES (1,'13:20:32','13:15:45', 2, TRUE, 16, 2, 13, 1);
 
 
 
 INSERT INTO petris_board(id,height,width,background,game_id) VALUES (1, 1000, 1000,'../resources/images/fondo.png', 1);
+
 
 INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id) VALUES (1, 1, 1, 3, 1, 1, 1);
 INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id) VALUES (2, 1, 1, 3, 2, 1, 1);
@@ -160,6 +162,5 @@ INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, pl
 INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id) VALUES (14, 1, 2, 7, 2, 1, 1);
 INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id) VALUES (15, 1, 2, 7, 3, 1, 1);
 INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id) VALUES (16, 1, 2, 7, 4, 1, 1);
-
 
 

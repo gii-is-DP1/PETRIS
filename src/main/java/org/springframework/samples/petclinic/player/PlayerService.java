@@ -48,4 +48,8 @@ public class PlayerService {
             return false;
         }
     }
+
+    public Player getPlayerById(Integer playerId) {
+        return playerRepository.findPlayerById(playerId);
+    }
 }

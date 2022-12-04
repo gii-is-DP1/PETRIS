@@ -75,6 +75,9 @@ public class GameServiceTest {
     void permittedNumToMoveTest(){
         Space space1 = Space.createSpace(1,4,2,0,0);
         Space space2 = Space.createSpace(2,3,4,0,0);
+        Space space3 = Space.createSpace(1,0,1,0,0);
+        Space space4 = Space.createSpace(2,0,0,0,0);
+
         
         boolean move1 = this.gameService.permittedNumToMove(space1, space2, 6, "black");
         assertThat(move1).isEqualTo(false);
@@ -87,6 +90,9 @@ public class GameServiceTest {
 
         boolean move4 = this.gameService.permittedNumToMove(space1, space2, 2, "black");
         assertThat(move4).isEqualTo(false);
+
+        boolean move5 = this.gameService.permittedNumToMove(space3, space4, 1, "red");
+        assertThat(move5).isEqualTo(true);
     }
     @Test
     void isNeighbourTest(){
@@ -123,12 +129,16 @@ public class GameServiceTest {
 
         Player player = new Player();
         player.setColour(colour);
+        player.setTurn(true);
 
         Space space1 = Space.createSpace(1,0,3,1,0);
         Space space2 = Space.createSpace(4,0,1,0,0);
         Space space3 = Space.createSpace(2,0,0,0,1);
         Space space4 = Space.createSpace(7,1,0,0,0);
-
+        Space space5 = Space.createSpace(1,0,1,0,0);
+        Space space6 = Space.createSpace(2,0,0,0,0);
+        
+        
         //debe dar falso por position
         boolean move1 = this.gameService.isMovementAllowed(player, space1, space2,2);
         assertThat(move1).isEqualTo(false);
@@ -141,5 +151,9 @@ public class GameServiceTest {
 
         boolean move4 = this.gameService.isMovementAllowed(player, space1, space4,2);
         assertThat(move4).isEqualTo(true);
+        
+
+        boolean move5 = this.gameService.isMovementAllowed(player, space5, space6, 1);
+        assertThat(move5).isEqualTo(true);
     }
 }

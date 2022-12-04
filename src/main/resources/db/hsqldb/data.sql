@@ -114,19 +114,13 @@ INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, conta
 INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (11, FALSE , 2 , 0,0,0,0,'jaigargar1');
 
 
-
-INSERT INTO phase_types(id, name) VALUES (1,'Spread');
-INSERT INTO phase_types(id, name) VALUES (2,'Contamination');
-INSERT INTO phase_types(id, name) VALUES (3,'Binary Fision');
-
-
-INSERT INTO games(id, loser, round, time, winner, phase_type_id, player1_id, player2_id, is_active, is_public, code) VALUES (1,'A', 2, 15, 'B', 2, 1, 2, TRUE, TRUE, 'CoDE1');
-INSERT INTO games(id, loser, round, time, winner, phase_type_id, player1_id, player2_id, is_active, is_public, code) VALUES (2,'B', 3, 30, 'A', 2, 3, 4, TRUE, FALSE, 'CoDE2');
-INSERT INTO games(id, loser, round, time, winner, phase_type_id, player1_id, player2_id, is_active, is_public, code) VALUES (3,'A', 4, 25, 'B', 2, 5, 6, FALSE, TRUE, 'CoDE3');
-INSERT INTO games(id, loser, round, time, winner, phase_type_id, player1_id, player2_id, is_active, is_public, code) VALUES (4,'B', 1, 45, 'A', 2, 7, 8, FALSE, FALSE, 'CoDE4');
-INSERT INTO games(id, loser, round, time, winner, phase_type_id, player1_id, player2_id, is_active, is_public, code) VALUES (5,'B', 1, 45, 'A', 2, 9, null, TRUE, TRUE, 'CoDE5');
-INSERT INTO games(id, loser, round, time, winner, phase_type_id, player1_id, player2_id, is_active, is_public, code) VALUES (6,'B', 1, 45, 'A', 2, 10, null, TRUE, TRUE, 'CoDE6');
-INSERT INTO games(id, loser, round, time, winner, phase_type_id, player1_id, player2_id, is_active, is_public, code) VALUES (7,'B', 1, 45, 'A', 2, 11, null, TRUE, TRUE, 'CoDE7');
+INSERT INTO games(id, loser, round, time, winner, phase, player1_id, player2_id, is_active, is_public, code) VALUES (1,'A', 2, 15, 'B', 2, 1, 2, TRUE, TRUE, 'CoDE1');
+INSERT INTO games(id, loser, round, time, winner, phase, player1_id, player2_id, is_active, is_public, code) VALUES (2,'B', 3, 30, 'A', 2, 3, 4, TRUE, FALSE, 'CoDE2');
+INSERT INTO games(id, loser, round, time, winner, phase, player1_id, player2_id, is_active, is_public, code) VALUES (3,'A', 4, 25, 'B', 2, 5, 6, FALSE, TRUE, 'CoDE3');
+INSERT INTO games(id, loser, round, time, winner, phase, player1_id, player2_id, is_active, is_public, code) VALUES (4,'B', 1, 45, 'A', 2, 7, 8, FALSE, FALSE, 'CoDE4');
+INSERT INTO games(id, loser, round, time, winner, phase, player1_id, player2_id, is_active, is_public, code) VALUES (5,'B', 1, 45, 'A', 2, 9, null, TRUE, TRUE, 'CoDE5');
+INSERT INTO games(id, loser, round, time, winner, phase, player1_id, player2_id, is_active, is_public, code) VALUES (6,'B', 1, 45, 'A', 2, 10, null, TRUE, TRUE, 'CoDE6');
+INSERT INTO games(id, loser, round, time, winner, phase, player1_id, player2_id, is_active, is_public, code) VALUES (7,'B', 1, 45, 'A', 2, 11, null, TRUE, TRUE, 'CoDE7');
 
 
 INSERT INTO spaces(id, position, num_black_bacteria, num_red_bacteria, num_black_sarcinas, num_red_sarcinas, game_id) VALUES (1, 1, 0,0,0,0,1);

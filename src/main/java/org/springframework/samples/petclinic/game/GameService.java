@@ -6,11 +6,14 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.Colour.Colour;
 import org.springframework.samples.petclinic.Colour.ColourService;
+import org.springframework.samples.petclinic.model.PetrisBoard;
 import org.springframework.samples.petclinic.model.PetrisBoardService;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.samples.petclinic.space.Space;
 import org.springframework.samples.petclinic.space.SpaceService;
+import org.springframework.samples.petclinic.token.ImpossibleMoveException;
+import org.springframework.samples.petclinic.token.Token;
 import org.springframework.samples.petclinic.token.TokenService;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.stereotype.Service;
@@ -115,6 +118,7 @@ public class GameService {
             game.setActive(true);
             game.setPlayer1(createdPlayer);
             game.createSpaces();
+            game.setPhase(1);
             BeanUtils.copyProperties(game, newGame, "id");
             Game createdGame = this.save(newGame);
             createdPlayer.setGame(createdGame);
@@ -174,6 +178,7 @@ public class GameService {
         }
         return res;
     }
+    
     //se puede mover de una casilla a su adyacente
     public boolean isNeighbour(Space space1, Space space2){
         Integer position1 = space1.getPosition();
@@ -186,6 +191,7 @@ public class GameService {
                         (position1==6 && position2==1);
         return res;
     }
+    
     //no puedes mover a una casilla que tenga una sarcina tuya
     public boolean moveToSpaceWithoutSarcine(String colour, Space space){
 
@@ -193,6 +199,7 @@ public class GameService {
                         (colour != "red" && space.getNumBlackSarcinas()<1);
         return res;
     }
+    
     //comprobar si un jugador puede mover unas bacterias de una casilla a otra
     public boolean isMovementAllowed(Player player, Space space1, Space space2, Integer numBacteriaToMove){
         String colour = player.getColour().getName();
@@ -204,8 +211,166 @@ public class GameService {
         return res;
     }
    
-   
-    public void makeMove(String userName, Game activeGame, Integer space1Position, Integer space2Position, Integer numBacteriaToMove) throws  isPlayer1Exception, isPlayer2Exception, movementIsAllowedException {
+   //añadir una nueva bacteria por casilla en la fase de fision
+    public void activateBinaryFision(Game game){
+        for(Space space : game.getSpaces()){
+            Integer numBlackBacteria = space.getNumBlackBacteria(); 
+            Integer numRedBacteria = space.getNumRedBacteria();
+            Integer numBlackSarcinas = space.getNumBlackSarcinas();
+            Integer numRedSarcinas = space.getNumRedSarcinas();
+
+            if (numRedSarcinas*5 + numRedBacteria ==0){
+                if (numBlackSarcinas<1 && numBlackBacteria>0){
+                    if(numBlackBacteria<4){
+                        space.setNumBlackBacteria(numBlackBacteria+1);
+                        Integer petrisBoardId = this.petrisBoardService.getByGameId(game.getId()).getId();
+                        Token token = this.tokenService.getTokenToAddInBinaryFision(petrisBoardId,"Black","Bacterium");
+                        token.setSpace(space);
+                        token.setPositionInSpace(numBlackBacteria+1);
+                        this.tokenService.save(token);
+                    }else{
+
+                        space.setNumBlackBacteria(0);
+                        space.setNumBlackSarcinas(1);
+
+                        List<Token> tokensToQuit = this.tokenService.getTokensToQuit(space);
+                        for (Token token :tokensToQuit){
+                            token.setPositionInSpace(0);
+                            token.setSpace(null);
+                            this.tokenService.save(token);
+                        }
+
+                        Integer petrisBoardId = this.petrisBoardService.getByGameId(game.getId()).getId();
+                        Token token = this.tokenService.getTokenToAddInBinaryFision(petrisBoardId, "Black","Sarcina");
+                        token.setSpace(space);
+                        token.setPositionInSpace(0);
+                        this.tokenService.save(token);
+                        
+                    }
+                }
+            }else if(numBlackSarcinas*5 + numBlackBacteria == 0){
+                if (numRedSarcinas<1 && numRedBacteria>0){
+                    if (numRedBacteria<4){
+                        space.setNumRedBacteria(numRedBacteria+1);
+
+                        Integer petrisBoardId = this.petrisBoardService.getByGameId(game.getId()).getId();
+                        Token token = this.tokenService.getTokenToAddInBinaryFision(petrisBoardId,"Red","Bacterium");
+                        token.setSpace(space);
+                        token.setPositionInSpace(numRedBacteria+1);
+                        this.tokenService.save(token);
+                    }else{
+                        space.setNumRedBacteria(0);
+                        space.setNumRedSarcinas(1);
+
+                        List<Token> tokensToQuit = this.tokenService.getTokensToQuit(space);
+                        for (Token token :tokensToQuit){
+                            token.setPositionInSpace(0);
+                            token.setSpace(null);
+                            this.tokenService.save(token);
+                        }
+
+                        Integer petrisBoardId = this.petrisBoardService.getByGameId(game.getId()).getId();
+                        Token token = this.tokenService.getTokenToAddInBinaryFision(petrisBoardId, "Red","Sarcina");
+                        token.setSpace(space);
+                        token.setPositionInSpace(0);
+                        this.tokenService.save(token);
+                    }
+                }
+            }
+            this.spaceService.save(space);
+        }
+
+    }
+    
+    //quien es el ganador por puntos 
+    public void setWinnerForPoints(Game game){
+        Player player1 = game.getPlayer1();
+        Player player2 = game.getPlayer2();
+        String winnerColour = "";
+        String player1Colour = player1.getColour().getName();
+        String player2Colour = player2.getColour().getName();
+        Integer player1points = player1.getPoints();
+        Integer player2points = player2.getPoints();
+        if  (player1points > player2points){
+            winnerColour = player1Colour;
+        }else if (player2points> player1points){
+            winnerColour = player2Colour;
+        }else{
+            Integer player1UsedSarcinas = player1.getUsedSarcinas();
+            Integer player2UsedSarcinas = player2.getUsedSarcinas();
+            if (player1UsedSarcinas<player2UsedSarcinas){
+                winnerColour = player1Colour;
+            }else if(player1UsedSarcinas>player2UsedSarcinas){
+                winnerColour = player2Colour;
+            }else{
+                Integer player1UsedBacteria = player1.getUsedBacteria();
+                Integer player2UsedBacteria = player2.getUsedBacteria();
+                if(player1UsedBacteria<player2UsedBacteria){
+                    winnerColour = player1Colour;
+                }else if(player1UsedBacteria>player2UsedBacteria){
+                    winnerColour = player2Colour;
+                }
+            }
+        }
+        game.setWinner(winnerColour);
+        this.save(game);
+    }
+    
+    //contar puntos de la fase de contaminacion de un player en concreto
+    public boolean playerContaminationPhase(Game game, Player player){
+        boolean res = false;
+        String colour = player.getColour().getName();
+        Integer points = 0;
+        if (colour =="red"){
+            for (Space space : game.getSpaces()){
+                Integer redTokens = space.getNumRedBacteria() + space.getNumRedSarcinas(); 
+                Integer blackTokens = space.getNumBlackBacteria() + space.getNumBlackSarcinas();
+                if (redTokens>0 && blackTokens>redTokens){
+                    points++;
+                }
+            }
+        }else{
+            for (Space space : game.getSpaces()){
+                Integer redTokens = space.getNumRedBacteria() + space.getNumRedSarcinas(); 
+                Integer blackTokens = space.getNumBlackBacteria() + space.getNumBlackSarcinas();
+                if (blackTokens>0 && redTokens>blackTokens){
+                    points++;
+                }
+            }
+        }
+        player.setPoints(player.getPoints()+points);
+        this.playerService.save(player);
+        if (player.getPoints()>=10){
+            res = true;
+        }
+        return res;
+    }
+    
+    //activar fase de contaminacion
+    public boolean activateContaminationPhase(Game game){
+        boolean res = false;
+        boolean player1IsLoser = this.playerContaminationPhase(game, game.getPlayer1());
+        boolean player2IsLoser = this.playerContaminationPhase(game, game.getPlayer2());
+
+        if(player1IsLoser && player2IsLoser){
+            res = true;
+            this.setWinnerForPoints(game);
+
+        }else if (player1IsLoser){
+            res = true; 
+            game.setWinner(game.getPlayer1().getColour().getName());
+            this.save(game);
+        }else if (player2IsLoser){
+            res = true; 
+            game.setWinner(game.getPlayer2().getColour().getName());
+            this.save(game);
+        }
+        return res;
+
+    }
+
+    //realizar un movimiento
+    public void makeMove(String userName, Game activeGame, Integer space1Position, Integer space2Position, Integer numBacteriaToMove)throws ImpossibleMoveException{
         boolean isUserPlayer1 = this.playerService.isPlayerOfUser(activeGame.getPlayer1().getId(), userName);
         boolean isUserPlayer2 = this.playerService.isPlayerOfUser(activeGame.getPlayer2().getId(), userName);
         boolean isMovementAllowed = false; 
@@ -225,34 +390,42 @@ public class GameService {
             isMovementAllowed = isMovementAllowed(activeGame.getPlayer1(), space1, space2, numBacteriaToMove);
             
             if (isMovementAllowed){
-                
-                this.tokenService.moveTokens(space1, space2, numBacteriaToMove, activeGame.getPlayer1().getColour().getName());
-                
-                space1.move(true, activeGame.getPlayer1().getColour().getName(), numBacteriaToMove);
-                space2.move(false, activeGame.getPlayer1().getColour().getName(), numBacteriaToMove);
-                this.spaceService.save(space1);
-                this.spaceService.save(space2);
+                try {
+                    
+                    this.tokenService.moveTokens(space1, space2, numBacteriaToMove, activeGame.getPlayer1().getColour().getName());
+                    
+                    space1.move(true, activeGame.getPlayer1().getColour().getName(), numBacteriaToMove);
+                    space2.move(false, activeGame.getPlayer1().getColour().getName(), numBacteriaToMove);
+                    this.spaceService.save(space1);
+                    this.spaceService.save(space2);
+                } catch (ImpossibleMoveException e) {
+                }
     
             }
         }else if (isUserPlayer2){
             isMovementAllowed = isMovementAllowed(activeGame.getPlayer2(), space1, space2, numBacteriaToMove);
             if (isMovementAllowed){
                 
-                this.tokenService.moveTokens(space1, space2, numBacteriaToMove, activeGame.getPlayer2().getColour().getName());
-                
-                space1.move(true, activeGame.getPlayer2().getColour().getName(), numBacteriaToMove);
-                space2.move(false, activeGame.getPlayer2().getColour().getName(), numBacteriaToMove);
-                this.spaceService.save(space1);
-                this.spaceService.save(space2);
+                try {
+                    this.tokenService.moveTokens(space1, space2, numBacteriaToMove, activeGame.getPlayer2().getColour().getName());
+                    
+                    space1.move(true, activeGame.getPlayer2().getColour().getName(), numBacteriaToMove);
+                    space2.move(false, activeGame.getPlayer2().getColour().getName(), numBacteriaToMove);
+                    this.spaceService.save(space1);
+                    this.spaceService.save(space2);
+                    
+                } catch (ImpossibleMoveException e) {
+                }
             }
         }
 
 
     }
-    public void changeTurn( String userName, Game activeGame) {
+    
+    //cambiar el turno
+    public void changeTurn(String userName, Game activeGame) {
         boolean isUserPlayer1 = this.playerService.isPlayerOfUser(activeGame.getPlayer1().getId(), userName);
         boolean isUserPlayer2 = this.playerService.isPlayerOfUser(activeGame.getPlayer2().getId(), userName);
-
 
         if (isUserPlayer1){
             if(activeGame.getPlayer1().isTurn()){
@@ -267,6 +440,36 @@ public class GameService {
         }
         this.save(activeGame);
     }
-   
+    
+    //pasar de ronda
+    public String passRound(String userName, Game activeGame){
+        String res = "redirect:/games/" + activeGame.getId();
+
+        Integer round = activeGame.getRound();
+        Integer phase = activeGame.getPhase();
+
+        if (phase == 1 || phase == 3 || phase == 5){
+            activeGame.setPhase(phase + 1);
+            changeTurn(userName, activeGame);
+        }else if (phase == 2 || phase == 4){
+            activeGame.setPhase(phase + 1);
+            this.activateBinaryFision(activeGame);
+
+        }else {
+            this.activateBinaryFision(activeGame);
+            boolean thereIsAWinner = this.activateContaminationPhase(activeGame);
+            if (thereIsAWinner){
+                res += "/finishedGame";
+
+            }else if (round == 4){
+                this.setWinnerForPoints(activeGame);
+                res += "/finishedGame";
+            }else {
+                activeGame.setPhase(1);
+                activeGame.setRound(round + 1);
+            }
+        }
+    return res; 
+   }
     
 }

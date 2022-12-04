@@ -39,34 +39,48 @@ public class TokenService {
         }
     }
 
-    public void moveTokens(Space space1, Space space2, Integer numBacteriaToMove, String colour) {
+    public void moveTokens(Space space1, Space space2, Integer numBacteriaToMove, String colour) throws ImpossibleMoveException {
         
-        List<Token> listToken = this.tokenRepository.findPossibleTokensToChangeOfSpace(space1.getId(), colour);
-
-        while(numBacteriaToMove!=0){
-            Token tokenToChange = listToken.get(numBacteriaToMove-1);
-            tokenToChange.setSpace(space2);
-            tokenToChange.setHasBeenUsed(true);
-            this.save(tokenToChange);
-            numBacteriaToMove--;
-        }
-
-        List<Token> tokensToOrderSpace1 = this.tokenRepository.findTokensOfSpace(space1.getId(), colour);
-        Integer numTokensSpace1 = tokensToOrderSpace1.size();
-        List<Token> tokensToOrderSpace2 = this.tokenRepository.findTokensOfSpace(space2.getId(), colour);
-        Integer numTokensSpace2 = tokensToOrderSpace2.size();
-
-        for (Token token :  tokensToOrderSpace1){
-            token.setPositionInSpace(numTokensSpace1);
-            this.save(token);
-            numTokensSpace1++;
-        }
-        for (Token token :  tokensToOrderSpace2){
-            token.setPositionInSpace(numTokensSpace2);
-            this.save(token);
-            numTokensSpace2++;
+        try {
+            List<Token> listToken = this.tokenRepository.findPossibleTokensToChangeOfSpace(space1.getId(), colour);
+    
+            while(numBacteriaToMove!=0){
+                Token tokenToChange = listToken.get(numBacteriaToMove-1);
+                tokenToChange.setSpace(space2);
+                tokenToChange.setHasBeenUsed(true);
+                this.save(tokenToChange);
+                numBacteriaToMove--;
+            }
+    
+            List<Token> tokensToOrderSpace1 = this.tokenRepository.findTokensOfSpace(space1.getId(), colour);
+            Integer numTokensSpace1 = tokensToOrderSpace1.size();
+            List<Token> tokensToOrderSpace2 = this.tokenRepository.findTokensOfSpace(space2.getId(), colour);
+            Integer numTokensSpace2 = tokensToOrderSpace2.size();
+    
+            for (Token token :  tokensToOrderSpace1){
+                token.setPositionInSpace(numTokensSpace1);
+                this.save(token);
+                numTokensSpace1++;
+            }
+            for (Token token :  tokensToOrderSpace2){
+                token.setPositionInSpace(numTokensSpace2);
+                this.save(token);
+                numTokensSpace2++;
+            }
+            
+        } catch (Exception e) {
+            throw new ImpossibleMoveException();
         }
     }
+
+    public Token getTokenToAddInBinaryFision(Integer petrisBoardId, String colour, String tokenType) {
+        return this.tokenRepository.findTokensToAddInBinaryFision(petrisBoardId,colour,tokenType).get(0);
+    }
+
+    public List<Token> getTokensToQuit(Space space) {
+        return this.tokenRepository.findTokensToQuit(space.getId());
+    }
+
 
     
 }

@@ -39,6 +39,7 @@ public class GameController{
     private static final String CURRENT_GAME = "games/playingGame";
     private static final String JOIN_BY_CODE = "games/joinByCode";
     private static final String GAMES_IN_PROGRESS = "games/gamesInProgress";
+    private static final String FINISHED_GAME = "games/finishedGame";
 
 
     @Autowired
@@ -141,54 +142,38 @@ public class GameController{
         Game activeGame= this.gameService.getGameById(gameId);
         try {
             this.gameService.makeMove(user.getUsername(), activeGame, space1Position, space2Position, numBacteriaToMove);
-        }catch (isPlayer1Exception e) {
-            model.put("message", "movement allowed 1");
-        }catch (isPlayer2Exception e) {
-            model.put("message", "movement allowed 2");
-        }
-        catch (movementIsAllowedException e) {
-            model.put("message", "entra");
         }
         catch (Exception e) {
             model.put("message", e);
         }
-        
-
+    
         model.addAttribute("code",activeGame.getCode());
         model.put("game", activeGame);
         model.put("petrisBoard", this.petrisBoardService.getByGameId(activeGame.getId()));
 
         return CURRENT_GAME;
     }
-    @GetMapping("/{gameId}/endTurn")
-    public String changeTurn(ModelMap model,@PathVariable("gameId") Integer gameId){
+    @GetMapping("/{gameId}/passRound")
+    public String passRound(ModelMap model,@PathVariable("gameId") Integer gameId){
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = this.userService.getUser(ud.getUsername()).get();
         model.addAttribute("user",user);
 
         Game activeGame= this.gameService.getGameById(gameId);
-        this.gameService.changeTurn(user.getUsername(), activeGame);
 
-        return "redirect:/games/" + gameId;
+        return this.gameService.passRound(user.getUsername(), activeGame);
     }
-    /* 
-    @GetMapping("/{gameId}/move")
-    public String move(ModelMap model,@PathVariable("gameId") Integer gameId, Integer space1Id, Integer space2Id, Integer numBacteriaToMove){
+    @GetMapping("/{gameId}/finishedGame")
+    public String finishedGame(ModelMap model,@PathVariable("gameId") Integer gameId){
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = this.userService.getUser(ud.getUsername()).get();
         model.addAttribute("user",user);
 
-        try{
-            Game activeGame= this.gameService.getGameById(gameId);
-            this.gameService.makeMove(user.getUsername(), activeGame, space1Id, space2Id, numBacteriaToMove);
+        Game game= this.gameService.getGameById(gameId);
+        model.put("game", game);
 
-        }catch(Exception e){
-            model.put("message", e);
-        }
-
-        return "redirect:/games/" + gameId;
+        return FINISHED_GAME;
     }
-*/
 
     @GetMapping("/playing")
     public String listAllPlayingGames(ModelMap model){

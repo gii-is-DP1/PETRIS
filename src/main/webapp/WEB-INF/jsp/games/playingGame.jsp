@@ -68,7 +68,7 @@
             </div>
         </div>
             <h1 class="h1" style="height: 62px; width: 200px; position: absolute; right: 3%; bottom: 80%; font-size: 26px;text-align:center;">Game Code: ${code}</h1>
-            <form action="/games/${game.id}/endTurn"><button class="button" style="font-size: 18px; height: 65px; width: 80px; position: absolute; right: 23%; bottom: 77%;">End Turn</button></form>
+            <form action="/games/${game.id}/passRound"><button class="button" style="font-size: 18px; height: 65px; width: 80px; position: absolute; right: 23%; bottom: 77%;">End Turn</button></form>
             <form action="/games/${game.id}/chat" target="_blank"><button class="button" style="height: 60px; width: 100px; position: absolute; right: 7%; bottom: 30%;">Chat</button></form>
         <form style="position:absolute; right: 4%; bottom: 40%;">
             Movement

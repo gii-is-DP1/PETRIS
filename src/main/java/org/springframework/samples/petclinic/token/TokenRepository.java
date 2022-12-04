@@ -13,5 +13,11 @@ public interface TokenRepository extends CrudRepository<Token, Integer>{
 
 	Token findById(int id) throws DataAccessException;
 
+	@Query("SELECT t FROM Token t WHERE t.space.id = ?1 AND t.colour.name = ?2")
+	List<Token> findTokensOfSpace(Integer spaceId, String colour);
+
+	@Query("SELECT t FROM Token t WHERE t.space.id = ?1 AND t.colour.name = ?2 AND t.hasBeenUsed = false ORDER BY position_in_space DESC")
+    List<Token> findPossibleTokensToChangeOfSpace(Integer spaceId, String colour);
+
 
 }

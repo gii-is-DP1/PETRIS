@@ -145,22 +145,22 @@ INSERT INTO statistics(id, init_time, end_time, final_round, winner, used_bacter
 INSERT INTO petris_board(id,height,width,background,game_id) VALUES (1, 1000, 1000,'../resources/images/fondo.png', 1);
 
 
-INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id) VALUES (1, 1, 1, 3, 1, 1, 1);
-INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id) VALUES (2, 1, 1, 3, 2, 1, 1);
-INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id) VALUES (3, 1, 1, 3, 3, 1, 1);
-INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id) VALUES (4, 1, 1, 3, 4, 1, 1);
-INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id) VALUES (5, 1, 2, 3, 1, 1, 1);
-INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id) VALUES (6, 1, 2, 3, 2, 1, 1);
-INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id) VALUES (7, 1, 2, 3, 3, 1, 1);
-INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id) VALUES (8, 1, 2, 3, 4, 1, 1);
+INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id, has_been_used) VALUES (1, 1, 1, 3, 1, 1, 1, FALSE);
+INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id, has_been_used) VALUES (2, 1, 1, 3, 2, 1, 1, FALSE);
+INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id, has_been_used) VALUES (3, 1, 1, 3, 3, 1, 1, FALSE);
+INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id, has_been_used) VALUES (4, 1, 1, 3, 4, 1, 1, FALSE);
+INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id, has_been_used) VALUES (5, 1, 2, 3, 1, 1, 1, FALSE);
+INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id, has_been_used) VALUES (6, 1, 2, 3, 2, 1, 1, FALSE);
+INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id, has_been_used) VALUES (7, 1, 2, 3, 3, 1, 1, FALSE);
+INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id, has_been_used) VALUES (8, 1, 2, 3, 4, 1, 1, FALSE);
 
-INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id) VALUES (9, 1, 1, 7, 1, 1, 1);
-INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id) VALUES (10, 1, 1, 7, 2, 1, 1);
-INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id) VALUES (11, 1, 1, 7, 3, 1, 1);
-INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id) VALUES (12, 1, 1, 7, 4, 1, 1);
-INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id) VALUES (13, 1, 2, 7, 1, 1, 1);
-INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id) VALUES (14, 1, 2, 7, 2, 1, 1);
-INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id) VALUES (15, 1, 2, 7, 3, 1, 1);
-INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id) VALUES (16, 1, 2, 7, 4, 1, 1);
+INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id, has_been_used) VALUES (9, 1, 1, 7, 1, 1, 1, FALSE);
+INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id, has_been_used) VALUES (10, 1, 1, 7, 2, 1, 1, FALSE);
+INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id, has_been_used) VALUES (11, 1, 1, 7, 3, 1, 1, FALSE);
+INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id, has_been_used) VALUES (12, 1, 1, 7, 4, 1, 1, FALSE);
+INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id, has_been_used) VALUES (13, 1, 2, 7, 1, 1, 1, FALSE);
+INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id, has_been_used) VALUES (14, 1, 2, 7, 2, 1, 1, FALSE);
+INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id, has_been_used) VALUES (15, 1, 2, 7, 3, 1, 1, FALSE);
+INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id, has_been_used) VALUES (16, 1, 2, 7, 4, 1, 1, FALSE);
 
 

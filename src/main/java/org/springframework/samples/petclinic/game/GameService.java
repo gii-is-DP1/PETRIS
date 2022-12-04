@@ -11,6 +11,7 @@ import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.samples.petclinic.space.Space;
 import org.springframework.samples.petclinic.space.SpaceService;
+import org.springframework.samples.petclinic.token.TokenService;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +23,15 @@ public class GameService {
     private final ColourService colourService;
     private final PetrisBoardService petrisBoardService;
     private final SpaceService spaceService;
+    private final TokenService tokenService;
+
 
     
     @Autowired
-	public GameService(GameRepository gameRepository,PlayerService playerService,ColourService colourService,PetrisBoardService petrisBoardService,SpaceService spaceService) {
+	public GameService(GameRepository gameRepository,TokenService tokenService,PlayerService playerService,ColourService colourService,PetrisBoardService petrisBoardService,SpaceService spaceService) {
 		this.gameRepository = gameRepository;
         this.playerService = playerService;
+        this.tokenService = tokenService;
         this.colourService = colourService;
         this.petrisBoardService = petrisBoardService;
         this.spaceService = spaceService;
@@ -221,6 +225,9 @@ public class GameService {
             isMovementAllowed = isMovementAllowed(activeGame.getPlayer1(), space1, space2, numBacteriaToMove);
             
             if (isMovementAllowed){
+                
+                this.tokenService.moveTokens(space1, space2, numBacteriaToMove, activeGame.getPlayer1().getColour().getName());
+                
                 space1.move(true, activeGame.getPlayer1().getColour().getName(), numBacteriaToMove);
                 space2.move(false, activeGame.getPlayer1().getColour().getName(), numBacteriaToMove);
                 this.spaceService.save(space1);
@@ -230,11 +237,13 @@ public class GameService {
         }else if (isUserPlayer2){
             isMovementAllowed = isMovementAllowed(activeGame.getPlayer2(), space1, space2, numBacteriaToMove);
             if (isMovementAllowed){
+                
+                this.tokenService.moveTokens(space1, space2, numBacteriaToMove, activeGame.getPlayer2().getColour().getName());
+                
                 space1.move(true, activeGame.getPlayer2().getColour().getName(), numBacteriaToMove);
                 space2.move(false, activeGame.getPlayer2().getColour().getName(), numBacteriaToMove);
                 this.spaceService.save(space1);
                 this.spaceService.save(space2);
-    
             }
         }
 

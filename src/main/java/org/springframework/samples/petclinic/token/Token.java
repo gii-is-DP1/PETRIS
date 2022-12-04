@@ -23,6 +23,8 @@ public class Token extends BaseEntity{
 	@NotNull
 	@ManyToOne
 	private TokenType tokenType;
+
+	private boolean hasBeenUsed;
        
 	@NotNull
 	@ManyToOne

@@ -25,6 +25,9 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.friendRequest.FriendRequest;
+import org.springframework.samples.petclinic.friendRequest.FriendRequestRepository;
+import org.springframework.samples.petclinic.friendRequest.FriendRequestService;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.game.GameService;
 import org.springframework.samples.petclinic.player.Player;
@@ -60,16 +63,23 @@ public class UserController {
 	private final UserService userService;
 	private final PlayerService playerService;
 	private final GameService gameService;
+	private final FriendRequestService friendRequestService;
+	private final FriendRequestRepository friendRequestRepository;
+	private final AuthoritiesRepository authoritiesRepository;
 
+	
 	
 	private final UserRepository userRepository;
 
 	@Autowired
-	public UserController(UserService clinicService, PlayerService playerService, GameService gameService, UserRepository userRepository) {
+	public UserController(UserService clinicService, PlayerService playerService, GameService gameService, UserRepository userRepository, FriendRequestRepository friendRequestRepository, FriendRequestService friendRequestService, AuthoritiesRepository authoritiesRepository) {
 		this.userService = clinicService;
 		this.playerService = playerService;
 		this.gameService = gameService;
 		this.userRepository = userRepository;
+		this.friendRequestRepository = friendRequestRepository;
+		this.friendRequestService = friendRequestService;
+		this.authoritiesRepository = authoritiesRepository;
 	}
 
 	@InitBinder
@@ -142,7 +152,7 @@ public class UserController {
 	public String personalStatistics(ModelMap model) {
 		String view = "users/pStatistics";
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User u = UserService.getUser(ud.getUsername()).get();
+		User u = this.userService.getUser(ud.getUsername()).get();
 		Double wr = u.winrate();
 		model.addAttribute("user", u);
 		model.addAttribute("wr", wr);
@@ -154,7 +164,7 @@ public class UserController {
 	public String record(ModelMap model) {
 		String view = "users/userRecord";
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User u = UserService.getUser(ud.getUsername()).get();
+		User u = this.userService.getUser(ud.getUsername()).get();
 		List<Player> players = userService.getPlayersByUser(u.getUsername());
 		List<Game> games = gameService.getAllGames();
 		List<Game> res = new ArrayList<Game>();
@@ -173,7 +183,7 @@ public class UserController {
 	public String profile(ModelMap model) {
 		String view = "users/profile";
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User u = UserService.getUser(ud.getUsername()).get();
+		User u = this.userService.getUser(ud.getUsername()).get();
 		model.addAttribute("user", u);
 		return view;
 
@@ -182,7 +192,7 @@ public class UserController {
 	@GetMapping(value = "/users/{userId}/edit")
 	public String initUpdateUserForm(@PathVariable("userId") String userId, ModelMap model) {
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User u = UserService.getUser(ud.getUsername()).get();
+		User u = this.userService.getUser(ud.getUsername()).get();
 		model.addAttribute("user", u);
 		return VIEWS_USER_EDIT_PROFILE;
 	}
@@ -196,7 +206,7 @@ public class UserController {
 		}else {
 			try {
 			UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			User u = UserService.getUser(ud.getUsername()).get();
+			User u = this.userService.getUser(ud.getUsername()).get();
 			u.setEmail(user.getEmail());
 			u.setPassword(user.getPassword());
 			//u.setUsername(user.getUsername());
@@ -222,8 +232,10 @@ public class UserController {
     public String userInterface(ModelMap model){
 		String view = "/users/userUI";
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User u = UserService.getUser(ud.getUsername()).get();
+		User u = this.userService.getUser(ud.getUsername()).get();
 		model.addAttribute("user", u);
+		Authorities au = authoritiesRepository.findByName(u.username);
+		model.addAttribute("au", au);
         return view;
     }
 
@@ -252,7 +264,7 @@ public class UserController {
 	@GetMapping("/users/{userId}/friends/search/{username}")
 	public String friendDetails(@PathVariable("username") String username, ModelMap modelMap) {
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		User u = UserService.getUser(ud.getUsername()).get();
+		User u = this.userService.getUser(ud.getUsername()).get();
 		modelMap.addAttribute("user", u);
 		User friend = this.userService.getUser(username).get();
 		modelMap.addAttribute("friend", friend);
@@ -267,8 +279,8 @@ public class UserController {
 	@GetMapping(value = "/users/{userId}/find")
 	public String initFindForm(ModelMap model) {
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = this.userService.getUser(ud.getUsername()).get();
-		model.addAttribute("user",user);
+        User user1 = this.userService.getUser(ud.getUsername()).get();
+		model.addAttribute("usuActual",user1);
 		model.put("user", new User());
 		String vista = "users/findUsers";
 		return vista;
@@ -277,6 +289,8 @@ public class UserController {
 	@GetMapping(value = "/users/{userId}/findAll")
 	public ModelAndView processFindForm(User user, BindingResult result, Map<String, Object> model) {
 		ModelAndView mav;
+		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User u = this.userService.getUser(ud.getUsername()).get();
 		// allow parameterless GET request for /users to return all records
 		if (user.username == null) {
 			user.setUsername(""); // empty string signifies broadest possible search
@@ -293,10 +307,12 @@ public class UserController {
 		else if (results.size() == 1) {
 			user = results.iterator().next();
 			mav = new ModelAndView("redirect:/users/{userId}/" + user.getUsername());
+			mav.addObject("usuActual", u);
 		}
 		else {
 			model.put("selections", results);
 			mav = new ModelAndView("/users/searchUsers");
+			mav.addObject("usuActual", u);
 
 		}
 		return mav;
@@ -306,7 +322,10 @@ public class UserController {
 	@GetMapping("/users/{userId}/{username}")
 	public ModelAndView showUser(@PathVariable("username") String username) {
 		ModelAndView mav = new ModelAndView("users/userDetails");
+		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User u = this.userService.getUser(ud.getUsername()).get();
 		mav.addObject(this.userService.getUser(username).get());
+		mav.addObject("usuActual",u);
 		return mav;
 	}
 
@@ -322,7 +341,17 @@ public class UserController {
 		return vista;
 	}
 
+	@GetMapping("/registeredUser")
+	public String showRegisteredUser(ModelMap model){
+		String vista = "users/registeredUser";
+		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User u = this.userService.getUser(ud.getUsername()).get();
+		model.addAttribute("user",u);
+		List<User> users = userService.getAllRegisteredUsers();
+		model.addAttribute("users", users);
 
+		return vista;
+	}
 
 	
 

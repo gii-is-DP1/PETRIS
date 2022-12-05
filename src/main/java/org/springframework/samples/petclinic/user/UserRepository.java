@@ -3,7 +3,6 @@ package org.springframework.samples.petclinic.user;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -23,5 +22,8 @@ public interface UserRepository extends  CrudRepository<User, String>{
     //@Query("SELECT user FROM User user ORDER BY user.points DESC LIMIT 3")
     @Query( value = "SELECT * FROM USERS ORDER BY points DESC LIMIT 3" , nativeQuery = true)
     public List<User> findBestPlayer();
+
+    @Query(value = "SELECT * FROM USERS", nativeQuery = true)
+    public List<User> findAllUsers();
 
 }

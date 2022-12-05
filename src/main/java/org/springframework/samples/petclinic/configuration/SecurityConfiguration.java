@@ -1,23 +1,17 @@
 package org.springframework.samples.petclinic.configuration;
 
-import javax.annotation.security.PermitAll;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistration;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -52,8 +46,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/video").permitAll()
 				.antMatchers("/login").permitAll()
 				.antMatchers("/player/**").hasAnyAuthority("player", "admin")
+				.antMatchers("/games/playing").hasAnyAuthority("admin")
+				.antMatchers("/games/finished").hasAnyAuthority("admin")
 				.antMatchers("/games/**").hasAnyAuthority("player", "admin")
 				.antMatchers("/users/**").hasAnyAuthority("player", "admin")
+				.antMatchers("/registeredUser").hasAnyAuthority("admin")
 				.anyRequest().denyAll()
 				.and()
 				 	.formLogin()

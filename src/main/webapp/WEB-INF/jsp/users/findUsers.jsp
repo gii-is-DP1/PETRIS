@@ -127,7 +127,7 @@ input:-moz-placeholder {
 <h1 class="h1">Encontrar usuario</h1>
 	<div class="flexsearch">
 	<div class="flexsearch--wrapper">
-    <form:form modelAttribute="user" action="/users/{userId}/findAll" method="get" class="form-horizontal"
+    <form:form modelAttribute="user" action="/users/${usuActual.username}/findAll" method="get" class="form-horizontal"
                id="search-owner-form">
         <div class="form-group">
             <div class="control-group" id="username">

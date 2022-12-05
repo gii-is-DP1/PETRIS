@@ -31,21 +31,11 @@ public class TokenController {
 	public TokenController(TokenService tokenService) {
 		this.tokenService = tokenService;
 	}
-
+	/* 
 	@ModelAttribute("types")
 	public Collection<TokenType> populateTokenTypes() {
 		return this.tokenService.findTokenTypes();
 	}
-        
-        /*@ModelAttribute("pet")
-	public Pet findPet(@PathVariable("petId") Integer petId) {
-            Pet result=null;
-		if(petId!=null)
-                    result=this.clinicService.findPetById(petId);
-                else
-                    result=new Pet();
-            return result;
-	}*/
                 
 	@InitBinder("player")
 	public void initPlayerBinder(WebDataBinder dataBinder) {
@@ -56,34 +46,6 @@ public class TokenController {
 	public void initTokenBinder(WebDataBinder dataBinder) {
 		dataBinder.setValidator(new TokenValidator());
 	}
-	/*
-	 * @GetMapping(value = "/tokens/new")
-	public String initCreationForm(Player player, ModelMap model) {
-		Token token = new Token();
-		player.addToken(token);
-		model.put("token", token);
-		return VIEWS_TOKEN_CREATE_OR_UPDATE_FORM;
-	}
-
-	@PostMapping(value = "/token/new")
-	public String processCreationForm(Player player, @Valid Token token, BindingResult result, ModelMap model) {		
-		if (result.hasErrors()) {
-			model.put("token", token);
-			return VIEWS_TOKEN_CREATE_OR_UPDATE_FORM;
-		}
-		else {
-			try{
-				player.addToken(token);
-				this.tokenService.saveToken(token);
-			}catch(DuplicatedPetNameException ex){
-				result.rejectValue("name", "duplicate", "already exists");
-				return VIEWS_TOKEN_CREATE_OR_UPDATE_FORM;
-			}
-			return "redirect:/players/{playerId}";
-		}
-	}
-
-	 */
 
 	@GetMapping(value = "/tokens/{tokenId}/edit")
 	public String initUpdateForm(@PathVariable("tokenId") int tokenId, ModelMap model) {
@@ -91,7 +53,7 @@ public class TokenController {
 		model.put("token", token);
 		return VIEWS_TOKEN_CREATE_OR_UPDATE_FORM;
 	}
-
+	
     /**
      *
      * @param token
@@ -101,7 +63,7 @@ public class TokenController {
      * @param player
      * @param model
      * @return
-     */
+     
         @PostMapping(value = "/tokens/{tokenId}/edit")
 	public String processUpdateForm(@Valid Token token, BindingResult result, Player player,@PathVariable("tokenId") int tokenId, ModelMap model) {
 		if (result.hasErrors()) {
@@ -111,8 +73,10 @@ public class TokenController {
 		else {
 			Token tokenToUpdate=this.tokenService.findTokenById(tokenId);
 			BeanUtils.copyProperties(token, tokenToUpdate, "id","player");                                                                                  
-			this.tokenService.saveToken(tokenToUpdate);
+			this.tokenService.save(tokenToUpdate);
 			return "redirect:/players/{playerId}";
 		}
 	}
+	*/
+	
 }

@@ -35,5 +35,5 @@
             </tr>
         </tbody>
     </table>
-    <div><form action="/users/{userId}/edit" style="height: 70px; width: 500px; position: absolute; right: 19%; bottom: 50%;"><button class="button">Edit profile</button></form></div>
+    <div><form action="/users/${user.username}/edit" style="height: 70px; width: 500px; position: absolute; right: 19%; bottom: 50%;"><button class="button">Edit profile</button></form></div>
 </petclinic:layout>

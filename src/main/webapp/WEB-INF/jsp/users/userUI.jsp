@@ -167,11 +167,18 @@ input:-moz-placeholder {
             <body>
 
               
+              <c:if test="${au.authority == 'admin'}">
+                <form action="/games/playing"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 25%;">Games in progress</button></form>
+                <form action="/games/finished"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 15%;">Finished games</button></form>
+                <form action="/registeredUser"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 5%;">Registered users</button></form>
+              </c:if>
+
+
 
 
                 <form action="/games"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 65%;">Play</button></form>
                 <form action=""><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 45%;">Spectate</button></form>
-                <form action="/users/{userId}/ranking"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 35%;">Ranking</button></form>
+                <form action="/users/${user.username}/ranking"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 35%;">Ranking</button></form>
                 <form action="/video"><button class="button" style="height: 60px; width: 500px; position: absolute; right: 36%; bottom: 55%;">How to play</button></form>
                 <!-- <img src="https://2tomatoesgames.com/wp-content/uploads/2020/07/petris-logo.png" style="height: 150px; position: absolute; right: 35%; bottom: 80%;">-->
                 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

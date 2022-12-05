@@ -35,7 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserService {
 
-	private static UserRepository userRepository;
+	private UserRepository userRepository;
 
     @Autowired
 	private AuthoritiesService authoritiesService;
@@ -55,13 +55,17 @@ public class UserService {
 		return userRepository.findByName(username).getPlayers();
 	}
 
+	public List<User> getAllRegisteredUsers(){
+		return userRepository.findAllUsers();
+	}
+
 	@Transactional
-	public static List<User> getBestPlayers(){
+	public List<User> getBestPlayers(){
 		return userRepository.findBestPlayer();
 	}
 	
 	@Transactional
-	public static Optional<User> getUser(String username) {
+	public Optional<User> getUser(String username) {
 		return userRepository.findById(username);
 	}
 	@Transactional

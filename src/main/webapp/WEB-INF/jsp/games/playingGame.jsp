@@ -1,129 +1,102 @@
 <%@ page session="false" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="game" tagdir="/WEB-INF/tags" %>
+
 <!-- %@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %-->  
 
-<layout pageName="playingGame">
-    <div class="inicio">
-        <html>
-            <head>
-            <meta charset="utf-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<game:layout pageName="playingGame">
 
-            <!-- Bootstrap CSS -->
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-            <title>Playing Game</title>
-            <style> 
-               body
-               {
-
-                background-image: url('https://img.freepik.com/vector-gratis/fondo-abstracto-blanco_23-2148833155.jpg?w=2000');
-                background-repeat: no-repeat;
-                background-position: center;
-                background-size: cover;
-                background-attachment: fixed;
-                
-               }
-               u{
-                display: inline-block;
-                padding: 15px 25px;
-                font-size: 20px;
-                text-align: center;	
-                text-decoration: none;
-                outline: none;
-                color: #fff;
-                background-color: #4CAF50;
-                border: none;
-                border-radius: 15px;
-                box-shadow: 0 9px #999;
-               }
-               h1
-               {
-                color: black;
-                text-align: center;
-                font-family: "Franchise";
-                font-size: 80px;
-               }
-               button
-               {
-                display: inline-block;
-                padding: 15px 25px;
-                font-size: 20px;
-                cursor: pointer;
-                text-align: center;	
-                text-decoration: none;
-                outline: none;
-                color: #fff;
-                background-color: #4CAF50;
-                border: none;
-                border-radius: 15px;
-                box-shadow: 0 9px #999;
-                
-               }
-
-               button:hover {background-color: #3e8e41}
-
-               button:active 
-               {
-                background-color: #3e8e41;
-                box-shadow: 0 5px #666;
-                transform: translateY(8px);
-               }
-               h2{
-                color: rgb(184, 0, 0);
-                font-family: "Algerian";
-                font-size: 60px;
-
-               }
-               
-               
-               
-            </style>   
-            </head>
-            <body>
-
-                    <br/>
-                    <c:if test="${message != null}">
-                    <div class="alert alert-success alert-dismissible fade show" role="alert" data-dismiss="alert">
-                        <button2 type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;
-                        </span></button2>
-                        <strong><c:out value="${message}"></c:out></strong><p style="font-size: 30px; position: absolute; right: 73.5%; bottom: -26%;"></p>
-                    </div>
-                    </div>
-                    </c:if>
-                
-                    <u class="button" style="height: 60px; width: 220px; position: absolute; right: 1%; bottom: 89%;"> Game code: ${code}</u>
-                    <img src="https://cdn-icons-png.flaticon.com/512/32/32341.png" style="height: 150px; position: absolute; right: 65%; bottom: 50%;">
-                    <img src="https://cdn-icons-png.flaticon.com/512/32/32341.png" style="height: 150px; position: absolute; right: 57%; bottom: 67%;">
-                    <img src="https://cdn-icons-png.flaticon.com/512/32/32341.png" style="height: 150px; position: absolute; right: 47%; bottom: 67%;">
-                    <img src="https://cdn-icons-png.flaticon.com/512/32/32341.png" style="height: 150px; position: absolute; right: 39%; bottom: 50%;">
-                    <img src="https://cdn-icons-png.flaticon.com/512/32/32341.png" style="height: 150px; position: absolute; right: 47%; bottom: 33%;">
-                    <img src="https://cdn-icons-png.flaticon.com/512/32/32341.png" style="height: 150px; position: absolute; right: 57%; bottom: 33%;">
-                    <img src="https://cdn-icons-png.flaticon.com/512/32/32341.png" style="height: 150px; position: absolute; right: 52%; bottom: 50%;">
-    
-                
-                <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-                <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
-
-                <script>
-                    window.setTimeout(function() {
-                        $(".alert").fadeTo(1500, 0).slideDown(1000, function(){
-                            $(this).remove();
-                        });
-                    }, 4000);
-                </script>
-
-            </body>
+    <head>
+        <style> 
             
+            h1
+            {
+        display: inline-block;
+        cursor: pointer;
+        text-align: center;	
+        text-decoration: none;
+        outline: none;
+        color: #fff;
+        background-color: #4CAF50;
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 9px #999;
+            }
+            button
+            {
+             display: inline-block;
+             padding: 15px 25px;
+             font-size: 24px;
+             cursor: pointer;
+             text-align: center;	
+             text-decoration: none;
+             outline: none;
+             color: #fff;
+             background-color: #4CAF50;
+             border: none;
+             border-radius: 15px;
+             box-shadow: 0 9px #999;
+             
+            }
+
+            button:hover {background-color: #3e8e41}
+
+            button:active 
+            {
+             background-color: #3e8e41;
+             box-shadow: 0 5px #666;
+             transform: translateY(8px);
+            }
+          
+         </style>   
+        </head>
+
+        <body>
+
+
+        <h2><fmt:message key="welcome"/></h2>
+        	
+            <div class="row">
+            <div class="col-md-12">
+                <game:board petrisBoard="${petrisBoard}">
+                    <c:forEach items="${petrisBoard.tokens}" var="token">
+                        <game:token size="100" token="${token}"/>            	
+                    </c:forEach>
+                </game:board>
+            </div>
+        </div>
+            <h1 class="h1" style="height: 62px; width: 200px; position: absolute; right: 3%; bottom: 80%; font-size: 26px;text-align:center;">Game Code: ${code}</h1>
+            <form action="/games/${game.id}/passRound"><button class="button" style="font-size: 18px; height: 65px; width: 80px; position: absolute; right: 23%; bottom: 77%;">End Turn</button></form>
+            <form action="/games/${game.id}/chat" target="_blank"><button class="button" style="height: 60px; width: 100px; position: absolute; right: 7%; bottom: 30%;">Chat</button></form>
+        <form style="position:absolute; right: 4%; bottom: 40%;">
+            Movement
+            <br>
+            Space 1:
+            <br>
+            <input type="text" name = "space1Position" value="" >
+            <br><br>
             
-        </html>
-      </div>
+            Space 2:
+            <br>
+            <input type="text" name = "space2Position" value="" >
+            <br><br>
+            Num Bacteria to move:
+            <br>
+            <input type="text" name = "numBacteriaToMove" value="" >
+            <br>
+        <br>
+        <div class="form-group">
+            <div class="col-sm-offset-0 ">
+                <button class="btn btn-default" type="submit">Make movement</button>
+            </div>
+        </div>
 
-      
 
-</layout>
+        </form>
+
+    </div>
+
+    </body>
+</game:layout>

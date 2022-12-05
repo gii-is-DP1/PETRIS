@@ -213,6 +213,12 @@ public class GameService {
    
    //añadir una nueva bacteria por casilla en la fase de fision
     public void activateBinaryFision(Game game){
+        String colourNotRed = "";
+        if (game.getPlayer1().getColour().getName().equals("red")){
+            colourNotRed= game.getPlayer2().getColour().getName();
+        }else{
+            colourNotRed = game.getPlayer1().getColour().getName();
+        }
         for(Space space : game.getSpaces()){
             Integer numBlackBacteria = space.getNumBlackBacteria(); 
             Integer numRedBacteria = space.getNumRedBacteria();
@@ -224,7 +230,7 @@ public class GameService {
                     if(numBlackBacteria<4){
                         space.setNumBlackBacteria(numBlackBacteria+1);
                         Integer petrisBoardId = this.petrisBoardService.getByGameId(game.getId()).getId();
-                        Token token = this.tokenService.getTokenToAddInBinaryFision(petrisBoardId,"Black","Bacterium");
+                        Token token = this.tokenService.getTokenToAddInBinaryFision(petrisBoardId,colourNotRed,"bacterium");
                         token.setSpace(space);
                         token.setPositionInSpace(numBlackBacteria+1);
                         this.tokenService.save(token);
@@ -241,7 +247,7 @@ public class GameService {
                         }
 
                         Integer petrisBoardId = this.petrisBoardService.getByGameId(game.getId()).getId();
-                        Token token = this.tokenService.getTokenToAddInBinaryFision(petrisBoardId, "Black","Sarcina");
+                        Token token = this.tokenService.getTokenToAddInBinaryFision(petrisBoardId, colourNotRed,"sarcina");
                         token.setSpace(space);
                         token.setPositionInSpace(0);
                         this.tokenService.save(token);
@@ -254,7 +260,7 @@ public class GameService {
                         space.setNumRedBacteria(numRedBacteria+1);
 
                         Integer petrisBoardId = this.petrisBoardService.getByGameId(game.getId()).getId();
-                        Token token = this.tokenService.getTokenToAddInBinaryFision(petrisBoardId,"Red","Bacterium");
+                        Token token = this.tokenService.getTokenToAddInBinaryFision(petrisBoardId,"red","bacterium");
                         token.setSpace(space);
                         token.setPositionInSpace(numRedBacteria+1);
                         this.tokenService.save(token);
@@ -270,7 +276,7 @@ public class GameService {
                         }
 
                         Integer petrisBoardId = this.petrisBoardService.getByGameId(game.getId()).getId();
-                        Token token = this.tokenService.getTokenToAddInBinaryFision(petrisBoardId, "Red","Sarcina");
+                        Token token = this.tokenService.getTokenToAddInBinaryFision(petrisBoardId, "red","sarcina");
                         token.setSpace(space);
                         token.setPositionInSpace(0);
                         this.tokenService.save(token);

@@ -74,7 +74,7 @@ public class TokenService {
     }
 
     public Token getTokenToAddInBinaryFision(Integer petrisBoardId, String colour, String tokenType) {
-        return this.tokenRepository.findTokensToAddInBinaryFision(petrisBoardId,colour,tokenType).get(0);
+        return this.tokenRepository.findTokensToAddInBinaryFision(petrisBoardId, colour, tokenType).get(0);
     }
 
     public List<Token> getTokensToQuit(Space space) {

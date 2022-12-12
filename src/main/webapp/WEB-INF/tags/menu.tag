@@ -38,12 +38,10 @@
 					title="Achievements" dropdown="${true}">
 					<ul class="dropdown-menu">
 							<li>
-								<a href="<c:url value="/achievements/" />"><span class="glyphicon glyphicon-certificate" aria-hidden="true"></span> Achievements List</a>		
+								<a href="<c:url value="/achievements" />"><span class="glyphicon glyphicon-certificate" aria-hidden="true"></span> Achievements List</a>		
 							</li>
-							<li class="divider"></li>
-							<li>								
-								<a href="<c:url value="/achievements/userId" />"><span class="glyphicon glyphicon-certificate" aria-hidden="true"></span> My Achievements </a>		
-
+							<li>
+								<a href="<c:url value="/achievements/${user.username}" />"><span class="glyphicon glyphicon-certificate" aria-hidden="true"></span> My Achievements</a>		
 							</li>
 						</ul>	
 				</petclinic:menuItem>

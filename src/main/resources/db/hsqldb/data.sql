@@ -157,4 +157,5 @@ INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, pl
 INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id, has_been_used) VALUES (15, 1, 2, 7, 3, 1, 1, FALSE);
 INSERT INTO tokens(id, token_type_id, colour_id, space_id, position_in_space, player_id, petris_board_id, has_been_used) VALUES (16, 1, 2, 7, 4, 1, 1, FALSE);
 
-
+INSERT INTO achievement(id,name,description,threshold,badge_image,metric) VALUES (1,'Petriplayer','¡Si juegas <THRESHOLD> partidas o más, consideramos que ya eres todo un campeón!',3.0,'https://bit.ly/proGamer','GAMES_PLAYED');
+INSERT INTO achievement(id,name,description,threshold,badge_image, metric) VALUES (2,'Proplayer','¡Si ganas <THRESHOLD> o más partidas es que eres todo un pro en esto!',20.0,'https://bit.ly/proGamer', 'VICTORIES');

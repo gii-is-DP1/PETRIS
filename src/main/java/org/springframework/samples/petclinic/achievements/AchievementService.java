@@ -26,5 +26,17 @@ public class AchievementService {
     public Achievement save(Achievement a){
         return achievementRepository.save(a);
     }
+
+    public void deleteAchievementById(int id){
+        achievementRepository.deleteById(id);
+    }
+
+    public List<Achievement>  getAchievementsByUser(String id) {
+        return achievementRepository.findPlayerAchievements(id);
+    }
+
+    public Achievement getAchievementByName(String name){
+        return achievementRepository.findByName(name);
+    }
     
 }

@@ -38,7 +38,7 @@ public class UserServiceTest {
     @Test
     void shouldFindPlayerByUserame(){
         List<Player> players = this.userService.getPlayersByUser("gonriblun");
-        assertThat(players.size()).isEqualTo(4);
+        assertThat(players.size()).isEqualTo(3);
     }
 
     @Test

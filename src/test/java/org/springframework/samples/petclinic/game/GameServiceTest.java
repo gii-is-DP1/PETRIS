@@ -13,7 +13,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.Colour.Colour;
 import org.springframework.samples.petclinic.player.Player;
+import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.samples.petclinic.space.Space;
+import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
@@ -21,13 +23,34 @@ public class GameServiceTest {
 
     @Autowired
 	protected GameService gameService;
+
+    @Autowired
+    protected UserService userService;
     
     @Test
 	void shouldFindAllGames() {
 		List<Game> games = this.gameService.getAllGames();
 		assertThat(games.size()).isEqualTo(7);
-
 	}
+
+    @Test
+    void shouldFindAllPlayingGames(){
+        List<Game> playingGames = this.gameService.getAllPlayingGames();
+        assertThat(playingGames.size()).isEqualTo(2);
+    }
+
+    @Test
+    void shouldFindActiveEmptyGames(){
+        List<Game> activeGames = this.gameService.getAllPublicActiveEmptyGames();
+        assertThat(activeGames.size()).isEqualTo(3);
+    }
+
+    @Test
+    void shouldFindFinishedGames(){
+        List<Game> finishedGames = this.gameService.getAllFinishedGames();
+        assertThat(finishedGames.size()).isEqualTo(2);
+    }
+
     @Test
 	void shouldFindGameByPlayerId() {
 		Game game = this.gameService.getGameByPlayerId(1);
@@ -156,4 +179,5 @@ public class GameServiceTest {
         boolean move5 = this.gameService.isMovementAllowed(player, space5, space6, 1);
         assertThat(move5).isEqualTo(true);
     }
+
 }

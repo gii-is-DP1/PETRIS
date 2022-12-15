@@ -30,7 +30,7 @@ public class PetrisBoardServiceTest {
     }
     @Test
     void shouldGetByGameId(){
-        Integer id = 6;
+        Integer id = 1;
         PetrisBoard board = this.petrisBoardService.getByGameId(id);
         assertThat(board.getHeight()).isEqualTo(1000);
     }

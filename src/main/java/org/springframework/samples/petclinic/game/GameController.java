@@ -6,6 +6,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.samples.petclinic.Colour.ColourService;
 import org.springframework.samples.petclinic.chat.ChatService;
 import org.springframework.samples.petclinic.model.PetrisBoardService;
@@ -39,6 +44,7 @@ public class GameController{
     private static final String CURRENT_GAME = "games/playingGame";
     private static final String JOIN_BY_CODE = "games/joinByCode";
     private static final String GAMES_IN_PROGRESS = "games/gamesInProgress";
+    private static final String GAMES_IN_PROGRESS_PAGE = "games/gamesInProgressP";
     private static final String FINISHED_GAME = "games/finishedGame";
 
 
@@ -182,6 +188,25 @@ public class GameController{
 
         List<Game> listGames = gameService.getAllPlayingGames();
         model.addAttribute("listGames", listGames);
+
+        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username = ud.getUsername();
+		User user = userService.getUser(username).get();
+        model.addAttribute("user", user);
+
+        return vista;
+    }
+
+
+    @GetMapping("/playingP")
+    public String listAllPlayingGamesPage(ModelMap model, @PageableDefault(page = 0,size = 1) Pageable pg){
+        Pageable page = PageRequest.of(0,1);
+        String vista = GAMES_IN_PROGRESS_PAGE;
+
+
+        Page<Game> lista = gameService.getAllPlayingGamesPage(pg);
+        List<Game> listGames = lista.toList();
+        model.addAttribute("listGames", lista);
 
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String username = ud.getUsername();

@@ -113,6 +113,9 @@ INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, conta
 INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (10, FALSE , 2 , 0,0,0,0,'dancorfon');
 INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (11, FALSE , 2 , 0,0,0,0,'jaigargar1');
 
+INSERT INTO games(id, loser, round, time, winner, phase, player1_id, player2_id, is_active, is_public, code) VALUES (8,'A', 2, 15, 'B', 2, 1, 2, TRUE, TRUE, 'CoDE8');
+INSERT INTO games(id, loser, round, time, winner, phase, player1_id, player2_id, is_active, is_public, code) VALUES (9,'A', 2, 15, 'B', 2, 1, 2, TRUE, TRUE, 'CoDE9');
+INSERT INTO games(id, loser, round, time, winner, phase, player1_id, player2_id, is_active, is_public, code) VALUES (10,'A', 2, 15, 'B', 2, 1, 2, TRUE, TRUE, 'CoDE10');
 
 INSERT INTO games(id, loser, round, time, winner, phase, player1_id, player2_id, is_active, is_public, code) VALUES (1,'A', 2, 15, 'B', 2, 1, 2, TRUE, TRUE, 'CoDE1');
 INSERT INTO games(id, loser, round, time, winner, phase, player1_id, player2_id, is_active, is_public, code) VALUES (2,'B', 3, 30, 'A', 2, 3, 4, TRUE, FALSE, 'CoDE2');

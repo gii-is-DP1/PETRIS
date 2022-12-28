@@ -46,11 +46,12 @@ public class Player extends BaseEntity{
     @JoinColumn(name = "game_id")
     private Game game;
 
-    public Player(Colour colour, Integer usedBacteria,Integer usedSarcinas,Integer contaminationPoints, User user){
+    public Player(Colour colour, Integer usedBacteria,Integer usedSarcinas,Integer contaminationPoints, Integer points,User user){
       this.colour = colour;
       this.usedBacteria = usedBacteria;
       this.usedSarcinas = usedSarcinas;
       this.contaminationPoints = contaminationPoints;
+      this.points = points;
       this.user = user;
     }
 

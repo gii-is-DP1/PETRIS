@@ -23,7 +23,10 @@ public interface TokenRepository extends CrudRepository<Token, Integer>{
     List<Token> findTokensToAddInBinaryFision(Integer petrisBoardId, String colour, String tokenType);
 
 	@Query("SELECT t FROM Token t WHERE t.space.id = ?1")	
-	List<Token> findTokensToQuit(Integer id);
+	List<Token> findTokensToQuit(Integer spaceId);
+
+	@Query("SELECT t FROM Token t WHERE t.petrisBoard.id = ?1")
+    List<Token> findTokensByPetrisBoardId(Integer petrisBoardId);
 
 
 }

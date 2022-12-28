@@ -14,7 +14,7 @@
             <br>
             <input type="radio" name="colourName" value="red">Red
             <br>
-            <input type="radio" name="colourName" value="black" checked>Blue
+            <input type="radio" name="colourName" value="blue" checked>Blue
             <br>
             <input type="radio" name="colourName" value="yellow" checked>Yellow
             <br>

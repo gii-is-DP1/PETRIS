@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.model.PetrisBoard;
+import org.springframework.samples.petclinic.model.PetrisBoardRepository;
 import org.springframework.samples.petclinic.space.Space;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +15,12 @@ import org.springframework.stereotype.Service;
 public class TokenService {
 
     private TokenRepository tokenRepository;
+    private PetrisBoardRepository petrisBoardRepository;
 
     @Autowired
-	public TokenService(TokenRepository tokenRepository) {
+	public TokenService(TokenRepository tokenRepository,PetrisBoardRepository petrisBoardRepository) {
 		this.tokenRepository = tokenRepository;
+        this.petrisBoardRepository = petrisBoardRepository;
 	}
 
     public Token findTokenById(int tokenId) {
@@ -54,18 +58,25 @@ public class TokenService {
     
             List<Token> tokensToOrderSpace1 = this.tokenRepository.findTokensOfSpace(space1.getId(), colour);
             Integer numTokensSpace1 = tokensToOrderSpace1.size();
+            Integer cont1 = 0;
             List<Token> tokensToOrderSpace2 = this.tokenRepository.findTokensOfSpace(space2.getId(), colour);
             Integer numTokensSpace2 = tokensToOrderSpace2.size();
+            Integer cont2 = 0;
+
     
             for (Token token :  tokensToOrderSpace1){
-                token.setPositionInSpace(numTokensSpace1);
+                if (cont1 < numTokensSpace1){
+                    cont1++;
+                }
+                token.setPositionInSpace(cont1);
                 this.save(token);
-                numTokensSpace1++;
             }
             for (Token token :  tokensToOrderSpace2){
-                token.setPositionInSpace(numTokensSpace2);
+                if (cont2 < numTokensSpace2){
+                    cont2++;
+                }
+                token.setPositionInSpace(cont2);
                 this.save(token);
-                numTokensSpace2++;
             }
             
         } catch (Exception e) {
@@ -81,6 +92,14 @@ public class TokenService {
         return this.tokenRepository.findTokensToQuit(space.getId());
     }
 
+    public void setAllHasBeenUsedToFalse(Game activeGame) {
+        PetrisBoard petrisBoard = this.petrisBoardRepository.findByGameId(activeGame.getId());
+        List<Token> gameTokens = this.tokenRepository.findTokensByPetrisBoardId(petrisBoard.getId());
 
-    
+        for(Token token : gameTokens){
+            token.setHasBeenUsed(false);
+            this.save(token);
+        }
+
+    }   
 }

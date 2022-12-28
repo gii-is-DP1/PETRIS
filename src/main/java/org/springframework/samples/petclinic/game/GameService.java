@@ -5,11 +5,9 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.samples.petclinic.Colour.Colour;
 import org.springframework.samples.petclinic.Colour.ColourService;
-import org.springframework.samples.petclinic.model.PetrisBoard;
 import org.springframework.samples.petclinic.model.PetrisBoardService;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerService;
@@ -49,10 +47,7 @@ public class GameService {
     public List<Game> getAllPlayingGames(){
         return gameRepository.findAllPlayingGames();
     }
-
-
-    private Pageable page = PageRequest.of(0, 5);
-
+    
     public Page<Game> getAllPlayingGamesPage(Pageable page){
         return gameRepository.findAllPlayingGamesPage(page);
     }
@@ -119,7 +114,7 @@ public class GameService {
             this.setActiveGamesToFalse(user.getUsername());
             
             Colour colour = this.colourService.getColourByName(colourName);
-            Player player1 = new Player(colour,0,0,0, user);
+            Player player1 = new Player(colour,0,0,0,0,user);
             Player createdPlayer = this.playerService.save(player1);
             
             Game newGame = new Game();
@@ -129,6 +124,7 @@ public class GameService {
             game.setPlayer1(createdPlayer);
             game.createSpaces();
             game.setPhase(1);
+            game.setRound(0);
             BeanUtils.copyProperties(game, newGame, "id");
             Game createdGame = this.save(newGame);
             createdPlayer.setGame(createdGame);
@@ -151,7 +147,7 @@ public class GameService {
 
             if (game.getPlayer2()==null){
                 
-                Player player2 = new Player(randomColour, 0,0,0, user);
+                Player player2 = new Player(randomColour, 0,0,0,0, user);
                 Player createdPlayer = this.playerService.save(player2);
                 game.setPlayer2(createdPlayer);
                 Game createdGame = this.save(game);
@@ -235,7 +231,7 @@ public class GameService {
             Integer numBlackSarcinas = space.getNumBlackSarcinas();
             Integer numRedSarcinas = space.getNumRedSarcinas();
 
-            if (numRedSarcinas*5 + numRedBacteria ==0){
+            if (numRedSarcinas + numRedBacteria ==0){
                 if (numBlackSarcinas<1 && numBlackBacteria>0){
                     if(numBlackBacteria<4){
                         space.setNumBlackBacteria(numBlackBacteria+1);
@@ -264,7 +260,7 @@ public class GameService {
                         
                     }
                 }
-            }else if(numBlackSarcinas*5 + numBlackBacteria == 0){
+            }else if(numBlackSarcinas + numBlackBacteria == 0){
                 if (numRedSarcinas<1 && numRedBacteria>0){
                     if (numRedBacteria<4){
                         space.setNumRedBacteria(numRedBacteria+1);
@@ -406,6 +402,7 @@ public class GameService {
             isMovementAllowed = isMovementAllowed(activeGame.getPlayer1(), space1, space2, numBacteriaToMove);
             
             if (isMovementAllowed){
+                
                 try {
                     
                     this.tokenService.moveTokens(space1, space2, numBacteriaToMove, activeGame.getPlayer1().getColour().getName());
@@ -421,7 +418,7 @@ public class GameService {
         }else if (isUserPlayer2){
             isMovementAllowed = isMovementAllowed(activeGame.getPlayer2(), space1, space2, numBacteriaToMove);
             if (isMovementAllowed){
-                
+
                 try {
                     this.tokenService.moveTokens(space1, space2, numBacteriaToMove, activeGame.getPlayer2().getColour().getName());
                     
@@ -461,29 +458,38 @@ public class GameService {
     public String passRound(String userName, Game activeGame){
         String res = "redirect:/games/" + activeGame.getId();
 
-        Integer round = activeGame.getRound();
-        Integer phase = activeGame.getPhase();
+        boolean isUserPlayer1AndIsPlayer1Turn = this.playerService.isPlayerOfUser(activeGame.getPlayer1().getId(), userName)
+                                    && activeGame.getPlayer1().isTurn();
+        boolean isUserPlayer2AndIsPlayer2Turn = this.playerService.isPlayerOfUser(activeGame.getPlayer2().getId(), userName)
+                                    && activeGame.getPlayer2().isTurn();
 
-        if (phase == 1 || phase == 3 || phase == 5){
-            activeGame.setPhase(phase + 1);
-            changeTurn(userName, activeGame);
-        }else if (phase == 2 || phase == 4){
-            activeGame.setPhase(phase + 1);
-            this.activateBinaryFision(activeGame);
-
-        }else {
-            this.activateBinaryFision(activeGame);
-            boolean thereIsAWinner = this.activateContaminationPhase(activeGame);
-            if (thereIsAWinner){
-                res += "/finishedGame";
-
-            }else if (round == 4){
-                this.setWinnerForPoints(activeGame);
-                res += "/finishedGame";
+        if(isUserPlayer1AndIsPlayer1Turn || isUserPlayer2AndIsPlayer2Turn){
+           
+            Integer round = activeGame.getRound();
+            Integer phase = activeGame.getPhase();
+    
+            if (phase == 1 || phase == 3 || phase == 5){
+                activeGame.setPhase(phase + 1);
+                changeTurn(userName, activeGame);
+            }else if (phase == 2 || phase == 4){
+                activeGame.setPhase(phase + 1);
+                this.activateBinaryFision(activeGame);
+    
             }else {
-                activeGame.setPhase(1);
-                activeGame.setRound(round + 1);
+                this.activateBinaryFision(activeGame);
+                boolean thereIsAWinner = this.activateContaminationPhase(activeGame);
+                if (thereIsAWinner){
+                    res += "/finishedGame";
+    
+                }else if (round == 4){
+                    this.setWinnerForPoints(activeGame);
+                    res += "/finishedGame";
+                }else {
+                    activeGame.setPhase(1);
+                    activeGame.setRound(round + 1);
+                }
             }
+            this.tokenService.setAllHasBeenUsedToFalse(activeGame);
         }
     return res; 
    }

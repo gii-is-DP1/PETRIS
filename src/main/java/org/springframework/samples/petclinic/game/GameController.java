@@ -7,14 +7,13 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.samples.petclinic.Colour.ColourService;
-import org.springframework.samples.petclinic.chat.ChatService;
 import org.springframework.samples.petclinic.model.PetrisBoardService;
+import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerService;
+import org.springframework.samples.petclinic.token.ImpossibleMoveException;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,7 +33,6 @@ public class GameController{
     private final GameService gameService;
     private final UserService userService;
     private final PetrisBoardService petrisBoardService;
-    private final ChatService chatService;
     private final PlayerService playerService;
 
 
@@ -49,12 +47,12 @@ public class GameController{
 
 
     @Autowired
-	public GameController(GameService gameService, PlayerService playerService,UserService userService,ColourService colourService,PetrisBoardService petrisBoardService, ChatService chatService) {
+	public GameController(GameService gameService,PlayerService playerService, UserService userService,ColourService colourService,PetrisBoardService petrisBoardService) {
 		this.gameService = gameService;
         this.userService =userService;
-        this.playerService = playerService;
         this.petrisBoardService = petrisBoardService;
-        this.chatService = chatService;
+        this.playerService = playerService;
+
 	}
 
     @GetMapping
@@ -73,7 +71,7 @@ public class GameController{
 		model.addAttribute("user", u);
         return CREATE_GAME;
     }
-    
+        
     @PostMapping("/create/{username}")
     public String saveNewGame(String colourName, boolean isPublic, @Valid Game game, BindingResult bindingResult, @PathVariable("username") String userName,ModelMap model){
         
@@ -149,7 +147,7 @@ public class GameController{
         try {
             this.gameService.makeMove(user.getUsername(), activeGame, space1Position, space2Position, numBacteriaToMove);
         }
-        catch (Exception e) {
+        catch (ImpossibleMoveException e) {
             model.put("message", e);
         }
     
@@ -166,6 +164,7 @@ public class GameController{
         model.addAttribute("user",user);
 
         Game activeGame= this.gameService.getGameById(gameId);
+        //Player playerWhoClicked = this.playerService.getPlayerWhoClicked(user.getUsername());
 
         return this.gameService.passRound(user.getUsername(), activeGame);
     }
@@ -183,9 +182,6 @@ public class GameController{
 
     @GetMapping("/playing")
     public String listAllPlayingGames(ModelMap model){
-
-        String vista = GAMES_IN_PROGRESS;
-
         List<Game> listGames = gameService.getAllPlayingGames();
         model.addAttribute("listGames", listGames);
 
@@ -194,18 +190,13 @@ public class GameController{
 		User user = userService.getUser(username).get();
         model.addAttribute("user", user);
 
-        return vista;
+        return GAMES_IN_PROGRESS;
     }
-
 
     @GetMapping("/playingP")
     public String listAllPlayingGamesPage(ModelMap model, @PageableDefault(page = 0,size = 1) Pageable pg){
-        Pageable page = PageRequest.of(0,1);
-        String vista = GAMES_IN_PROGRESS_PAGE;
-
 
         Page<Game> lista = gameService.getAllPlayingGamesPage(pg);
-        List<Game> listGames = lista.toList();
         model.addAttribute("listGames", lista);
 
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -213,13 +204,11 @@ public class GameController{
 		User user = userService.getUser(username).get();
         model.addAttribute("user", user);
 
-        return vista;
+        return GAMES_IN_PROGRESS_PAGE;
     }
 
     @GetMapping("/finished")
     public String listAllFinishedGames(ModelMap model){
-        String vista = "games/finishedGames";
-
         List<Game> listGames = gameService.getAllFinishedGames();
         model.addAttribute("listGames", listGames);
 
@@ -228,7 +217,7 @@ public class GameController{
 		User user = userService.getUser(username).get();
         model.addAttribute("user", user);
 
-        return vista;
+        return "games/finishedGames";
     }
 
 }

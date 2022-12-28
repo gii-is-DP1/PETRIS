@@ -64,7 +64,7 @@ public class Space extends BaseEntity{
                     this.numRedSarcinas += 1;
                 }
             }else{
-                this.numBlackBacteria += numBlackBacteria;
+                this.numBlackBacteria += numBacteriaToMove;
 
                 if (this.numBlackBacteria>5){
                     this.numBlackBacteria -= 5;
@@ -77,7 +77,7 @@ public class Space extends BaseEntity{
                 this.numRedBacteria -= numBacteriaToMove;
 
             }else{
-                this.numBlackBacteria -= numBlackBacteria;
+                this.numBlackBacteria -= numBacteriaToMove;
 
             }
         }

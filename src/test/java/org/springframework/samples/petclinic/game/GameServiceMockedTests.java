@@ -15,7 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 
-
+/* 
 
 @WebMvcTest(controllers = GameController.class)
 public class GameServiceMockedTests {
@@ -91,3 +91,4 @@ public class GameServiceMockedTests {
     //perform(get("/owners/new")).andExpect(status().isOk());
     
 }
+*/

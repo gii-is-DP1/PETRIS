@@ -30,13 +30,13 @@ public class GameServiceTest {
     @Test
 	void shouldFindAllGames() {
 		List<Game> games = this.gameService.getAllGames();
-		assertThat(games.size()).isEqualTo(7);
+		assertThat(games.size()).isEqualTo(10);
 	}
 
     @Test
     void shouldFindAllPlayingGames(){
         List<Game> playingGames = this.gameService.getAllPlayingGames();
-        assertThat(playingGames.size()).isEqualTo(2);
+        assertThat(playingGames.size()).isEqualTo(5);
     }
 
     @Test

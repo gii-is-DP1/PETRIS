@@ -99,17 +99,17 @@ INSERT INTO colours(id,name) VALUES (3, 'yellow');
 INSERT INTO token_types(id,name) VALUES (1, 'bacterium');
 INSERT INTO token_types(id,name) VALUES (2, 'sarcina');
 
-INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (1, TRUE , 1 , 0,0,0,0,'raumerbas');
-INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (2, FALSE , 2 , 0,0,0,0,'gonriblun');
-INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (3, FALSE , 2 , 0,0,0,0,'raumerbas');
-INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (4, FALSE , 2 , 0,0,0,0,'gonriblun');
-INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (5, FALSE , 2 , 0,0,0,0,'raumerbas');
-INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (6, FALSE , 2 , 0,0,0,0,'gonriblun');
-INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (7, FALSE , 2 , 0,0,0,0,'raumerbas');
-INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (8, FALSE , 2 , 0,0,0,0,'raumerbas');
-INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (9, FALSE , 2 , 0,0,0,0,'lucantdel');
-INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (10, FALSE , 2 , 0,0,0,0,'dancorfon');
-INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, contamination_points,points,user_id) VALUES (11, FALSE , 2 , 0,0,0,0,'jaigargar1');
+INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, contamination_points,has_moved,points,user_id) VALUES (1, TRUE , 1 , 0,0,0,FALSE,0,'raumerbas');
+INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, contamination_points,has_moved,points,user_id) VALUES (2, FALSE , 2 , 0,0,0,FALSE,0,'gonriblun');
+INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, contamination_points,has_moved,points,user_id) VALUES (3, FALSE , 2 , 0,0,0,FALSE,0,'raumerbas');
+INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, contamination_points,has_moved,points,user_id) VALUES (4, FALSE , 2 , 0,0,0,FALSE,0,'gonriblun');
+INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, contamination_points,has_moved,points,user_id) VALUES (5, FALSE , 2 , 0,0,0,FALSE,0,'raumerbas');
+INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, contamination_points,has_moved,points,user_id) VALUES (6, FALSE , 2 , 0,0,0,FALSE,0,'gonriblun');
+INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, contamination_points,has_moved,points,user_id) VALUES (7, FALSE , 2 , 0,0,0,FALSE,0,'raumerbas');
+INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, contamination_points,has_moved,points,user_id) VALUES (8, FALSE , 2 , 0,0,0,FALSE,0,'raumerbas');
+INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, contamination_points,has_moved,points,user_id) VALUES (9, FALSE , 2 , 0,0,0,FALSE,0,'lucantdel');
+INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, contamination_points,has_moved,points,user_id) VALUES (10, FALSE , 2 , 0,0,0,FALSE,0,'dancorfon');
+INSERT INTO players(id, is_turn , colour_id, used_bacteria, used_sarcinas, contamination_points,has_moved,points,user_id) VALUES (11, FALSE , 2 , 0,0,0,FALSE,0,'jaigargar1');
 
 INSERT INTO games(id, loser, round, time, winner, phase, player1_id, player2_id, is_active, is_public, code) VALUES (1,'A', 2, 15, 'B', 2, 1, 2, TRUE, TRUE, 'CoDE1');
 INSERT INTO games(id, loser, round, time, winner, phase, player1_id, player2_id, is_active, is_public, code) VALUES (2,'B', 3, 30, 'A', 2, 3, 4, TRUE, FALSE, 'CoDE2');

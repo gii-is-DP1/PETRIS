@@ -148,10 +148,13 @@ public class GameController{
             this.gameService.makeMove(user.getUsername(), activeGame, space1Position, space2Position, numBacteriaToMove);
         }
         catch (ImpossibleMoveException i){
-            model.put("message", i);
+            model.put("message", "You can't make this move, try another one.");
         }
-        catch (Exception e) {
+        catch (IncompleteGameException e) {
+            model.put("message", "Waiting for another player.");
+        }catch (Exception e){
         }
+    
         model.addAttribute("code",activeGame.getCode());
         model.put("game", activeGame);
         model.put("petrisBoard", this.petrisBoardService.getByGameId(activeGame.getId()));
@@ -159,15 +162,22 @@ public class GameController{
         return CURRENT_GAME;
     }
     @GetMapping("/{gameId}/passRound")
-    public String passRound(ModelMap model,@PathVariable("gameId") Integer gameId){
+    public String passRound(ModelMap model,@PathVariable("gameId") Integer gameId) throws NotHisTurnException{
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = this.userService.getUser(ud.getUsername()).get();
         model.addAttribute("user",user);
 
         Game activeGame= this.gameService.getGameById(gameId);
-        //Player playerWhoClicked = this.playerService.getPlayerWhoClicked(user.getUsername());
+        String redirection ="redirect:/games/" + activeGame.getId();
+        try{
+            redirection = this.gameService.passRound(user.getUsername(), activeGame);
+        }catch(NoMoveException e){
+            model.put("message", "You have to make a move to pass turn.");
+        }catch(NotHisTurnException e){
+            model.put("message", "It's not your turn");
+        }
 
-        return this.gameService.passRound(user.getUsername(), activeGame);
+        return redirection;
     }
     @GetMapping("/{gameId}/finishedGame")
     public String finishedGame(ModelMap model,@PathVariable("gameId") Integer gameId){

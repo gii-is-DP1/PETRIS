@@ -133,6 +133,9 @@ public class GameServiceTest {
 
         boolean move3 = this.gameService.isNeighbour(space4, space3);
         assertThat(move3).isEqualTo(true);
+
+        boolean move4 = this.gameService.isNeighbour(space1, space1);
+        assertThat(move4).isEqualTo(false);
     }
     @Test
     void moveToSpaceWithoutSarcineTest(){

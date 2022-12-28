@@ -43,17 +43,54 @@ public class TokenService {
         }
     }
 
-    public void moveTokens(Space space1, Space space2, Integer numBacteriaToMove, String colour) throws ImpossibleMoveException {
+    public void moveTokens(Space space1, Space space2, Integer numBacteriaToMove, String colour, Integer petrisBoardId) throws ImpossibleMoveException {
         
         try {
             List<Token> listToken = this.tokenRepository.findPossibleTokensToChangeOfSpace(space1.getId(), colour);
     
-            while(numBacteriaToMove!=0){
-                Token tokenToChange = listToken.get(numBacteriaToMove-1);
-                tokenToChange.setSpace(space2);
-                tokenToChange.setHasBeenUsed(true);
-                this.save(tokenToChange);
-                numBacteriaToMove--;
+            if (colour.equals("red")){
+                if (space2.getNumRedBacteria()+numBacteriaToMove >4){
+                    while(numBacteriaToMove!=0){
+                        Token bacteriaToDelete = listToken.get(numBacteriaToMove-1);
+                        bacteriaToDelete.setSpace(null);
+                        bacteriaToDelete.setPositionInSpace(0);
+                        this.save(bacteriaToDelete);
+                    }
+                    Token sarcinaToAdd = this.tokenRepository.findUnusedSarcina(petrisBoardId,colour,"sarcina").get(0);
+                    sarcinaToAdd.setSpace(space2);
+                    sarcinaToAdd.setPositionInSpace(1);
+                    this.save(sarcinaToAdd);
+                }else{
+                    while(numBacteriaToMove!=0){
+                        Token tokenToChange = listToken.get(numBacteriaToMove-1);
+                        tokenToChange.setSpace(space2);
+                        tokenToChange.setHasBeenUsed(true);
+                        this.save(tokenToChange);
+                        numBacteriaToMove--;
+                    }
+                }
+
+            }else {
+                if (space2.getNumBlackBacteria()+numBacteriaToMove >4){
+                    while(numBacteriaToMove!=0){
+                        Token bacteriaToDelete = listToken.get(numBacteriaToMove-1);
+                        bacteriaToDelete.setSpace(null);
+                        bacteriaToDelete.setPositionInSpace(0);
+                        this.save(bacteriaToDelete);
+                    }
+                    Token sarcinaToAdd = this.tokenRepository.findUnusedSarcina(petrisBoardId,colour,"sarcina").get(0);
+                    sarcinaToAdd.setSpace(space2);
+                    sarcinaToAdd.setPositionInSpace(1);
+                    this.save(sarcinaToAdd);
+                }else{
+                    while(numBacteriaToMove!=0){
+                        Token tokenToChange = listToken.get(numBacteriaToMove-1);
+                        tokenToChange.setSpace(space2);
+                        tokenToChange.setHasBeenUsed(true);
+                        this.save(tokenToChange);
+                        numBacteriaToMove--;
+                    }
+                }
             }
     
             List<Token> tokensToOrderSpace1 = this.tokenRepository.findTokensOfSpace(space1.getId(), colour);

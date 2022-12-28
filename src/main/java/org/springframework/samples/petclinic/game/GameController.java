@@ -147,10 +147,11 @@ public class GameController{
         try {
             this.gameService.makeMove(user.getUsername(), activeGame, space1Position, space2Position, numBacteriaToMove);
         }
-        catch (ImpossibleMoveException e) {
-            model.put("message", e);
+        catch (ImpossibleMoveException i){
+            model.put("message", i);
         }
-    
+        catch (Exception e) {
+        }
         model.addAttribute("code",activeGame.getCode());
         model.put("game", activeGame);
         model.put("petrisBoard", this.petrisBoardService.getByGameId(activeGame.getId()));

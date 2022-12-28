@@ -335,16 +335,16 @@ public class GameService {
         Integer points = 0;
         if (colour =="red"){
             for (Space space : game.getSpaces()){
-                Integer redTokens = space.getNumRedBacteria() + space.getNumRedSarcinas(); 
-                Integer blackTokens = space.getNumBlackBacteria() + space.getNumBlackSarcinas();
+                Integer redTokens = space.getNumRedBacteria() + space.getNumRedSarcinas()*5; 
+                Integer blackTokens = space.getNumBlackBacteria() + space.getNumBlackSarcinas()*5;
                 if (redTokens>0 && blackTokens>redTokens){
                     points++;
                 }
             }
         }else{
             for (Space space : game.getSpaces()){
-                Integer redTokens = space.getNumRedBacteria() + space.getNumRedSarcinas(); 
-                Integer blackTokens = space.getNumBlackBacteria() + space.getNumBlackSarcinas();
+                Integer redTokens = space.getNumRedBacteria() + space.getNumRedSarcinas()*5; 
+                Integer blackTokens = space.getNumBlackBacteria() + space.getNumBlackSarcinas()*5;
                 if (blackTokens>0 && redTokens>blackTokens){
                     points++;
                 }

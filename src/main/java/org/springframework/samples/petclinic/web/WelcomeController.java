@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class WelcomeController {
 	
-	  @GetMapping({"/","/welcome"})
-	  public String welcome(Map<String, Object> model) {	
+	@GetMapping({"/","/welcome"})
+	public String welcome(Map<String, Object> model) {
 
 		List<Person> persons = new ArrayList<Person>();
 		Person person1 =new Person();
@@ -50,5 +50,9 @@ public class WelcomeController {
 	    return "welcome";
 	  }
 
+	@GetMapping({"/error" })
+	public String error(Map<String, Object> model) {
+		return "/error";
+	}
 	  
 }

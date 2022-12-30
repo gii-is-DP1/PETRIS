@@ -11,8 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.samples.petclinic.Colour.ColourService;
 import org.springframework.samples.petclinic.model.PetrisBoardService;
-import org.springframework.samples.petclinic.player.Player;
-import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.samples.petclinic.token.ImpossibleMoveException;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
@@ -33,7 +31,6 @@ public class GameController{
     private final GameService gameService;
     private final UserService userService;
     private final PetrisBoardService petrisBoardService;
-    private final PlayerService playerService;
 
 
     private static final String GAME_VIEW = "games/showGameInit";
@@ -47,11 +44,10 @@ public class GameController{
 
 
     @Autowired
-	public GameController(GameService gameService,PlayerService playerService, UserService userService,ColourService colourService,PetrisBoardService petrisBoardService) {
+	public GameController(GameService gameService, UserService userService,ColourService colourService,PetrisBoardService petrisBoardService) {
 		this.gameService = gameService;
         this.userService =userService;
         this.petrisBoardService = petrisBoardService;
-        this.playerService = playerService;
 
 	}
 
@@ -147,11 +143,11 @@ public class GameController{
         try {
             this.gameService.makeMove(user.getUsername(), activeGame, space1Position, space2Position, numBacteriaToMove);
         }
-        catch (ImpossibleMoveException i){
-            model.put("message", "You can't make this move, try another one.");
-        }
         catch (IncompleteGameException e) {
             model.put("message", "Waiting for another player.");
+        }
+        catch (ImpossibleMoveException i){
+            model.put("message", "You can't make this move, try another one.");
         }catch (Exception e){
         }
     

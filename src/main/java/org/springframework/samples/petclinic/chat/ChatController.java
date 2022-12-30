@@ -17,7 +17,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class ChatController {
@@ -25,14 +24,13 @@ public class ChatController {
     private final GameService gameService;
     private final UserService userService;
     private final ChatService chatService;
-    private final ChatRepository chatRepository;
+
 
     @Autowired
-	public ChatController(GameService gameService,UserService userService, ChatService chatService, ChatRepository chatRepository) {
+	public ChatController(GameService gameService,UserService userService, ChatService chatService) {
 		this.gameService = gameService;
         this.userService = userService;
         this.chatService = chatService;
-        this.chatRepository = chatRepository;
 	}
 
     @GetMapping(path = "/games/{gameId}/chat")

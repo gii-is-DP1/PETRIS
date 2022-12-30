@@ -20,8 +20,6 @@ import org.springframework.samples.petclinic.token.TokenService;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.stereotype.Service;
 
-import ch.qos.logback.core.joran.conditional.ElseAction;
-
 @Service
 public class GameService {
 
@@ -336,7 +334,7 @@ public class GameService {
         boolean res = false;
         String colour = player.getColour().getName();
         Integer points = 0;
-        if (colour =="red"){
+        if (colour.equals("red")){
             for (Space space : game.getSpaces()){
                 Integer redTokens = space.getNumRedBacteria() + space.getNumRedSarcinas()*5; 
                 Integer blackTokens = space.getNumBlackBacteria() + space.getNumBlackSarcinas()*5;
@@ -364,18 +362,18 @@ public class GameService {
     //activar fase de contaminacion
     public boolean activateContaminationPhase(Game game){
         boolean res = false;
-        boolean player1IsLoser = this.playerContaminationPhase(game, game.getPlayer1());
-        boolean player2IsLoser = this.playerContaminationPhase(game, game.getPlayer2());
+        boolean player1IsWinner = this.playerContaminationPhase(game, game.getPlayer1());
+        boolean player2IsWinner = this.playerContaminationPhase(game, game.getPlayer2());
 
-        if(player1IsLoser && player2IsLoser){
+        if(player1IsWinner && player2IsWinner){
             res = true;
             this.setWinnerForPoints(game);
 
-        }else if (player1IsLoser){
+        }else if (player1IsWinner){
             res = true; 
             game.setWinner(game.getPlayer1().getColour().getName());
             this.save(game);
-        }else if (player2IsLoser){
+        }else if (player2IsWinner){
             res = true; 
             game.setWinner(game.getPlayer2().getColour().getName());
             this.save(game);
@@ -408,44 +406,44 @@ public class GameService {
         }
 
         if (isUserPlayer1){
-            isMovementAllowed = isMovementAllowed(activeGame.getPlayer1(), space1, space2, numBacteriaToMove);
+
+            isMovementAllowed = this.isMovementAllowed(activeGame.getPlayer1(), space1, space2, numBacteriaToMove);
             
             if (isMovementAllowed){
                 
-                try {
-                    PetrisBoard petrisBoard = this.petrisBoardService.getByGameId(activeGame.getId());
-                    this.tokenService.moveTokens(space1, space2, numBacteriaToMove, activeGame.getPlayer1().getColour().getName(),petrisBoard.getId());
+                PetrisBoard petrisBoard = this.petrisBoardService.getByGameId(activeGame.getId());
+                this.tokenService.moveTokens(space1, space2, numBacteriaToMove, activeGame.getPlayer1().getColour().getName(),petrisBoard.getId());
                     
-                    space1.move(true, activeGame.getPlayer1().getColour().getName(), numBacteriaToMove);
-                    space2.move(false, activeGame.getPlayer1().getColour().getName(), numBacteriaToMove);
-                    this.spaceService.save(space1);
-                    this.spaceService.save(space2);
+                space1.move(true, activeGame.getPlayer1().getColour().getName(), numBacteriaToMove);
+                space2.move(false, activeGame.getPlayer1().getColour().getName(), numBacteriaToMove);
+                this.spaceService.save(space1);
+                this.spaceService.save(space2);
 
-                    activeGame.getPlayer1().setHasMoved(true);
-                    this.playerService.save(activeGame.getPlayer1());
-
-                } catch (ImpossibleMoveException e) {
-                }
-                
+                activeGame.getPlayer1().setHasMoved(true);
+                this.playerService.save(activeGame.getPlayer1());
             }
+            else{
+                throw new ImpossibleMoveException();
+            }
+
         }else if (isUserPlayer2){
+        
             isMovementAllowed = isMovementAllowed(activeGame.getPlayer2(), space1, space2, numBacteriaToMove);
+           
             if (isMovementAllowed){
 
-                try {
-                    PetrisBoard petrisBoard = this.petrisBoardService.getByGameId(activeGame.getId());
-                    this.tokenService.moveTokens(space1, space2, numBacteriaToMove, activeGame.getPlayer2().getColour().getName(),petrisBoard.getId());
+                PetrisBoard petrisBoard = this.petrisBoardService.getByGameId(activeGame.getId());
+                this.tokenService.moveTokens(space1, space2, numBacteriaToMove, activeGame.getPlayer2().getColour().getName(),petrisBoard.getId());
                     
-                    space1.move(true, activeGame.getPlayer2().getColour().getName(), numBacteriaToMove);
-                    space2.move(false, activeGame.getPlayer2().getColour().getName(), numBacteriaToMove);
-                    this.spaceService.save(space1);
-                    this.spaceService.save(space2);
+                space1.move(true, activeGame.getPlayer2().getColour().getName(), numBacteriaToMove);
+                space2.move(false, activeGame.getPlayer2().getColour().getName(), numBacteriaToMove);
+                this.spaceService.save(space1);
+                this.spaceService.save(space2);
                     
-                    activeGame.getPlayer2().setHasMoved(true);
-                    this.playerService.save(activeGame.getPlayer2());
-
-                } catch (ImpossibleMoveException e) {
-                }
+                activeGame.getPlayer2().setHasMoved(true);
+                this.playerService.save(activeGame.getPlayer2());
+            }else{
+                throw new ImpossibleMoveException();
             }
         }
 
@@ -515,6 +513,7 @@ public class GameService {
                 activeGame.setPhase(1);
                 activeGame.setRound(round + 1);
             }
+            this.save(activeGame);
 
             thereIsAWinner = thereIsAWinner || !this.checkThereIsPossibleMove(activeGame);
 

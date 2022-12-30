@@ -31,5 +31,8 @@ public interface TokenRepository extends CrudRepository<Token, Integer>{
 	@Query("SELECT t FROM Token t WHERE t.petrisBoard.id = ?1 AND t.colour.name = ?2 AND t.tokenType.name = ?3")
 	List<Token> findUnusedSarcina(Integer petrisBoardId, String colour, String tokenType);
 
+	@Query("SELECT t FROM Token t WHERE t.space.id = ?1 and t.colour.name = ?2")
+	List<Token> findTokensToChangeForSarcina(Integer spaceId, String colour);
+
 
 }

@@ -187,7 +187,7 @@ public class GameController{
         return FINISHED_GAME;
     }
 
-    @GetMapping("/playing")
+    @GetMapping("/playingP")
     public String listAllPlayingGames(ModelMap model){
         List<Game> listGames = gameService.getAllPlayingGames();
         model.addAttribute("listGames", listGames);
@@ -200,7 +200,7 @@ public class GameController{
         return GAMES_IN_PROGRESS;
     }
 
-    @GetMapping("/playingP")
+    @GetMapping("/playing")
     public String listAllPlayingGamesPage(ModelMap model, @PageableDefault(page = 0,size = 1) Pageable pg){
 
         Page<Game> lista = gameService.getAllPlayingGamesPage(pg);

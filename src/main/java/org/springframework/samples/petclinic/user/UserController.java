@@ -16,23 +16,23 @@
 package org.springframework.samples.petclinic.user;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collection;
-
 import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.friendRequest.FriendRequest;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.samples.petclinic.friendRequest.FriendRequestRepository;
 import org.springframework.samples.petclinic.friendRequest.FriendRequestService;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.game.GameService;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerService;
-import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -342,12 +342,12 @@ public class UserController {
 	}
 
 	@GetMapping("/registeredUser")
-	public String showRegisteredUser(ModelMap model){
+	public String showRegisteredUser(ModelMap model, @PageableDefault(page = 0,size = 3) Pageable pg){
 		String vista = "users/registeredUser";
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User u = this.userService.getUser(ud.getUsername()).get();
 		model.addAttribute("user",u);
-		List<User> users = userService.getAllRegisteredUsers();
+		Page<User> users = userService.getAllRegisteredUsers(pg);
 		model.addAttribute("users", users);
 
 		return vista;

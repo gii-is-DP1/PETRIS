@@ -27,9 +27,6 @@ public interface GameRepository extends CrudRepository<Game,Integer>{
     Game findGameByCode(String gameCode);
 
     @Query("SELECT g FROM Game g WHERE g.isActive = true AND g.player2 != null")
-    List<Game> findAllPlayingGames();
-
-    @Query("SELECT g FROM Game g WHERE g.isActive = true AND g.player2 != null")
     Page<Game> findAllPlayingGamesPage(Pageable pageable);
 
     @Query("SELECT g FROM Game g WHERE g.isActive = false")

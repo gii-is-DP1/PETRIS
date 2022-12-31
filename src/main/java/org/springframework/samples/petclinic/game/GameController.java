@@ -177,27 +177,65 @@ public class GameController{
     }
     @GetMapping("/{gameId}/finishedGame")
     public String finishedGame(ModelMap model,@PathVariable("gameId") Integer gameId){
-        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = this.userService.getUser(ud.getUsername()).get();
-        model.addAttribute("user",user);
+        if(this.gameService.getGameById(gameId)==null) {
+            throw new RuntimeException("test exception");
+        } else {
 
-        Game game= this.gameService.getGameById(gameId);
-        model.put("game", game);
-
-        return FINISHED_GAME;
-    }
-
-    @GetMapping("/playingP")
-    public String listAllPlayingGames(ModelMap model){
-        List<Game> listGames = gameService.getAllPlayingGames();
-        model.addAttribute("listGames", listGames);
-
-        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String username = ud.getUsername();
-		User user = userService.getUser(username).get();
-        model.addAttribute("user", user);
-
-        return GAMES_IN_PROGRESS;
+            UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User user = this.userService.getUser(ud.getUsername()).get();
+            
+    
+            Game game= this.gameService.getGameById(gameId);
+            model.put("game", game);
+            User winneruser = new User();
+            Integer points = null;
+            if(game.getWinner().equals("red")) {
+                if(game.getPlayer1().getColour().getName().equals("red")) {
+                    winneruser = game.getPlayer1().getUser();
+                    if(user.getUsername().equals(winneruser.getUsername())) {
+                        points = 15;
+                        user.setPoints(user.getPoints() + points);
+                    } else if(user.getUsername().equals(game.getPlayer2().getUser().getUsername())) {
+                        points = -10;
+                        user.setPoints(user.getPoints() + points);
+                    }
+                } else {
+                    winneruser = game.getPlayer2().getUser();
+                    if(user.getUsername().equals(winneruser.getUsername())) {
+                        points = 15;
+                        user.setPoints(user.getPoints() + points);
+                    } else if(user.getUsername().equals(game.getPlayer1().getUser().getUsername())) {
+                        points = -10;
+                        user.setPoints(user.getPoints() + points);
+                    }
+                }
+            } else {
+                if(game.getPlayer1().getColour().getName().equals("red")) {
+                    winneruser = game.getPlayer2().getUser();
+                    if(user.getUsername().equals(winneruser.getUsername())) {
+                        points = 15;
+                        user.setPoints(user.getPoints() + points);
+                    } else if(user.getUsername().equals(game.getPlayer1().getUser().getUsername())) {
+                        points = -10;
+                        user.setPoints(user.getPoints() + points);
+                    }
+                } else {
+                    winneruser = game.getPlayer1().getUser();
+                    if(user.getUsername().equals(winneruser.getUsername())) {
+                        points = 15;
+                        user.setPoints(user.getPoints() + points);
+                    } else if(user.getUsername().equals(game.getPlayer2().getUser().getUsername())) {
+                        points = -10;
+                        user.setPoints(user.getPoints() + points);
+                    }
+                }
+            }
+            model.addAttribute("user",user);
+            model.addAttribute("winnerUser", winneruser);
+            model.addAttribute("pointOfTheGame", points);
+    
+            return FINISHED_GAME;
+        }
     }
 
     @GetMapping("/playing")

@@ -42,10 +42,6 @@ public class GameService {
     public List<Game> getAllGames(){
         return gameRepository.findAll();
     }
-
-    public List<Game> getAllPlayingGames(){
-        return gameRepository.findAllPlayingGames();
-    }
     
     public Page<Game> getAllPlayingGamesPage(Pageable page){
         return gameRepository.findAllPlayingGamesPage(page);

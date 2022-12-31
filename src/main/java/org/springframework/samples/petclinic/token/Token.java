@@ -66,11 +66,11 @@ public class Token extends BaseEntity{
 				}else if(numSpace == 2 || numSpace == 6){
 					x = 260;
 				}else if(numSpace == 3 || numSpace == 5){
-					x = 430;
+					x = 570;
 				}else if(numSpace == 4){
-					x = 580;
+					x = 780;
 				}else if(numSpace == 7){
-					x = 790;
+					x = 420;
 				}
 				return x ;
 				

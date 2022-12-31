@@ -117,6 +117,7 @@ public class TokenService {
     
                
     }
+    
     public void orderSpaces(Space space1, Space space2, String colour){
 
         List<Token> tokensToOrderSpace1 = this.tokenRepository.findTokensOfSpace(space1.getId(), colour);

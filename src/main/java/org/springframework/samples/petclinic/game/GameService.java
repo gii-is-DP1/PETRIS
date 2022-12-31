@@ -29,9 +29,7 @@ public class GameService {
     private final PetrisBoardService petrisBoardService;
     private final SpaceService spaceService;
     private final TokenService tokenService;
-
-
-    
+ 
     @Autowired
 	public GameService(GameRepository gameRepository,TokenService tokenService,PlayerService playerService,ColourService colourService,PetrisBoardService petrisBoardService,SpaceService spaceService) {
 		this.gameRepository = gameRepository;
@@ -60,9 +58,11 @@ public class GameService {
     public Game getGameById(Integer id){
         return gameRepository.findGameByid(id);        
     }
+    
     public List<Game> getAllPublicActiveEmptyGames(){
         return gameRepository.findAllPublicActiveEmptyGames();
     }
+    
     public Game getActiveGameByPlayer(String username){
         return gameRepository.findActiveGameByPlayer(username);
     }
@@ -202,8 +202,8 @@ public class GameService {
     //no puedes mover a una casilla que tenga una sarcina tuya
     public boolean moveToSpaceWithoutSarcine(String colour, Space space){
 
-        boolean res =   (colour == "red" && space.getNumRedSarcinas()<1) || 
-                        (colour != "red" && space.getNumBlackSarcinas()<1);
+        boolean res =   (colour.equals("red") && space.getNumRedSarcinas()<1) || 
+                        (!colour.equals("red") && space.getNumBlackSarcinas()<1);
         return res;
     }
     
@@ -300,32 +300,40 @@ public class GameService {
         Player player1 = game.getPlayer1();
         Player player2 = game.getPlayer2();
         String winnerColour = "";
+        String loserColour = "";
         String player1Colour = player1.getColour().getName();
         String player2Colour = player2.getColour().getName();
         Integer player1points = player1.getPoints();
         Integer player2points = player2.getPoints();
         if  (player1points > player2points){
             winnerColour = player1Colour;
+            loserColour = player2Colour;
         }else if (player2points> player1points){
             winnerColour = player2Colour;
+            loserColour = player1Colour;
         }else{
             Integer player1UsedSarcinas = player1.getUsedSarcinas();
             Integer player2UsedSarcinas = player2.getUsedSarcinas();
             if (player1UsedSarcinas<player2UsedSarcinas){
                 winnerColour = player1Colour;
+                loserColour = player2Colour;
             }else if(player1UsedSarcinas>player2UsedSarcinas){
                 winnerColour = player2Colour;
+                loserColour = player1Colour;
             }else{
                 Integer player1UsedBacteria = player1.getUsedBacteria();
                 Integer player2UsedBacteria = player2.getUsedBacteria();
                 if(player1UsedBacteria<player2UsedBacteria){
                     winnerColour = player1Colour;
+                    loserColour = player2Colour;
                 }else if(player1UsedBacteria>player2UsedBacteria){
                     winnerColour = player2Colour;
+                    loserColour = player1Colour;
                 }
             }
         }
         game.setWinner(winnerColour);
+        game.setLoser(loserColour);
         this.save(game);
     }
     
@@ -372,10 +380,12 @@ public class GameService {
         }else if (player1IsWinner){
             res = true; 
             game.setWinner(game.getPlayer1().getColour().getName());
+            game.setLoser(game.getPlayer2().getColour().getName());
             this.save(game);
         }else if (player2IsWinner){
             res = true; 
             game.setWinner(game.getPlayer2().getColour().getName());
+            game.setLoser(game.getPlayer1().getColour().getName());
             this.save(game);
         }
         return res;
@@ -473,8 +483,10 @@ public class GameService {
     public String passRound(String userName, Game activeGame) throws NotHisTurnException, NoMoveException{
         String res = "redirect:/games/" + activeGame.getId();
         boolean isPermitted = false;
+        boolean isPlayer1 = this.playerService.isPlayerOfUser(activeGame.getPlayer1().getId(), userName);
+        boolean isPlayer2 = this.playerService.isPlayerOfUser(activeGame.getPlayer2().getId(), userName);
 
-        if (this.playerService.isPlayerOfUser(activeGame.getPlayer1().getId(), userName)){
+        if (isPlayer1){
             if(!activeGame.getPlayer1().isTurn()){
                 throw new NotHisTurnException();
             }else if(!activeGame.getPlayer1().isHasMoved()){
@@ -482,7 +494,7 @@ public class GameService {
             }else{
                 isPermitted = true;
             }
-        }else if(this.playerService.isPlayerOfUser(activeGame.getPlayer2().getId(), userName)){
+        }else if(isPlayer2){
             if(!activeGame.getPlayer2().isTurn()){
                 throw new NotHisTurnException();
             }else if(!activeGame.getPlayer2().isHasMoved()){
@@ -533,10 +545,18 @@ public class GameService {
     private boolean checkThereIsPossibleMove(Game game) {
         Player player = null;
         boolean thereIsAMove = false;
+        String winnerColour = "";
+        String loserColour= "";
+        String player1Colour = game.getPlayer1().getColour().getName();
+        String player2Colour = game.getPlayer2().getColour().getName();
         if(game.getPlayer1().isTurn()){
             player = game.getPlayer1();
+            winnerColour = player2Colour;
+            loserColour = player1Colour;
         }else{
             player = game.getPlayer2();
+            winnerColour = player1Colour;
+            loserColour = player2Colour;
         }
         List<Space> spaces = game.getSpaces();
 
@@ -544,11 +564,17 @@ public class GameService {
             for(Space spaceTarget:spaces){
                 Integer numBacteriaToMove = 4;
                 while(numBacteriaToMove!=0 && !thereIsAMove){
-                    thereIsAMove = thereIsAMove || this.isMovementAllowed(player, spaceSource, spaceTarget, numBacteriaToMove);
+                    thereIsAMove = this.isMovementAllowed(player, spaceSource, spaceTarget, numBacteriaToMove);
                     numBacteriaToMove--;
                 }
             }
         }
+        if (!thereIsAMove){
+            game.setWinner(winnerColour);
+            game.setLoser(loserColour);
+            this.save(game);
+        }
+
         return thereIsAMove;
     }
     

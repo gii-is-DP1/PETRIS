@@ -389,12 +389,15 @@ public class GameService {
     }
 
     //realizar un movimiento
-    public void makeMove(String userName, Game activeGame, Integer space1Position, Integer space2Position, Integer numBacteriaToMove)throws ImpossibleMoveException, IncompleteGameException{
+    public void makeMove(String userName, Game activeGame, Integer space1Position, Integer space2Position, Integer numBacteriaToMove)throws ImpossibleMoveException, IncompleteGameException, MoveNotMadeException{
         
         boolean gameIsComplete = activeGame.getPlayer1() != null && activeGame.getPlayer2() !=null;
         if (!gameIsComplete){
             throw new IncompleteGameException();
         }
+        
+        this.checkHasMoved(space1Position,space2Position,numBacteriaToMove);
+        
         boolean isUserPlayer1 = this.playerService.isPlayerOfUser(activeGame.getPlayer1().getId(), userName);
         boolean isUserPlayer2 = this.playerService.isPlayerOfUser(activeGame.getPlayer2().getId(), userName);
 
@@ -456,6 +459,16 @@ public class GameService {
 
     }
     
+    private void checkHasMoved(Integer space1Position, Integer space2Position, Integer numBacteriaToMove) throws MoveNotMadeException {
+
+        if (space1Position == null && space2Position == null && numBacteriaToMove == null){
+            throw new MoveNotMadeException();
+        }
+    }
+
+
+
+
     //cambiar el turno
     public void changeTurn(String userName, Game activeGame) {
         boolean isUserPlayer1 = this.playerService.isPlayerOfUser(activeGame.getPlayer1().getId(), userName);
@@ -577,15 +590,16 @@ public class GameService {
 
         boolean res = false ;
         boolean isPlayer1 = this.playerService.isPlayerOfUser(activeGame.getPlayer1().getId(), userName);
-        boolean isPlayer2 = this.playerService.isPlayerOfUser(activeGame.getPlayer2().getId(), userName);
-
         if (isPlayer1){
-            if(!activeGame.getPlayer1().isTurn()){
+            if(activeGame.getPlayer1().isTurn()){
                 res = true;
             }
-        }else if(isPlayer2){
-            if(!activeGame.getPlayer2().isTurn()){
-                res = true;
+        }else if (activeGame.getPlayer2() != null){
+            boolean isPlayer2 = this.playerService.isPlayerOfUser(activeGame.getPlayer2().getId(), userName);
+            if(isPlayer2){
+                if(activeGame.getPlayer2().isTurn()){
+                    res = true;
+                }
             }
         }
         return res;

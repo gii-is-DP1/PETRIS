@@ -159,11 +159,11 @@ public class GameController{
         }
         catch (ImpossibleMoveException i){
             model.put("message", "You can't make this move, try another one.");
+        }catch (MoveNotMadeException i){
+            
         }catch (Exception e){
             if(this.playerService.getPlayerHasMoved(gameId).isHasMoved() == true){
-                model.put("message", "if you have already moved your tokens you should end your turn");
-            }else{
-
+                model.put("message", "If you have already moved your tokens you should end your turn.");
             }
         }
         boolean showPassTurnButton = this.gameService.showPassTurnButton(activeGame, user.getUsername());

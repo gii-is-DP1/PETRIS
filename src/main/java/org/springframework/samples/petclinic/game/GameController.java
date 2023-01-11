@@ -6,10 +6,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.samples.petclinic.Colour.ColourService;
-import org.springframework.samples.petclinic.chat.ChatService;
 import org.springframework.samples.petclinic.model.PetrisBoardService;
+import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerService;
+import org.springframework.samples.petclinic.token.ImpossibleMoveException;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,8 +33,8 @@ public class GameController{
     private final GameService gameService;
     private final UserService userService;
     private final PetrisBoardService petrisBoardService;
-    private final ChatService chatService;
     private final PlayerService playerService;
+    
 
 
     private static final String GAME_VIEW = "games/showGameInit";
@@ -39,16 +43,17 @@ public class GameController{
     private static final String CURRENT_GAME = "games/playingGame";
     private static final String JOIN_BY_CODE = "games/joinByCode";
     private static final String GAMES_IN_PROGRESS = "games/gamesInProgress";
+    private static final String GAMES_IN_PROGRESS_PAGE = "games/gamesInProgressP";
     private static final String FINISHED_GAME = "games/finishedGame";
 
 
     @Autowired
-	public GameController(GameService gameService, PlayerService playerService,UserService userService,ColourService colourService,PetrisBoardService petrisBoardService, ChatService chatService) {
+	public GameController(GameService gameService, UserService userService,ColourService colourService,PetrisBoardService petrisBoardService,PlayerService playerService) {
 		this.gameService = gameService;
         this.userService =userService;
-        this.playerService = playerService;
         this.petrisBoardService = petrisBoardService;
-        this.chatService = chatService;
+        this.playerService = playerService;
+
 	}
 
     @GetMapping
@@ -67,7 +72,7 @@ public class GameController{
 		model.addAttribute("user", u);
         return CREATE_GAME;
     }
-    
+        
     @PostMapping("/create/{username}")
     public String saveNewGame(String colourName, boolean isPublic, @Valid Game game, BindingResult bindingResult, @PathVariable("username") String userName,ModelMap model){
         
@@ -140,11 +145,26 @@ public class GameController{
         model.addAttribute("user",user);
                     
         Game activeGame= this.gameService.getGameById(gameId);
+
+        if(this.gameService.getGameById(gameId).getPlayer1() != null && this.gameService.getGameById(gameId).getPlayer2() != null){
+            List<Player> players = playerService.getPlayersOfGame(gameId);
+            model.addAttribute("players", players);
+        }
+        
         try {
             this.gameService.makeMove(user.getUsername(), activeGame, space1Position, space2Position, numBacteriaToMove);
         }
-        catch (Exception e) {
-            model.put("message", e);
+        catch (IncompleteGameException e) {
+            model.put("message", "Waiting for another player.");
+        }
+        catch (ImpossibleMoveException i){
+            model.put("message", "You can't make this move, try another one.");
+        }catch (Exception e){
+            if(this.playerService.getPlayerHasMoved(gameId).isHasMoved() == true){
+                model.put("message", "if you have already moved your tokens you should end your turn");
+            }else{
+
+            }
         }
     
         model.addAttribute("code",activeGame.getCode());
@@ -154,49 +174,111 @@ public class GameController{
         return CURRENT_GAME;
     }
     @GetMapping("/{gameId}/passRound")
-    public String passRound(ModelMap model,@PathVariable("gameId") Integer gameId){
+    public String passRound(ModelMap model,@PathVariable("gameId") Integer gameId) throws NotHisTurnException{
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = this.userService.getUser(ud.getUsername()).get();
         model.addAttribute("user",user);
 
         Game activeGame= this.gameService.getGameById(gameId);
+        String redirection ="redirect:/games/" + activeGame.getId();
+        try{
+            redirection = this.gameService.passRound(user.getUsername(), activeGame);
+        }catch(NoMoveException e){
+            model.put("message", "You have to make a move to pass turn.");
+        }catch(NotHisTurnException e){
+            model.put("message", "It's not your turn");
+        }
 
-        return this.gameService.passRound(user.getUsername(), activeGame);
+        return redirection;
     }
     @GetMapping("/{gameId}/finishedGame")
     public String finishedGame(ModelMap model,@PathVariable("gameId") Integer gameId){
-        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = this.userService.getUser(ud.getUsername()).get();
-        model.addAttribute("user",user);
+        if(this.gameService.getGameById(gameId)==null) {
+            throw new RuntimeException("test exception");
+        } else {
 
+<<<<<<< HEAD
         gameService.achievementsUpdateFinishedGame(gameId);
         
         Game game= this.gameService.getGameById(gameId);
         model.put("game", game);
 
         return FINISHED_GAME;
+=======
+            UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User user = this.userService.getUser(ud.getUsername()).get();
+            
+    
+            Game game= this.gameService.getGameById(gameId);
+            model.put("game", game);
+            User winneruser = new User();
+            Integer points = null;
+            if(game.getWinner().equals("red")) {
+                if(game.getPlayer1().getColour().getName().equals("red")) {
+                    winneruser = game.getPlayer1().getUser();
+                    if(user.getUsername().equals(winneruser.getUsername())) {
+                        points = 15;
+                        user.setPoints(user.getPoints() + points);
+                    } else if(user.getUsername().equals(game.getPlayer2().getUser().getUsername())) {
+                        points = -10;
+                        user.setPoints(user.getPoints() + points);
+                    }
+                } else {
+                    winneruser = game.getPlayer2().getUser();
+                    if(user.getUsername().equals(winneruser.getUsername())) {
+                        points = 15;
+                        user.setPoints(user.getPoints() + points);
+                    } else if(user.getUsername().equals(game.getPlayer1().getUser().getUsername())) {
+                        points = -10;
+                        user.setPoints(user.getPoints() + points);
+                    }
+                }
+            } else {
+                if(game.getPlayer1().getColour().getName().equals("red")) {
+                    winneruser = game.getPlayer2().getUser();
+                    if(user.getUsername().equals(winneruser.getUsername())) {
+                        points = 15;
+                        user.setPoints(user.getPoints() + points);
+                    } else if(user.getUsername().equals(game.getPlayer1().getUser().getUsername())) {
+                        points = -10;
+                        user.setPoints(user.getPoints() + points);
+                    }
+                } else {
+                    winneruser = game.getPlayer1().getUser();
+                    if(user.getUsername().equals(winneruser.getUsername())) {
+                        points = 15;
+                        user.setPoints(user.getPoints() + points);
+                    } else if(user.getUsername().equals(game.getPlayer2().getUser().getUsername())) {
+                        points = -10;
+                        user.setPoints(user.getPoints() + points);
+                    }
+                }
+            }
+            model.addAttribute("user",user);
+            model.addAttribute("winnerUser", winneruser);
+            model.addAttribute("pointOfTheGame", points);
+    
+            return FINISHED_GAME;
+        }
+>>>>>>> master
     }
 
     @GetMapping("/playing")
-    public String listAllPlayingGames(ModelMap model){
+    public String listAllPlayingGamesPage(ModelMap model, @PageableDefault(page = 0,size = 1) Pageable pg){
 
-        String vista = GAMES_IN_PROGRESS;
-
-        List<Game> listGames = gameService.getAllPlayingGames();
-        model.addAttribute("listGames", listGames);
+        Page<Game> lista = gameService.getAllPlayingGamesPage(pg);
+        model.addAttribute("listGames", lista);
 
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String username = ud.getUsername();
 		User user = userService.getUser(username).get();
         model.addAttribute("user", user);
 
-        return vista;
+        return GAMES_IN_PROGRESS_PAGE;
     }
 
     @GetMapping("/finished")
     public String listAllFinishedGames(ModelMap model){
-        String vista = "games/finishedGames";
-
         List<Game> listGames = gameService.getAllFinishedGames();
         model.addAttribute("listGames", listGames);
 
@@ -205,7 +287,7 @@ public class GameController{
 		User user = userService.getUser(username).get();
         model.addAttribute("user", user);
 
-        return vista;
+        return "games/finishedGames";
     }
 
 }

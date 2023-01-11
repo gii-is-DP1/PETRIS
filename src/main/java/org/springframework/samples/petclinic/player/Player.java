@@ -36,6 +36,9 @@ public class Player extends BaseEntity{
     @NotNull
     private Integer contaminationPoints;
 
+    @NotNull
+    private boolean hasMoved;
+
     private Integer points;
 
     @ManyToOne
@@ -46,11 +49,13 @@ public class Player extends BaseEntity{
     @JoinColumn(name = "game_id")
     private Game game;
 
-    public Player(Colour colour, Integer usedBacteria,Integer usedSarcinas,Integer contaminationPoints, User user){
+    public Player(Colour colour, Integer usedBacteria,Integer usedSarcinas,Integer contaminationPoints,boolean hasMoved, Integer points,User user){
       this.colour = colour;
       this.usedBacteria = usedBacteria;
       this.usedSarcinas = usedSarcinas;
       this.contaminationPoints = contaminationPoints;
+      this.hasMoved=hasMoved;
+      this.points = points;
       this.user = user;
     }
 

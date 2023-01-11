@@ -16,7 +16,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${users}" var="users">
+				<c:forEach items="${users.content}" var="usersp">
 					<thead>
 						<tr>
 							<th style="width: 150px;">User: </th>
@@ -25,22 +25,33 @@
 					<tr>
                         <th style = "width: 1300px; right: 15%">Username </th>
 						<td style = " position: absolute; right: 20%" >
-							<c:out value="${users.username}"/>
+							<c:out value="${usersp.username}"/>
 						</td>
 					</tr>
 					<tr>
                         <th style = "width: 1300px; right: 15%">Email </th>
 						<td style = " position: absolute; right: 20%" >
-							<c:out value="${users.email}"/>
+							<c:out value="${usersp.email}"/>
 						</td>
 					</tr> 
 					<tr>
                         <th style = "width: 1300px; right: 15%">Enabled </th>
 						<td style = " position: absolute; right: 20%" >
-							<c:out value="${users.enabled}"/>
+							<c:out value="${usersp.enabled}"/>
 						</td>
-					</tr>            
+					</tr>  
+					          
 				</c:forEach>
+				<c:if test="${!users.last}">
+      					<li class="next">
+       					<a href="?page=${users.number+1}">Next &rarr;</a>
+        				</li>
+ 				</c:if>
+				<c:if test="${users.number!=0}">	
+						<li class="Back">
+						 	<a href="?page=${users.number-1}">Back &rarr;</a>
+					  	</li>
+				</c:if>
 
 
         </tbody>

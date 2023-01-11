@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.player;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.game.Game;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +41,7 @@ public class PlayerService {
     }
 
     public boolean isPlayerOfUser(Integer id, String username) {
+        
         Player player =  playerRepository.findUserOfPlayer(id, username);
         if (player!=null){
             return true;
@@ -51,5 +53,20 @@ public class PlayerService {
 
     public Player getPlayerById(Integer playerId) {
         return playerRepository.findPlayerById(playerId);
+    }
+
+    public void setFalsePlayersMove(Game activeGame) {
+        Player player1 = activeGame.getPlayer1();
+        Player player2 = activeGame.getPlayer2();
+
+        player1.setHasMoved(false);
+        player2.setHasMoved(false);
+
+        this.save(player1);
+        this.save(player2);
+    }
+
+    public Player getPlayerHasMoved(Integer gameId){
+        return playerRepository.findPlayerHasMoved(gameId);
     }
 }

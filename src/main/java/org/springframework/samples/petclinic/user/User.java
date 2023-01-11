@@ -1,6 +1,5 @@
 package org.springframework.samples.petclinic.user;
 
-import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Set;
 
@@ -15,6 +14,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.springframework.samples.petclinic.achievements.Achievement;
 import org.springframework.samples.petclinic.player.Player;
 
@@ -25,6 +26,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Audited
 @Table(name = "users")
 public class User{
 	@NotNull
@@ -55,14 +57,17 @@ public class User{
 	String password;
 
 	@ManyToMany
+	@NotAudited
 	private Set<Achievement> achievements;
 
 	boolean enabled;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+	@NotAudited
 	private List<Player> players;
 
 	@ManyToMany(cascade = CascadeType.ALL)
+	@NotAudited
 	private List<User> friends;
 
 	public User(String username, String email, String password){
@@ -83,6 +88,7 @@ public class User{
 	}
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+	@NotAudited
 	private Set<Authorities> authorities;
 
 	public Set<Achievement> getAchievements() {

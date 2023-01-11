@@ -2,6 +2,8 @@ package org.springframework.samples.petclinic.game;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -25,7 +27,7 @@ public interface GameRepository extends CrudRepository<Game,Integer>{
     Game findGameByCode(String gameCode);
 
     @Query("SELECT g FROM Game g WHERE g.isActive = true AND g.player2 != null")
-    List<Game> findAllPlayingGames();
+    Page<Game> findAllPlayingGamesPage(Pageable pageable);
 
     @Query("SELECT g FROM Game g WHERE g.isActive = false")
     List<Game> findAllPlayingGamesFinished();

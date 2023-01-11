@@ -22,6 +22,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,8 +56,8 @@ public class UserService {
 		return userRepository.findByName(username).getPlayers();
 	}
 
-	public List<User> getAllRegisteredUsers(){
-		return userRepository.findAllUsers();
+	public Page<User> getAllRegisteredUsers(Pageable page){
+		return userRepository.findAllUsers(page);
 	}
 
 	@Transactional

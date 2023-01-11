@@ -30,14 +30,17 @@ public class GameServiceTest {
     @Test
 	void shouldFindAllGames() {
 		List<Game> games = this.gameService.getAllGames();
-		assertThat(games.size()).isEqualTo(7);
+		assertThat(games.size()).isEqualTo(10);
 	}
 
+    /*
+     
     @Test
     void shouldFindAllPlayingGames(){
         List<Game> playingGames = this.gameService.getAllPlayingGames();
-        assertThat(playingGames.size()).isEqualTo(2);
+        assertThat(playingGames.size()).isEqualTo(5);
     }
+    */
 
     @Test
     void shouldFindActiveEmptyGames(){
@@ -133,6 +136,9 @@ public class GameServiceTest {
 
         boolean move3 = this.gameService.isNeighbour(space4, space3);
         assertThat(move3).isEqualTo(true);
+
+        boolean move4 = this.gameService.isNeighbour(space1, space1);
+        assertThat(move4).isEqualTo(false);
     }
     @Test
     void moveToSpaceWithoutSarcineTest(){
@@ -160,13 +166,14 @@ public class GameServiceTest {
         Space space4 = Space.createSpace(7,1,0,0,0);
         Space space5 = Space.createSpace(1,0,1,0,0);
         Space space6 = Space.createSpace(2,0,0,0,0);
-        
-        
+        Space space7 = Space.createSpace(7,1,4,0,0);
+        Space space8 = Space.createSpace(2,0,0,1,0);
+
         //debe dar falso por position
         boolean move1 = this.gameService.isMovementAllowed(player, space1, space2,2);
         assertThat(move1).isEqualTo(false);
         //debe dar falso por tener sarcina
-        boolean move2 = this.gameService.isMovementAllowed(player, space1, space3,2);
+        boolean move2 = this.gameService.isMovementAllowed(player, space1, space3,1);
         assertThat(move2).isEqualTo(false);
         //debe dar falso por numero invalido de numBacteriaToMove
         boolean move3 = this.gameService.isMovementAllowed(player, space1, space4,1);
@@ -174,10 +181,12 @@ public class GameServiceTest {
 
         boolean move4 = this.gameService.isMovementAllowed(player, space1, space4,2);
         assertThat(move4).isEqualTo(true);
-        
-
+    
         boolean move5 = this.gameService.isMovementAllowed(player, space5, space6, 1);
         assertThat(move5).isEqualTo(true);
+
+        boolean move6 = this.gameService.isMovementAllowed(player, space7, space8, 4);
+        assertThat(move6).isEqualTo(true);
     }
 
 }

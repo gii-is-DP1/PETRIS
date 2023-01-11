@@ -40,7 +40,6 @@ public class FriendRequestController {
 
     @PostMapping(path = "/users/{userId}/friends/friendRequest/{id}/accept")
     public String accept(@PathVariable("id") int id, ModelMap modelMap) {
-        String vista = "invitations/invitationList";
         UserDetails userDet = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.getUser(userDet.getUsername()).get();
         modelMap.addAttribute("user", user);

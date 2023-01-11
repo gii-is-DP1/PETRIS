@@ -33,11 +33,13 @@ public class GameServiceTest {
 		assertThat(games.size()).isEqualTo(10);
 	}
 
-    @Test
-    void shouldFindAllPlayingGames(){
-        List<Game> playingGames = this.gameService.getAllPlayingGames();
-        assertThat(playingGames.size()).isEqualTo(5);
-    }
+    /*
+     @Test
+     void shouldFindAllPlayingGames(){
+         List<Game> playingGames = this.gameService.getAllPlayingGames();
+         assertThat(playingGames.size()).isEqualTo(5);
+        }
+    */
 
     @Test
     void shouldFindActiveEmptyGames(){

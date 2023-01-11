@@ -98,5 +98,36 @@
 
     </div>
 
+    <h2 style = "height: 62px; width: 200px; position: absolute; right: 6%; bottom: 10%; font-size: 26px;text-align:center;">Game History</h2>
+
+    <table id="personalStatistics" class="table table-striped">
+        <thead>
+        </thead>
+        <tbody>
+            <tr>
+                <th  style = "width: 300px; position: absolute; right: 3%; bottom: 3%;">Phase</th>
+                <td style = "position: absolute; right: 3%;bottom: 3%">
+                    <c:out value="${game.phase}"/>
+                </td>
+            </tr>
+            <tr>
+                <th  style = "width: 300px; position: absolute; right: 3%; bottom: -1%;">Round</th>
+                <td style = "position: absolute; right: 3%;bottom: -1%">
+                    <c:out value="${game.round}"/>
+                </td>
+            </tr>
+            <tr>
+                <th  style = "width: 300px; position: absolute; right: 3%; bottom: 7%;">Turn</th>
+                <td style = "position: absolute; right: 3%;bottom: 7%">
+                    <c:if test="${players.get(0).turn eq true}">
+                    <c:out value="${players.get(0).user.username}"/>
+                    </c:if>
+                    <c:if test="${players.get(1).turn eq true}">
+                    <c:out value="${players.get(1).user.username}"/>
+                    </c:if>
+                </td>
+            </tr>
+        </tbody>
+    </table>   
     </body>
 </game:layout>

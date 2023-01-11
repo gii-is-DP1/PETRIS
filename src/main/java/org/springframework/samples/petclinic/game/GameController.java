@@ -150,9 +150,11 @@ public class GameController{
             model.put("message", "You can't make this move, try another one.");
         }catch (Exception e){
         }
+        boolean showPassTurnButton = this.gameService.showPassTurnButton(activeGame, user.getUsername());
     
         model.addAttribute("code",activeGame.getCode());
         model.put("game", activeGame);
+        model.addAttribute("showPassTurnButton", showPassTurnButton);
         model.put("petrisBoard", this.petrisBoardService.getByGameId(activeGame.getId()));
 
         return CURRENT_GAME;
@@ -177,6 +179,7 @@ public class GameController{
     }
     @GetMapping("/{gameId}/finishedGame")
     public String finishedGame(ModelMap model,@PathVariable("gameId") Integer gameId){
+       
         if(this.gameService.getGameById(gameId)==null) {
             throw new RuntimeException("test exception");
         } else {

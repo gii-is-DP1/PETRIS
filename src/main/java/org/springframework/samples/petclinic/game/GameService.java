@@ -573,5 +573,22 @@ public class GameService {
 
         return thereIsAMove;
     }
+    public boolean showPassTurnButton(Game activeGame, String userName) {
+
+        boolean res = false ;
+        boolean isPlayer1 = this.playerService.isPlayerOfUser(activeGame.getPlayer1().getId(), userName);
+        boolean isPlayer2 = this.playerService.isPlayerOfUser(activeGame.getPlayer2().getId(), userName);
+
+        if (isPlayer1){
+            if(!activeGame.getPlayer1().isTurn()){
+                res = true;
+            }
+        }else if(isPlayer2){
+            if(!activeGame.getPlayer2().isTurn()){
+                res = true;
+            }
+        }
+        return res;
+    }
     
 }

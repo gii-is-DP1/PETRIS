@@ -169,6 +169,8 @@ public class GameController{
         User user = this.userService.getUser(ud.getUsername()).get();
         model.addAttribute("user",user);
 
+        gameService.achievementsUpdateFinishedGame(gameId);
+        
         Game game= this.gameService.getGameById(gameId);
         model.put("game", game);
 

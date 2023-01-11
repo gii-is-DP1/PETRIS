@@ -248,6 +248,7 @@ public class GameController{
             }
 
             gameService.achievementsUpdateFinishedGame(gameId);
+            
             model.addAttribute("user",user);
             model.addAttribute("winnerUser", winneruser);
             model.addAttribute("pointOfTheGame", points);

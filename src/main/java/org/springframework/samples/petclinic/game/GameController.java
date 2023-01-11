@@ -197,14 +197,6 @@ public class GameController{
             throw new RuntimeException("test exception");
         } else {
 
-<<<<<<< HEAD
-        gameService.achievementsUpdateFinishedGame(gameId);
-        
-        Game game= this.gameService.getGameById(gameId);
-        model.put("game", game);
-
-        return FINISHED_GAME;
-=======
             UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             User user = this.userService.getUser(ud.getUsername()).get();
             
@@ -254,13 +246,14 @@ public class GameController{
                     }
                 }
             }
+
+            gameService.achievementsUpdateFinishedGame(gameId);
             model.addAttribute("user",user);
             model.addAttribute("winnerUser", winneruser);
             model.addAttribute("pointOfTheGame", points);
     
             return FINISHED_GAME;
         }
->>>>>>> master
     }
 
     @GetMapping("/playing")

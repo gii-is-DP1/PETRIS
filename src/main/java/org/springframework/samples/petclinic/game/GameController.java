@@ -246,9 +246,14 @@ public class GameController{
                     }
                 }
             }
+
+
+
             model.addAttribute("user",user);
             model.addAttribute("winnerUser", winneruser);
             model.addAttribute("pointOfTheGame", points);
+
+            //gameService.achievementsUpdateFinishedGame(gameId);
     
             return FINISHED_GAME;
         }

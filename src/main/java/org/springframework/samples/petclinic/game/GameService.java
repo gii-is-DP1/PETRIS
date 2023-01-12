@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.samples.petclinic.Colour.Colour;
 import org.springframework.samples.petclinic.Colour.ColourService;
+import org.springframework.samples.petclinic.achievements.Achievement;
+import org.springframework.samples.petclinic.achievements.AchievementRepository;
 import org.springframework.samples.petclinic.model.PetrisBoard;
 import org.springframework.samples.petclinic.model.PetrisBoardService;
 import org.springframework.samples.petclinic.player.Player;
@@ -29,15 +31,17 @@ public class GameService {
     private final PetrisBoardService petrisBoardService;
     private final SpaceService spaceService;
     private final TokenService tokenService;
+    private final AchievementRepository achievementRepository;
  
     @Autowired
-	public GameService(GameRepository gameRepository,TokenService tokenService,PlayerService playerService,ColourService colourService,PetrisBoardService petrisBoardService,SpaceService spaceService) {
+	public GameService(GameRepository gameRepository,TokenService tokenService,PlayerService playerService,ColourService colourService,PetrisBoardService petrisBoardService,SpaceService spaceService, AchievementRepository achievementRepository) {
 		this.gameRepository = gameRepository;
         this.playerService = playerService;
         this.tokenService = tokenService;
         this.colourService = colourService;
         this.petrisBoardService = petrisBoardService;
         this.spaceService = spaceService;
+        this.achievementRepository = achievementRepository;
 	}
     public List<Game> getAllGames(){
         return gameRepository.findAll();
@@ -572,6 +576,45 @@ public class GameService {
         }
 
         return thereIsAMove;
+    }
+
+    // Actualizacion logros tras partida
+    public void achievementsUpdateFinishedGame(Integer idGame) {
+        Game g = gameRepository.findGameByid(idGame);
+        List<Achievement> achievements = achievementRepository.findAll();
+        List<Player> players = null;
+        players.add(g.getPlayer1());
+        players.add(g.getPlayer2());
+        for (Player p : players) {
+            for (Achievement a : achievements) {
+                switch (a.getMetric()) {
+                    case VICTORIES:
+                        if (p.getUser().getWonGames()==(a.getThreshold())) {
+                            a.getUsersWithAchievement().add(p.getUser());
+                            achievementRepository.save(a);
+                        }
+                        break;
+                    case LOSES:
+                        if (p.getUser().getLostGames()==(a.getThreshold())) {
+                            a.getUsersWithAchievement().add(p.getUser());
+                            achievementRepository.save(a);
+                        }
+                        break;
+                    case GAMES_PLAYED:
+                        if (p.getUser().getPlayedGames()==(a.getThreshold())) {
+                            a.getUsersWithAchievement().add(p.getUser());
+                            achievementRepository.save(a);
+                        }
+                        break;
+                    case POINTS:
+                        if (p.getUser().getPoints()==(a.getThreshold())) {
+                            a.getUsersWithAchievement().add(p.getUser());
+                            achievementRepository.save(a);
+                        }
+                        break;
+                }
+            }
+        }
     }
     
 }

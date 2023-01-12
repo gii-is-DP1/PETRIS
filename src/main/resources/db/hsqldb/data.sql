@@ -3,9 +3,11 @@ INSERT INTO users(username,password,enabled,email,points,played_games,won_games,
 INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('gonriblun','1',TRUE,'top2delmundo@email.com',100,25,25,0);
 INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('lucantdel','soysemigod',TRUE,'top3delmundo@email.com',30,28,24,4);
 INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('dancorfon','soysemigod',TRUE,'top4delmundo@email.com',150,24,21,3);
-INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('jaigargar1','soysemigod',TRUE,'top5delmundo@email.com',80,25,20,5);
+INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('jaigargar1','soysemigod',TRUE,'top5delmundo@email.com',0,2,0,2);
 INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('player1','soysemigod',TRUE,'top5delmundo@email.com',100,25,20,5);
 INSERT INTO users(username,password,enabled,email,points,played_games,won_games,lost_games) VALUES ('player2','soysemigod',TRUE,'player2@email.com',0,0,0,0);
+
+
 
 INSERT INTO USERS_FRIENDS VALUES ('raumerbas', 'dancorfon');
 INSERT INTO USERS_FRIENDS VALUES ('raumerbas', 'gonriblun');
@@ -168,3 +170,15 @@ INSERT INTO achievement(id,name,description,threshold,badge_image, metric) VALUE
 
 
 INSERT INTO chat(id, user_id, game_id, text) VALUES (1, 'raumerbas', 1, 'Aprende a jugar fenómeno, jajajajjaja. Te faltan bacterias');
+
+INSERT INTO USERS_ACHIEVEMENTS VALUES ('raumerbas', 1);
+INSERT INTO USERS_ACHIEVEMENTS VALUES ('gonriblun', 1);
+INSERT INTO USERS_ACHIEVEMENTS VALUES ('lucantdel', 1);
+INSERT INTO USERS_ACHIEVEMENTS VALUES ('player1', 1);
+INSERT INTO USERS_ACHIEVEMENTS VALUES ('dancorfon', 1);
+
+INSERT INTO USERS_ACHIEVEMENTS VALUES ('raumerbas', 2);
+INSERT INTO USERS_ACHIEVEMENTS VALUES ('gonriblun', 2);
+INSERT INTO USERS_ACHIEVEMENTS VALUES ('lucantdel', 2);
+INSERT INTO USERS_ACHIEVEMENTS VALUES ('player1', 2);
+INSERT INTO USERS_ACHIEVEMENTS VALUES ('dancorfon', 2);

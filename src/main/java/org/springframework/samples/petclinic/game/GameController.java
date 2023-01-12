@@ -161,16 +161,18 @@ public class GameController{
         }
         catch (ImpossibleMoveException i){
             model.put("message", "You can't make this move, try another one.");
+        }catch (MoveNotMadeException i){
+            
         }catch (Exception e){
             if(this.playerService.getPlayerHasMoved(gameId).isHasMoved() == true){
-                model.put("message", "if you have already moved your tokens you should end your turn");
-            }else{
-
+                model.put("message", "If you have already moved your tokens you should end your turn.");
             }
         }
+        boolean showPassTurnButton = this.gameService.showPassTurnButton(activeGame, user.getUsername());
     
         model.addAttribute("code",activeGame.getCode());
         model.put("game", activeGame);
+        model.addAttribute("showPassTurnButton", showPassTurnButton);
         model.put("petrisBoard", this.petrisBoardService.getByGameId(activeGame.getId()));
 
         return CURRENT_GAME;
@@ -194,7 +196,9 @@ public class GameController{
         return redirection;
     }
     @GetMapping("/{gameId}/finishedGame")
+
     public String finishedGame(ModelMap model,@PathVariable("gameId") Integer gameId) throws DataAccessException, DuplicatedUserNameException{
+
         if(this.gameService.getGameById(gameId)==null) {
             throw new RuntimeException("test exception");
         } else {

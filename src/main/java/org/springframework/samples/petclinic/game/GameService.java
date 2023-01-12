@@ -345,6 +345,7 @@ public class GameService {
         }
         game.setWinner(winnerColour);
         game.setLoser(loserColour);
+        game.setActive(false);
         this.save(game);
     }
     
@@ -392,11 +393,13 @@ public class GameService {
             res = true; 
             game.setWinner(game.getPlayer1().getColour().getName());
             game.setLoser(game.getPlayer2().getColour().getName());
+            game.setActive(false);
             this.save(game);
         }else if (player2IsWinner){
             res = true; 
             game.setWinner(game.getPlayer2().getColour().getName());
             game.setLoser(game.getPlayer1().getColour().getName());
+            game.setActive(false);
             this.save(game);
         }
         return res;
@@ -596,6 +599,7 @@ public class GameService {
         if (!thereIsAMove){
             game.setWinner(winnerColour);
             game.setLoser(loserColour);
+            game.setActive(false);
             this.save(game);
         }
 
@@ -717,6 +721,25 @@ public class GameService {
                 }
             }
         }
+
+    }
+    public void leaveGame(Game activeGame, String userName) {
+       
+        boolean isPlayer1 = this.playerService.isPlayerOfUser(activeGame.getPlayer1().getId(), userName);
+        boolean isPlayer2 = this.playerService.isPlayerOfUser(activeGame.getPlayer2().getId(), userName);
+
+        if (isPlayer1){
+            activeGame.setLoser(activeGame.getPlayer1().getColour().getName());
+            activeGame.setWinner(activeGame.getPlayer2().getColour().getName());
+            activeGame.setActive(false);
+            this.save(activeGame);
+        }else if(isPlayer2){
+            activeGame.setLoser(activeGame.getPlayer2().getColour().getName());
+            activeGame.setWinner(activeGame.getPlayer1().getColour().getName());
+            activeGame.setActive(false);
+            this.save(activeGame);
+        }
+
 
     }
     

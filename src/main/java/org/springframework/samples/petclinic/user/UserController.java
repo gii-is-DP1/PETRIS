@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -352,6 +353,68 @@ public class UserController {
 
 		return vista;
 	}
+
+	@GetMapping("/registeredUser/{userId}")
+	public String editUserAdmin(ModelMap model, @PathVariable("userId") String userId){
+		String vista = "/users/editUserAdmin";
+		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User u = this.userService.getUser(ud.getUsername()).get();
+		model.addAttribute("user", u);
+		User u1 = this.userService.getUser(userId).get();
+		model.addAttribute("user1", u1);
+		return vista;
+
+	}
+
+	@PostMapping("/registeredUser/{userId}/edit")
+	public String processUpdateUserForm(ModelMap modelMap, @Valid User user, BindingResult result, 
+		@PathVariable("userId") String userId) throws DataAccessException, DuplicatedUserNameException {
+			String vista = "users/registeredUser";
+			if (result.hasErrors()) {
+				String vista2 = "users/editUserAdmin";
+				return vista2;
+			}else{
+				try {
+					User u1 = this.userService.getUser(userId).get();
+					u1.setEmail(user.getEmail());
+					u1.setPassword(user.getPassword());
+					userService.saveUser(u1);
+					modelMap.put("message", "User " + user.username + " has been modified");
+					modelMap.put("messageType", "warning");
+					
+				} catch (DuplicatedUserNameException e) {
+					modelMap.put("message", "User " + user.username + " has been modified");
+					modelMap.put("messageType", "warning");
+				}
+				return vista;
+			}
+		}
+
+		@GetMapping("/registeredUser/delete/{username}")
+		public String deleteUser(@PathVariable("username") String username, ModelMap modelMap) {
+			//UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			//User user = userService.getUser(ud.getUsername()).get();
+			//modelMap.addAttribute("user", user);
+			Optional<User> user1 = Optional.of(userService.getUser(username).get());
+
+			if(user1.isPresent()) {
+				userService.delete(user1.get());
+				modelMap.addAttribute("message", "user delete");
+			}else{
+				modelMap.addAttribute("message", "user not deleted");
+			}
+			
+			
+			return "redirect:/registeredUser";
+
+			
+
+			///if(u.isEnabled()){
+				
+
+			//}
+		}
+
 
 	
 

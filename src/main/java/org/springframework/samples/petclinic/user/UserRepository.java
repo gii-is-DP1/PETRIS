@@ -28,4 +28,7 @@ public interface UserRepository extends  CrudRepository<User, String>{
     @Query(value = "SELECT * FROM USERS", nativeQuery = true)
     public Page<User> findAllUsers(Pageable pageable);
 
+    @Query(value = "SELECT * FROM USERS", nativeQuery = true)
+    public List<User> findAllUsers2();
+
 }

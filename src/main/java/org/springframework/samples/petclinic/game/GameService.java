@@ -2,6 +2,8 @@ package org.springframework.samples.petclinic.game;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -467,6 +469,7 @@ public class GameService {
                     
                 activeGame.getPlayer2().setHasMoved(true);
                 this.playerService.save(activeGame.getPlayer2());
+
             }else{
                 throw new ImpossibleMoveException();
             }
@@ -505,31 +508,12 @@ public class GameService {
     }
     
     //pasar de ronda
-    public String passRound(String userName, Game activeGame) throws NotHisTurnException, NoMoveException{
+    public String passRound(String userName, Game activeGame){
         String res = "redirect:/games/" + activeGame.getId();
-        boolean isPermitted = false;
         boolean isPlayer1 = this.playerService.isPlayerOfUser(activeGame.getPlayer1().getId(), userName);
         boolean isPlayer2 = this.playerService.isPlayerOfUser(activeGame.getPlayer2().getId(), userName);
 
-        if (isPlayer1){
-            if(!activeGame.getPlayer1().isTurn()){
-                throw new NotHisTurnException();
-            }else if(!activeGame.getPlayer1().isHasMoved()){
-                throw new NoMoveException();
-            }else{
-                isPermitted = true;
-            }
-        }else if(isPlayer2){
-            if(!activeGame.getPlayer2().isTurn()){
-                throw new NotHisTurnException();
-            }else if(!activeGame.getPlayer2().isHasMoved()){
-                throw new NoMoveException();
-            }else{
-                isPermitted = true;
-            }
-        }
-
-        if(isPermitted){
+        if(isPlayer1 || isPlayer2){
 
             Integer round = activeGame.getRound();
             Integer phase = activeGame.getPhase();
@@ -608,16 +592,16 @@ public class GameService {
 
         boolean res = false ;
         boolean isPlayer1 = this.playerService.isPlayerOfUser(activeGame.getPlayer1().getId(), userName);
-        if (isPlayer1){
-            if(activeGame.getPlayer1().isTurn()){
-                res = true;
-            }
+        if (isPlayer1 && activeGame.getPlayer1().isTurn() && activeGame.getPlayer1().isHasMoved()){
+            
+            res = true;
+
         }else if (activeGame.getPlayer2() != null){
+            
             boolean isPlayer2 = this.playerService.isPlayerOfUser(activeGame.getPlayer2().getId(), userName);
-            if(isPlayer2){
-                if(activeGame.getPlayer2().isTurn()){
-                    res = true;
-                }
+           
+            if(isPlayer2 && activeGame.getPlayer2().isTurn() && activeGame.getPlayer2().isHasMoved()){
+                res = true;
             }
         }
         return res;
@@ -651,15 +635,16 @@ public class GameService {
         if(user.getUsername().equals(winnerUser.getUsername())) {
              points = 15;
              user.setPoints(user.getPoints() + points);
+             user.setPlayedGames(user.getPlayedGames() + 1);
              user.setWonGames(user.getWonGames() + 1);
              
         } else if((user.getUsername().equals(game.getPlayer2().getUser().getUsername())) || 
         (user.getUsername().equals(game.getPlayer1().getUser().getUsername()))) {
              points = -10;
              user.setPoints(user.getPoints() + points);
+             user.setPlayedGames(user.getPlayedGames() + 1);
              user.setLostGames(user.getLostGames() + 1);
-             
-
+            
         }
 
         return user;

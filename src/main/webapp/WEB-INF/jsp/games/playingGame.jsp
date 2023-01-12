@@ -99,27 +99,53 @@
 
     </div>
 
-    <h2 style = "height: 62px; width: 200px; position: absolute; right: 6%; bottom: 10%; font-size: 26px;text-align:center;">Game History</h2>
+    <h2 style = "height: 62px; width: 200px; position: absolute; right: 6%; bottom: 18%; font-size: 26px;text-align:center;">Players</h2>
 
     <table id="personalStatistics" class="table table-striped">
         <thead>
         </thead>
         <tbody>
             <tr>
-                <th  style = "width: 300px; position: absolute; right: 3%; bottom: 3%;">Phase</th>
-                <td style = "position: absolute; right: 3%;bottom: 3%">
+                <th  style = "width: 300px; position: absolute; right: 3%; bottom: 17%;" >
+                    <a href="/users/${user.username}/${players.get(0).user.username}" target="_blank"><c:out value="${players.get(0).user.username}"/></a>
+                </th>    
+                <td style = "position: absolute; right: 3%;bottom: 17%">
+                    <c:out value="${players.get(0).colour.name}"/>
+                </td>
+            </tr>
+            <tr>
+                <th  style = "width: 300px; position: absolute; right: 3%; bottom: 13%;" >
+                    <a href="/users/${user.username}/${players.get(1).user.username}" target="_blank"><c:out value="${players.get(1).user.username}"/></a>
+
+                </th>    
+                <td style = "position: absolute; right: 3%;bottom: 13%">
+                    <c:out value="${players.get(1).colour.name}"/>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2 style = "height: 62px; width: 200px; position: absolute; right: 6%; bottom: 1%; font-size: 26px;text-align:center;">Game History</h2>
+
+    <table id="gameStatistics" class="table table-striped">
+        <thead>
+        </thead>
+        <tbody>
+            <tr>
+                <th  style = "width: 300px; position: absolute; right: 3%; bottom: -5%;">Phase</th>
+                <td style = "position: absolute; right: 3%;bottom: -5%">
                     <c:out value="${game.phase}"/>
                 </td>
             </tr>
             <tr>
-                <th  style = "width: 300px; position: absolute; right: 3%; bottom: -1%;">Round</th>
-                <td style = "position: absolute; right: 3%;bottom: -1%">
+                <th  style = "width: 300px; position: absolute; right: 3%; bottom: -9%;">Round</th>
+                <td style = "position: absolute; right: 3%;bottom: -9%">
                     <c:out value="${game.round}"/>
                 </td>
             </tr>
             <tr>
-                <th  style = "width: 300px; position: absolute; right: 3%; bottom: 7%;">Turn</th>
-                <td style = "position: absolute; right: 3%;bottom: 7%">
+                <th  style = "width: 300px; position: absolute; right: 3%; bottom: -1%;">Turn</th>
+                <td style = "position: absolute; right: 3%;bottom: -1%">
                     <c:if test="${players.get(0).turn eq true}">
                     <c:out value="${players.get(0).user.username}"/>
                     </c:if>

@@ -107,7 +107,7 @@
         <tbody>
             <tr>
                 <th  style = "width: 300px; position: absolute; right: 3%; bottom: 17%;" >
-                    <c:out value="${players.get(0).user.username}"/>
+                    <a href="/users/${user.username}/${players.get(0).user.username}" target="_blank"><c:out value="${players.get(0).user.username}"/></a>
                 </th>    
                 <td style = "position: absolute; right: 3%;bottom: 17%">
                     <c:out value="${players.get(0).colour.name}"/>
@@ -115,7 +115,8 @@
             </tr>
             <tr>
                 <th  style = "width: 300px; position: absolute; right: 3%; bottom: 13%;" >
-                    <c:out value="${players.get(1).user.username}"/>
+                    <a href="/users/${user.username}/${players.get(1).user.username}" target="_blank"><c:out value="${players.get(1).user.username}"/></a>
+
                 </th>    
                 <td style = "position: absolute; right: 3%;bottom: 13%">
                     <c:out value="${players.get(1).colour.name}"/>

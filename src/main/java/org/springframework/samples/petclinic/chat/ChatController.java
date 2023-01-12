@@ -38,8 +38,7 @@ public class ChatController {
 		String vista = "chats/chat";
 		response.addHeader("Refresh", "12");
 		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String username = ud.getUsername();
-		User user = userService.getUser(username).get();
+		User user = userService.getUser(ud.getUsername()).get();
 		Game game = gameService.getGameById(gameId);
         User player1 = game.getPlayer1().getUser();
         User player2 = game.getPlayer2().getUser();
@@ -48,8 +47,7 @@ public class ChatController {
 
 
 		modelMap.addAttribute("user", user);
-		Collection<Chat> res;
-		res = this.chatService.getChatsById(game.getId());
+		Collection<Chat> res = this.chatService.getChatsById(game.getId());
 		modelMap.addAttribute("chats", res);
 
 		modelMap.addAttribute("NuevoMensaje", new Chat());

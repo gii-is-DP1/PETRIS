@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -14,6 +15,7 @@ import org.springframework.samples.petclinic.model.PetrisBoardService;
 import org.springframework.samples.petclinic.player.Player;
 import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.samples.petclinic.token.ImpossibleMoveException;
+import org.springframework.samples.petclinic.user.DuplicatedUserNameException;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -194,68 +196,30 @@ public class GameController{
         return redirection;
     }
     @GetMapping("/{gameId}/finishedGame")
-    public String finishedGame(ModelMap model,@PathVariable("gameId") Integer gameId){
-       
+
+    public String finishedGame(ModelMap model,@PathVariable("gameId") Integer gameId) throws DataAccessException, DuplicatedUserNameException{
+
         if(this.gameService.getGameById(gameId)==null) {
             throw new RuntimeException("test exception");
         } else {
-
+        
             UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             User user = this.userService.getUser(ud.getUsername()).get();
-            
-    
+        
             Game game= this.gameService.getGameById(gameId);
             model.put("game", game);
-            User winneruser = new User();
-            Integer points = null;
-            if(game.getWinner().equals("red")) {
-                if(game.getPlayer1().getColour().getName().equals("red")) {
-                    winneruser = game.getPlayer1().getUser();
-                    if(user.getUsername().equals(winneruser.getUsername())) {
-                        points = 15;
-                        user.setPoints(user.getPoints() + points);
-                    } else if(user.getUsername().equals(game.getPlayer2().getUser().getUsername())) {
-                        points = -10;
-                        user.setPoints(user.getPoints() + points);
-                    }
-                } else {
-                    winneruser = game.getPlayer2().getUser();
-                    if(user.getUsername().equals(winneruser.getUsername())) {
-                        points = 15;
-                        user.setPoints(user.getPoints() + points);
-                    } else if(user.getUsername().equals(game.getPlayer1().getUser().getUsername())) {
-                        points = -10;
-                        user.setPoints(user.getPoints() + points);
-                    }
-                }
-            } else {
-                if(game.getPlayer1().getColour().getName().equals("red")) {
-                    winneruser = game.getPlayer2().getUser();
-                    if(user.getUsername().equals(winneruser.getUsername())) {
-                        points = 15;
-                        user.setPoints(user.getPoints() + points);
-                    } else if(user.getUsername().equals(game.getPlayer1().getUser().getUsername())) {
-                        points = -10;
-                        user.setPoints(user.getPoints() + points);
-                    }
-                } else {
-                    winneruser = game.getPlayer1().getUser();
-                    if(user.getUsername().equals(winneruser.getUsername())) {
-                        points = 15;
-                        user.setPoints(user.getPoints() + points);
-                    } else if(user.getUsername().equals(game.getPlayer2().getUser().getUsername())) {
-                        points = -10;
-                        user.setPoints(user.getPoints() + points);
-                    }
-                }
-            }
-            model.addAttribute("user",user);
+            User winneruser = this.gameService.getWinnerUser(gameId);
+            User user1 = this.gameService.getUser(gameId, winneruser, user);
+            Integer points = this.gameService.getPointsGame(gameId, winneruser, user);
+            model.addAttribute("user",user1);
             model.addAttribute("winnerUser", winneruser);
             model.addAttribute("pointOfTheGame", points);
+
+            //gameService.achievementsUpdateFinishedGame(gameId);
     
             return FINISHED_GAME;
         }
-    }
+     }
 
     @GetMapping("/playing")
     public String listAllPlayingGamesPage(ModelMap model, @PageableDefault(page = 0,size = 1) Pageable pg){

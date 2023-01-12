@@ -19,7 +19,12 @@
 				<c:forEach items="${users.content}" var="usersp">
 					<thead>
 						<tr>
-							<th style="width: 150px;">User: </th>
+							<th style="width: 150px;">User: 
+							<form action=""><button style="height: 5px; position: absolute; right: 25%;">Update</button></form>
+							<form action=""><button style="height: 5px; position: absolute; right: 20%;">Delete</button></form>
+							&nbsp;
+							</th>
+
 						</tr>
 					</thead>
 					<tr>

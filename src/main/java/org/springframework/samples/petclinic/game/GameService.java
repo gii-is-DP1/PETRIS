@@ -4,10 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.samples.petclinic.Colour.Colour;
 import org.springframework.samples.petclinic.Colour.ColourService;
+import org.springframework.samples.petclinic.achievements.Achievement;
+import org.springframework.samples.petclinic.achievements.AchievementRepository;
 import org.springframework.samples.petclinic.model.PetrisBoard;
 import org.springframework.samples.petclinic.model.PetrisBoardService;
 import org.springframework.samples.petclinic.player.Player;
@@ -17,7 +20,12 @@ import org.springframework.samples.petclinic.space.SpaceService;
 import org.springframework.samples.petclinic.token.ImpossibleMoveException;
 import org.springframework.samples.petclinic.token.Token;
 import org.springframework.samples.petclinic.token.TokenService;
+import org.springframework.samples.petclinic.user.DuplicatedUserNameException;
 import org.springframework.samples.petclinic.user.User;
+import org.springframework.samples.petclinic.user.UserRepository;
+import org.springframework.samples.petclinic.user.UserService;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,15 +37,22 @@ public class GameService {
     private final PetrisBoardService petrisBoardService;
     private final SpaceService spaceService;
     private final TokenService tokenService;
+    private final AchievementRepository achievementRepository;
+    private final UserService userService;
+    private final UserRepository userRepository;
  
     @Autowired
-	public GameService(GameRepository gameRepository,TokenService tokenService,PlayerService playerService,ColourService colourService,PetrisBoardService petrisBoardService,SpaceService spaceService) {
+	public GameService(GameRepository gameRepository,TokenService tokenService,PlayerService playerService,ColourService colourService,
+    PetrisBoardService petrisBoardService,SpaceService spaceService, UserService userService, UserRepository userRepository, AchievementRepository achievementRepository) {
 		this.gameRepository = gameRepository;
         this.playerService = playerService;
         this.tokenService = tokenService;
         this.colourService = colourService;
         this.petrisBoardService = petrisBoardService;
         this.spaceService = spaceService;
+        this.userService = userService;
+        this.userRepository = userRepository;
+        this.achievementRepository = achievementRepository;
 	}
     public List<Game> getAllGames(){
         return gameRepository.findAll();
@@ -586,6 +601,7 @@ public class GameService {
 
         return thereIsAMove;
     }
+
     public boolean showPassTurnButton(Game activeGame, String userName) {
 
         boolean res = false ;
@@ -603,6 +619,105 @@ public class GameService {
             }
         }
         return res;
+
+
+    public User getWinnerUser(Integer gameId) {
+        User winneruser = new User();
+        Game game= this.getGameById(gameId);
+        if(game.getWinner().equals("red")) {
+            if(game.getPlayer1().getColour().getName().equals("red")) {
+                winneruser = game.getPlayer1().getUser();
+            } else {
+                winneruser = game.getPlayer2().getUser();
+            }
+        } else {
+            if(game.getPlayer1().getColour().getName().equals("red")) {
+                winneruser = game.getPlayer2().getUser();
+            } else {
+                winneruser = game.getPlayer1().getUser();
+            }
+        }
+
+        return winneruser;
+
+    }
+
+    
+    public User getUser(Integer gameId, User winnerUser, User user) throws DataAccessException, DuplicatedUserNameException {
+        Game game= this.getGameById(gameId);
+        Integer points = null;
+        if(user.getUsername().equals(winnerUser.getUsername())) {
+             points = 15;
+             user.setPoints(user.getPoints() + points);
+             user.setWonGames(user.getWonGames() + 1);
+             
+        } else if((user.getUsername().equals(game.getPlayer2().getUser().getUsername())) || 
+        (user.getUsername().equals(game.getPlayer1().getUser().getUsername()))) {
+             points = -10;
+             user.setPoints(user.getPoints() + points);
+             user.setLostGames(user.getLostGames() + 1);
+             
+
+        }
+
+        return user;
+        
+    }
+
+    public Integer getPointsGame(Integer gameId, User winnerUser, User user) {
+            
+    
+            Game game= this.getGameById(gameId);
+            Integer points = null;
+            if(user.getUsername().equals(winnerUser.getUsername())) {
+                points = 15;
+           } else if((user.getUsername().equals(game.getPlayer2().getUser().getUsername())) || 
+           (user.getUsername().equals(game.getPlayer1().getUser().getUsername()))) { 
+                points = -10;
+           }
+           return points;
+        }
+
+
+
+    // Actualizacion logros tras partida
+    public void achievementsUpdateFinishedGame(Integer idGame) {
+        Game g = gameRepository.findGameByid(idGame);
+        List<Achievement> achievements = achievementRepository.findAll();
+        List<Player> players = null;
+        players.add(g.getPlayer1());
+        players.add(g.getPlayer2());
+        for (Player p : players) {
+            for (Achievement a : achievements) {
+                switch (a.getMetric()) {
+                    case VICTORIES:
+                        if (p.getUser().getWonGames()==(a.getThreshold())) {
+                            a.getUsersWithAchievement().add(p.getUser());
+                            achievementRepository.save(a);
+                        }
+                        break;
+                    case LOSES:
+                        if (p.getUser().getLostGames()==(a.getThreshold())) {
+                            a.getUsersWithAchievement().add(p.getUser());
+                            achievementRepository.save(a);
+                        }
+                        break;
+                    case GAMES_PLAYED:
+                        if (p.getUser().getPlayedGames()==(a.getThreshold())) {
+                            a.getUsersWithAchievement().add(p.getUser());
+                            achievementRepository.save(a);
+                        }
+                        break;
+                    case POINTS:
+                        if (p.getUser().getPoints()==(a.getThreshold())) {
+                            a.getUsersWithAchievement().add(p.getUser());
+                            achievementRepository.save(a);
+                        }
+                        break;
+                }
+            }
+        }
+
     }
     
 }

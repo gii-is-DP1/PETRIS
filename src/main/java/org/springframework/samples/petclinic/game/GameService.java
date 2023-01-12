@@ -163,6 +163,7 @@ public class GameService {
             } 
     }
 
+    // Actualizacion logros tras partida
     public void achievementsUpdateFinishedGame(Integer idGame) {
         Game g = gameRepository.findGameByid(idGame);
         List<Achievement> achievements = achievementRepository.findAll();

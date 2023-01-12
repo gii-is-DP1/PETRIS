@@ -192,11 +192,26 @@ public class GameController{
         }catch(NotHisTurnException e){
             model.put("message", "It's not your turn");
         }
-
         return redirection;
     }
-    @GetMapping("/{gameId}/finishedGame")
 
+    @GetMapping("/{gameId}/leaveGame")
+    public String leaveGame(ModelMap model, @PathVariable("gameId") Integer gameId){
+        
+        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = this.userService.getUser(ud.getUsername()).get();
+        model.addAttribute("user",user);
+
+        Game activeGame= this.gameService.getGameById(gameId);
+
+        this.gameService.leaveGame(activeGame,user.getUsername());
+
+        return "redirect:/games/" + activeGame.getId() + "/finishedGame";
+
+    }
+    
+
+    @GetMapping("/{gameId}/finishedGame")
     public String finishedGame(ModelMap model,@PathVariable("gameId") Integer gameId) throws DataAccessException, DuplicatedUserNameException{
 
         if(this.gameService.getGameById(gameId)==null) {
@@ -215,7 +230,7 @@ public class GameController{
             model.addAttribute("winnerUser", winneruser);
             model.addAttribute("pointOfTheGame", points);
 
-            //gameService.achievementsUpdateFinishedGame(gameId);
+            gameService.achievementsUpdateFinishedGame(gameId);
     
             return FINISHED_GAME;
         }

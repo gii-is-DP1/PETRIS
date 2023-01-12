@@ -34,11 +34,12 @@ public class GameServiceTest {
 	}
 
     /*
-     @Test
-     void shouldFindAllPlayingGames(){
-         List<Game> playingGames = this.gameService.getAllPlayingGames();
-         assertThat(playingGames.size()).isEqualTo(5);
-        }
+     
+    @Test
+    void shouldFindAllPlayingGames(){
+        List<Game> playingGames = this.gameService.getAllPlayingGames();
+        assertThat(playingGames.size()).isEqualTo(5);
+    }
     */
 
     @Test
@@ -172,7 +173,7 @@ public class GameServiceTest {
         boolean move1 = this.gameService.isMovementAllowed(player, space1, space2,2);
         assertThat(move1).isEqualTo(false);
         //debe dar falso por tener sarcina
-        boolean move2 = this.gameService.isMovementAllowed(player, space1, space3,2);
+        boolean move2 = this.gameService.isMovementAllowed(player, space1, space3,1);
         assertThat(move2).isEqualTo(false);
         //debe dar falso por numero invalido de numBacteriaToMove
         boolean move3 = this.gameService.isMovementAllowed(player, space1, space4,1);

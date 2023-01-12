@@ -619,7 +619,7 @@ public class GameService {
             }
         }
         return res;
-
+    }
 
     public User getWinnerUser(Integer gameId) {
         User winneruser = new User();

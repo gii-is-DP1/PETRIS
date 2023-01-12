@@ -65,4 +65,8 @@ public class PlayerService {
         this.save(player1);
         this.save(player2);
     }
+
+    public Player getPlayerHasMoved(Integer gameId){
+        return playerRepository.findPlayerHasMoved(gameId);
+    }
 }

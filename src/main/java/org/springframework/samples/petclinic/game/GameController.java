@@ -206,7 +206,7 @@ public class GameController{
 
         this.gameService.leaveGame(activeGame,user.getUsername());
 
-        return FINISHED_GAME;
+        return "redirect:/games/" + activeGame.getId() + "/finishedGame";
 
     }
     
@@ -230,7 +230,7 @@ public class GameController{
             model.addAttribute("winnerUser", winneruser);
             model.addAttribute("pointOfTheGame", points);
 
-            //gameService.achievementsUpdateFinishedGame(gameId);
+            gameService.achievementsUpdateFinishedGame(gameId);
     
             return FINISHED_GAME;
         }

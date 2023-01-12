@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.samples.petclinic.Colour.Colour;
 import org.springframework.samples.petclinic.Colour.ColourService;
 import org.springframework.samples.petclinic.achievements.Achievement;
-import org.springframework.samples.petclinic.achievements.AchievementRepository;
+import org.springframework.samples.petclinic.achievements.AchievementService;
 import org.springframework.samples.petclinic.model.PetrisBoard;
 import org.springframework.samples.petclinic.model.PetrisBoardService;
 import org.springframework.samples.petclinic.player.Player;
@@ -24,8 +24,6 @@ import org.springframework.samples.petclinic.user.DuplicatedUserNameException;
 import org.springframework.samples.petclinic.user.User;
 import org.springframework.samples.petclinic.user.UserRepository;
 import org.springframework.samples.petclinic.user.UserService;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -37,13 +35,13 @@ public class GameService {
     private final PetrisBoardService petrisBoardService;
     private final SpaceService spaceService;
     private final TokenService tokenService;
-    private final AchievementRepository achievementRepository;
+    private final AchievementService achievementService;
     private final UserService userService;
     private final UserRepository userRepository;
  
     @Autowired
 	public GameService(GameRepository gameRepository,TokenService tokenService,PlayerService playerService,ColourService colourService,
-    PetrisBoardService petrisBoardService,SpaceService spaceService, UserService userService, UserRepository userRepository, AchievementRepository achievementRepository) {
+    PetrisBoardService petrisBoardService,SpaceService spaceService, UserService userService, UserRepository userRepository, AchievementService achievementService) {
 		this.gameRepository = gameRepository;
         this.playerService = playerService;
         this.tokenService = tokenService;
@@ -52,7 +50,7 @@ public class GameService {
         this.spaceService = spaceService;
         this.userService = userService;
         this.userRepository = userRepository;
-        this.achievementRepository = achievementRepository;
+        this.achievementService = achievementService;
 	}
     public List<Game> getAllGames(){
         return gameRepository.findAll();
@@ -685,40 +683,35 @@ public class GameService {
 
 
     // Actualizacion logros tras partida
-    public void achievementsUpdateFinishedGame(Integer idGame) {
-        Game g = gameRepository.findGameByid(idGame);
-        List<Achievement> achievements = achievementRepository.findAll();
-        List<Player> players = null;
-        players.add(g.getPlayer1());
-        players.add(g.getPlayer2());
+    public void achievementsUpdateFinishedGame(Integer gameId) {
+
+        List<Achievement> achievements = achievementService.getAllAchievements();
+        List<Player> players = this.playerService.getPlayersOfGame(gameId);
         for (Player p : players) {
             for (Achievement a : achievements) {
                 switch (a.getMetric()) {
                     case VICTORIES:
                         if (p.getUser().getWonGames()==(a.getThreshold())) {
                             a.getUsersWithAchievement().add(p.getUser());
-                            achievementRepository.save(a);
                         }
                         break;
                     case LOSES:
                         if (p.getUser().getLostGames()==(a.getThreshold())) {
                             a.getUsersWithAchievement().add(p.getUser());
-                            achievementRepository.save(a);
                         }
                         break;
                     case GAMES_PLAYED:
                         if (p.getUser().getPlayedGames()==(a.getThreshold())) {
                             a.getUsersWithAchievement().add(p.getUser());
-                            achievementRepository.save(a);
                         }
                         break;
                     case POINTS:
                         if (p.getUser().getPoints()==(a.getThreshold())) {
                             a.getUsersWithAchievement().add(p.getUser());
-                            achievementRepository.save(a);
                         }
                         break;
                 }
+                this.achievementService.save(a);
             }
         }
 

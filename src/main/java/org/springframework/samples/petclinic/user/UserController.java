@@ -380,9 +380,6 @@ public class UserController {
 
 		@GetMapping("/registeredUser/delete/{username}")
 		public String deleteUser(@PathVariable("username") String username, ModelMap modelMap) {
-			//UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			//User user = userService.getUser(ud.getUsername()).get();
-			//modelMap.addAttribute("user", user);
 			Optional<User> user1 = Optional.of(userService.getUser(username).get());
 
 			if(user1.isPresent()) {
@@ -396,12 +393,20 @@ public class UserController {
 			return "redirect:/registeredUser";
 
 			
-
-			///if(u.isEnabled()){
-				
-
-			//}
 		}
+
+		@GetMapping("/auditoria")
+    	public String listAuditory(ModelMap model){
+        	List<Object> list = userService.auditoria();
+        	model.addAttribute("list", list);
+
+        	UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        	String username = ud.getUsername();
+        	User user = userService.getUser(username).get();
+        	model.addAttribute("user", user);
+
+        	return "/auditoria";
+    	}
 
 
 	

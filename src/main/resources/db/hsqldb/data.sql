@@ -25,8 +25,8 @@ INSERT INTO authorities(id,username,authority) VALUES (2,'gonriblun','admin');
 INSERT INTO authorities(id,username,authority) VALUES (3,'lucantdel','admin');
 INSERT INTO authorities(id,username,authority) VALUES (4,'dancorfon','admin');
 INSERT INTO authorities(id,username,authority) VALUES (5,'jaigargar1','admin');
-INSERT INTO authorities(id,username,authority) VALUES (6,'player1','player');
-INSERT INTO authorities(id,username,authority) VALUES (7,'player2','player');
+INSERT INTO authorities(id,username,authority) VALUES (6,'player1','user');
+INSERT INTO authorities(id,username,authority) VALUES (7,'player2','user');
 
 
 INSERT INTO vets(id, first_name,last_name) VALUES (1, 'James', 'Carter');

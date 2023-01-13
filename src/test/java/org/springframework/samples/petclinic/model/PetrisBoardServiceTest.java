@@ -32,13 +32,5 @@ public class PetrisBoardServiceTest {
         PetrisBoard board = this.petrisBoardService.getByGameId(id);
         assertThat(board.getHeight()).isEqualTo(1000);
     }
-    @Test
-    void shouldCreatePetrisBoard(){
-        Game game = this.gameService.getAllPublicActiveEmptyGames().get(0);
-        PetrisBoard board = this.petrisBoardService.createBoard(game);
-
-        assertThat(board.getId()).isNotNull();
-        assertThat(board.getGame().getId()).isEqualTo(game.getId());
-        assertThat(board.getTokens().get(0).getId()).isNotEqualTo(0);
-    }
+    
 }

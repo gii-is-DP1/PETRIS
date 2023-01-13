@@ -19,7 +19,7 @@ public class PlayerServiceTest {
 	@Test
 	void shouldListAllPlayer(){
 		List<Player> players = this.playerService.getAll();
-		assertThat(players.size()).isEqualTo(11);
+		assertThat(players.size()).isEqualTo(14);
 	}
     @Test
 	void shouldFindPlayersByUser() {

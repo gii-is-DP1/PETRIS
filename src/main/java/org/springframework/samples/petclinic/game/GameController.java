@@ -24,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -232,12 +233,29 @@ public class GameController{
             model.addAttribute("winnerUser", winneruser);
             model.addAttribute("pointOfTheGame", points);
             
+            
             this.gameService.achievementsUpdateFinishedGame(gameId);
     
             return FINISHED_GAME;
         }
      }
 
+
+    @PostMapping("/{gameId}/finishedGame")
+    public String postfinishedGame(@Valid @ModelAttribute("user") User user,@PathVariable("gameId") Integer gameId,
+    BindingResult bindingResult) throws DataAccessException, DuplicatedUserNameException {
+        if (bindingResult.hasErrors()) {
+            return FINISHED_GAME;
+        } else {
+            User winneruser = this.gameService.getWinnerUser(gameId);
+            this.gameService.savUser(gameId, winneruser, user);
+            return FINISHED_GAME;
+        }
+        
+    }
+    
+
+        
     @GetMapping("/playing")
     public String listAllPlayingGamesPage(ModelMap model, @PageableDefault(page = 0,size = 1) Pageable pg){
 

@@ -28,12 +28,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.samples.petclinic.friendRequest.FriendRequestRepository;
-import org.springframework.samples.petclinic.friendRequest.FriendRequestService;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.game.GameService;
 import org.springframework.samples.petclinic.player.Player;
-import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -58,28 +55,19 @@ import org.springframework.web.servlet.ModelAndView;
 public class UserController {
 
 	private static final String VIEWS_USER_CREATE_FORM = "users/createUserForm";
-	private static final String VIEWS_OWNER_CREATE_FORM = "users/createOwnerForm";
 	private static final String VIEWS_USER_EDIT_PROFILE = "users/editProfile";
 
 	private final UserService userService;
-	private final PlayerService playerService;
 	private final GameService gameService;
-	private final FriendRequestService friendRequestService;
-	private final FriendRequestRepository friendRequestRepository;
 	private final AuthoritiesRepository authoritiesRepository;
 
 	
 	
-	private final UserRepository userRepository;
 
 	@Autowired
-	public UserController(UserService clinicService, PlayerService playerService, GameService gameService, UserRepository userRepository, FriendRequestRepository friendRequestRepository, FriendRequestService friendRequestService, AuthoritiesRepository authoritiesRepository) {
-		this.userService = clinicService;
-		this.playerService = playerService;
+	public UserController(UserService userService, GameService gameService, AuthoritiesRepository authoritiesRepository) {
+		this.userService = userService;
 		this.gameService = gameService;
-		this.userRepository = userRepository;
-		this.friendRequestRepository = friendRequestRepository;
-		this.friendRequestService = friendRequestService;
 		this.authoritiesRepository = authoritiesRepository;
 	}
 

@@ -44,9 +44,14 @@ public class GameController{
     private static final String GAME_LISTING = "games/gameListing";
     private static final String CURRENT_GAME = "games/playingGame";
     private static final String JOIN_BY_CODE = "games/joinByCode";
-    private static final String GAMES_IN_PROGRESS = "games/gamesInProgress";
     private static final String GAMES_IN_PROGRESS_PAGE = "games/gamesInProgressP";
     private static final String FINISHED_GAME = "games/finishedGame";
+    private static final String SPECTATE_GAME = "games/spectate";
+    private static final String GAMES_TO_SPECTATE = "games/gameListingToSpectate";
+    private static final String SPECTATE_BY_CODE = "games/spectateByCode";
+
+
+
 
 
     @Autowired
@@ -134,7 +139,7 @@ public class GameController{
             return GAME_LISTING;
             
         } catch (Exception e) {
-            model.put("message", "invalid code   ");
+            model.put("message", "Error:  " + e);
             return JOIN_BY_CODE;
         }
     }
@@ -148,9 +153,12 @@ public class GameController{
                     
         Game activeGame= this.gameService.getGameById(gameId);
 
-        if(this.gameService.getGameById(gameId).getPlayer1() != null && this.gameService.getGameById(gameId).getPlayer2() != null){
+        response.addHeader("Refresh", "15");
+
+        if(activeGame.getPlayer2() != null){
             List<Player> players = playerService.getPlayersOfGame(gameId);
             model.addAttribute("players", players);
+            
         }
         
         try {
@@ -161,9 +169,8 @@ public class GameController{
         }
         catch (ImpossibleMoveException i){
             model.put("message", "You can't make this move, try another one.");
-        }catch (MoveNotMadeException i){
-            
-        }catch (Exception e){
+        }
+        catch (Exception e){
             if(this.playerService.getPlayerHasMoved(gameId).isHasMoved() == true){
                 model.put("message", "If you have already moved your tokens you should end your turn.");
             }
@@ -177,6 +184,7 @@ public class GameController{
 
         return CURRENT_GAME;
     }
+    
     @GetMapping("/{gameId}/passRound")
     public String passRound(ModelMap model,@PathVariable("gameId") Integer gameId) throws NotHisTurnException{
         UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -184,14 +192,9 @@ public class GameController{
         model.addAttribute("user",user);
 
         Game activeGame= this.gameService.getGameById(gameId);
-        String redirection ="redirect:/games/" + activeGame.getId();
-        try{
-            redirection = this.gameService.passRound(user.getUsername(), activeGame);
-        }catch(NoMoveException e){
-            model.put("message", "You have to make a move to pass turn.");
-        }catch(NotHisTurnException e){
-            model.put("message", "It's not your turn");
-        }
+        
+        String redirection = this.gameService.passRound(user.getUsername(), activeGame);
+        
         return redirection;
     }
 
@@ -210,7 +213,6 @@ public class GameController{
 
     }
     
-
     @GetMapping("/{gameId}/finishedGame")
     public String finishedGame(ModelMap model,@PathVariable("gameId") Integer gameId) throws DataAccessException, DuplicatedUserNameException{
 
@@ -229,8 +231,8 @@ public class GameController{
             model.addAttribute("user",user1);
             model.addAttribute("winnerUser", winneruser);
             model.addAttribute("pointOfTheGame", points);
-
-            gameService.achievementsUpdateFinishedGame(gameId);
+            
+            this.gameService.achievementsUpdateFinishedGame(gameId);
     
             return FINISHED_GAME;
         }
@@ -263,4 +265,54 @@ public class GameController{
         return "games/finishedGames";
     }
 
+
+    @GetMapping("/spectate")
+    public String spectateGame(ModelMap model){
+        UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User u = userService.getUser(ud.getUsername()).get();
+		model.addAttribute("user", u);
+        return SPECTATE_GAME;
+    }
+
+    @GetMapping("/spectate/public")
+    public String spectatePublicGame(ModelMap model,@PageableDefault(page = 0,size = 1) Pageable pg){
+
+        try {
+            UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User user = this.userService.getUser(ud.getUsername()).get();
+            model.addAttribute("user",user);
+
+            Page<Game> games = this.gameService.getAllPlayingGamesPage(pg);
+            model.addAttribute("listGames",games);
+            return GAMES_TO_SPECTATE;
+            
+        } catch (Exception e) {
+            model.put("message", "Error:  " + e);
+            return SPECTATE_GAME;
+        }
+    }
+
+    @GetMapping("/spectate/{gameCode}")
+    public String spectateGameByCode(@PathVariable("gameCode") String gameCode,  ModelMap model){
+        return spectatePrivateGame(gameCode, model);
+
+    }
+
+    @GetMapping("/spectate/private")
+    public String spectatePrivateGame(String gameCode,  ModelMap model){
+
+        try {
+            UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User user = this.userService.getUser(ud.getUsername()).get();
+            
+            model.addAttribute("user",user);
+            Game activeGame = this.gameService.getGameByCode(gameCode);
+            
+            return "redirect:/games/" + activeGame.getId();
+
+        }catch (Exception e) {
+            model.put("message", "Invalid code");
+            return SPECTATE_BY_CODE;
+        }
+    }
 }

@@ -20,8 +20,8 @@
 					<thead>
 						<tr>
 							<th style="width: 150px;">User: 
-							<form action=""><button style="height: 5px; position: absolute; right: 25%;">Update</button></form>
-							<form action=""><button style="height: 5px; position: absolute; right: 20%;">Delete</button></form>
+							<form action="/registeredUser/${usersp.username}"><button style="height: 5px; position: absolute; right: 25%;">Update</button></form>
+							<form action="/registeredUser/delete/{usersp.username}"><button style="height: 5px; position: absolute; right: 20%;">Delete</button></form>
 							&nbsp;
 							</th>
 

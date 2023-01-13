@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -27,12 +28,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.samples.petclinic.friendRequest.FriendRequestRepository;
-import org.springframework.samples.petclinic.friendRequest.FriendRequestService;
 import org.springframework.samples.petclinic.game.Game;
 import org.springframework.samples.petclinic.game.GameService;
 import org.springframework.samples.petclinic.player.Player;
-import org.springframework.samples.petclinic.player.PlayerService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -57,28 +55,19 @@ import org.springframework.web.servlet.ModelAndView;
 public class UserController {
 
 	private static final String VIEWS_USER_CREATE_FORM = "users/createUserForm";
-	private static final String VIEWS_OWNER_CREATE_FORM = "users/createOwnerForm";
 	private static final String VIEWS_USER_EDIT_PROFILE = "users/editProfile";
 
 	private final UserService userService;
-	private final PlayerService playerService;
 	private final GameService gameService;
-	private final FriendRequestService friendRequestService;
-	private final FriendRequestRepository friendRequestRepository;
 	private final AuthoritiesRepository authoritiesRepository;
 
 	
 	
-	private final UserRepository userRepository;
 
 	@Autowired
-	public UserController(UserService clinicService, PlayerService playerService, GameService gameService, UserRepository userRepository, FriendRequestRepository friendRequestRepository, FriendRequestService friendRequestService, AuthoritiesRepository authoritiesRepository) {
-		this.userService = clinicService;
-		this.playerService = playerService;
+	public UserController(UserService userService, GameService gameService, AuthoritiesRepository authoritiesRepository) {
+		this.userService = userService;
 		this.gameService = gameService;
-		this.userRepository = userRepository;
-		this.friendRequestRepository = friendRequestRepository;
-		this.friendRequestService = friendRequestService;
 		this.authoritiesRepository = authoritiesRepository;
 	}
 
@@ -352,6 +341,68 @@ public class UserController {
 
 		return vista;
 	}
+
+	@GetMapping("/registeredUser/{userId}")
+	public String editUserAdmin(ModelMap model, @PathVariable("userId") String userId){
+		String vista = "/users/editUserAdmin";
+		UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User u = this.userService.getUser(ud.getUsername()).get();
+		model.addAttribute("user", u);
+		User u1 = this.userService.getUser(userId).get();
+		model.addAttribute("user1", u1);
+		return vista;
+
+	}
+
+	@PostMapping("/registeredUser/{userId}/edit")
+	public String processUpdateUserForm(ModelMap modelMap, @Valid User user, BindingResult result, 
+		@PathVariable("userId") String userId) throws DataAccessException, DuplicatedUserNameException {
+			String vista = "users/registeredUser";
+			if (result.hasErrors()) {
+				String vista2 = "users/editUserAdmin";
+				return vista2;
+			}else{
+				try {
+					User u1 = this.userService.getUser(userId).get();
+					u1.setEmail(user.getEmail());
+					u1.setPassword(user.getPassword());
+					userService.saveUser(u1);
+					modelMap.put("message", "User " + user.username + " has been modified");
+					modelMap.put("messageType", "warning");
+					
+				} catch (DuplicatedUserNameException e) {
+					modelMap.put("message", "User " + user.username + " has been modified");
+					modelMap.put("messageType", "warning");
+				}
+				return vista;
+			}
+		}
+
+		@GetMapping("/registeredUser/delete/{username}")
+		public String deleteUser(@PathVariable("username") String username, ModelMap modelMap) {
+			//UserDetails ud = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			//User user = userService.getUser(ud.getUsername()).get();
+			//modelMap.addAttribute("user", user);
+			Optional<User> user1 = Optional.of(userService.getUser(username).get());
+
+			if(user1.isPresent()) {
+				userService.delete(user1.get());
+				modelMap.addAttribute("message", "user delete");
+			}else{
+				modelMap.addAttribute("message", "user not deleted");
+			}
+			
+			
+			return "redirect:/registeredUser";
+
+			
+
+			///if(u.isEnabled()){
+				
+
+			//}
+		}
+
 
 	
 

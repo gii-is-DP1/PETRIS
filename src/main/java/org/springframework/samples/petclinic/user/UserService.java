@@ -98,4 +98,9 @@ public class UserService {
 		userRepository.save(user);
 		userRepository.save(friend);
 	}
+
+	@Transactional
+	public void delete(User user) {
+		userRepository.delete(user);
+	}
 }

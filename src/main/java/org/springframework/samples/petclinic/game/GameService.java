@@ -22,8 +22,6 @@ import org.springframework.samples.petclinic.token.Token;
 import org.springframework.samples.petclinic.token.TokenService;
 import org.springframework.samples.petclinic.user.DuplicatedUserNameException;
 import org.springframework.samples.petclinic.user.User;
-import org.springframework.samples.petclinic.user.UserRepository;
-import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -36,20 +34,16 @@ public class GameService {
     private final SpaceService spaceService;
     private final TokenService tokenService;
     private final AchievementService achievementService;
-    private final UserService userService;
-    private final UserRepository userRepository;
  
     @Autowired
 	public GameService(GameRepository gameRepository,TokenService tokenService,PlayerService playerService,ColourService colourService,
-    PetrisBoardService petrisBoardService,SpaceService spaceService, UserService userService, UserRepository userRepository, AchievementService achievementService) {
+    PetrisBoardService petrisBoardService,SpaceService spaceService, AchievementService achievementService) {
 		this.gameRepository = gameRepository;
         this.playerService = playerService;
         this.tokenService = tokenService;
         this.colourService = colourService;
         this.petrisBoardService = petrisBoardService;
         this.spaceService = spaceService;
-        this.userService = userService;
-        this.userRepository = userRepository;
         this.achievementService = achievementService;
 	}
     public List<Game> getAllGames(){
@@ -418,8 +412,8 @@ public class GameService {
         boolean isUserPlayer2 = this.playerService.isPlayerOfUser(activeGame.getPlayer2().getId(), userName);
 
         boolean isMovementAllowed = false; 
-        Space space1 = null;
-        Space space2 = null;
+        Space space1 = new Space();
+        Space space2 = new Space();
 
         for (Space space : activeGame.getSpaces()){
             if (space.getPosition() == space1Position){
@@ -467,6 +461,7 @@ public class GameService {
                     
                 activeGame.getPlayer2().setHasMoved(true);
                 this.playerService.save(activeGame.getPlayer2());
+
             }else{
                 throw new ImpossibleMoveException();
             }
@@ -505,31 +500,12 @@ public class GameService {
     }
     
     //pasar de ronda
-    public String passRound(String userName, Game activeGame) throws NotHisTurnException, NoMoveException{
+    public String passRound(String userName, Game activeGame){
         String res = "redirect:/games/" + activeGame.getId();
-        boolean isPermitted = false;
         boolean isPlayer1 = this.playerService.isPlayerOfUser(activeGame.getPlayer1().getId(), userName);
         boolean isPlayer2 = this.playerService.isPlayerOfUser(activeGame.getPlayer2().getId(), userName);
 
-        if (isPlayer1){
-            if(!activeGame.getPlayer1().isTurn()){
-                throw new NotHisTurnException();
-            }else if(!activeGame.getPlayer1().isHasMoved()){
-                throw new NoMoveException();
-            }else{
-                isPermitted = true;
-            }
-        }else if(isPlayer2){
-            if(!activeGame.getPlayer2().isTurn()){
-                throw new NotHisTurnException();
-            }else if(!activeGame.getPlayer2().isHasMoved()){
-                throw new NoMoveException();
-            }else{
-                isPermitted = true;
-            }
-        }
-
-        if(isPermitted){
+        if(isPlayer1 || isPlayer2){
 
             Integer round = activeGame.getRound();
             Integer phase = activeGame.getPhase();
@@ -539,6 +515,7 @@ public class GameService {
             if (phase == 1 || phase == 3 || phase == 5){
                 activeGame.setPhase(phase + 1);
                 changeTurn(userName, activeGame);
+
             }else if (phase == 2 || phase == 4){
                 activeGame.setPhase(phase + 1);
                 this.activateBinaryFision(activeGame);
@@ -550,6 +527,7 @@ public class GameService {
                 activeGame.setPhase(1);
                 activeGame.setRound(round + 1);
             }
+
             this.save(activeGame);
 
             thereIsAWinner = thereIsAWinner || !this.checkThereIsPossibleMove(activeGame);
@@ -563,6 +541,8 @@ public class GameService {
             }
             this.tokenService.setAllHasBeenUsedToFalse(activeGame);
             this.playerService.setFalsePlayersMove(activeGame);
+
+
         }
     return res; 
    }
@@ -608,16 +588,16 @@ public class GameService {
 
         boolean res = false ;
         boolean isPlayer1 = this.playerService.isPlayerOfUser(activeGame.getPlayer1().getId(), userName);
-        if (isPlayer1){
-            if(activeGame.getPlayer1().isTurn()){
-                res = true;
-            }
+        if (isPlayer1 && activeGame.getPlayer1().isTurn() && activeGame.getPlayer1().isHasMoved()){
+            
+            res = true;
+
         }else if (activeGame.getPlayer2() != null){
+            
             boolean isPlayer2 = this.playerService.isPlayerOfUser(activeGame.getPlayer2().getId(), userName);
-            if(isPlayer2){
-                if(activeGame.getPlayer2().isTurn()){
-                    res = true;
-                }
+           
+            if(isPlayer2 && activeGame.getPlayer2().isTurn() && activeGame.getPlayer2().isHasMoved()){
+                res = true;
             }
         }
         return res;
@@ -651,15 +631,16 @@ public class GameService {
         if(user.getUsername().equals(winnerUser.getUsername())) {
              points = 15;
              user.setPoints(user.getPoints() + points);
+             user.setPlayedGames(user.getPlayedGames() + 1);
              user.setWonGames(user.getWonGames() + 1);
              
         } else if((user.getUsername().equals(game.getPlayer2().getUser().getUsername())) || 
         (user.getUsername().equals(game.getPlayer1().getUser().getUsername()))) {
              points = -10;
              user.setPoints(user.getPoints() + points);
+             user.setPlayedGames(user.getPlayedGames() + 1);
              user.setLostGames(user.getLostGames() + 1);
-             
-
+            
         }
 
         return user;
@@ -726,6 +707,7 @@ public class GameService {
             activeGame.setWinner(activeGame.getPlayer2().getColour().getName());
             activeGame.setActive(false);
             this.save(activeGame);
+
         }else if(isPlayer2){
             activeGame.setLoser(activeGame.getPlayer2().getColour().getName());
             activeGame.setWinner(activeGame.getPlayer1().getColour().getName());
@@ -735,5 +717,6 @@ public class GameService {
 
 
     }
+
     
 }

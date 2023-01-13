@@ -69,14 +69,16 @@ public class UserService {
 	public Optional<User> getUser(String username) {
 		return userRepository.findById(username);
 	}
-	@Transactional
+
+	@Transactional(rollbackFor = {DataAccessException.class, DuplicatedUserNameException.class})
 	public void saveUser(User user) throws DataAccessException, DuplicatedUserNameException{
 		if (userRepository.findByName(user.getUsername()) == null){
 			user.setEnabled(true);
 			userRepository.save(user);
 			authoritiesService.saveAuthorities(user.getUsername(), "admin");
 		}else{
-			throw new DuplicatedUserNameException();
+			if(userRepository.findByName(user.getUsername()) != null)
+				userRepository.save(user);
 		}
 	}
 
@@ -94,7 +96,7 @@ public class UserService {
 		friends.remove(friend);
 		othersFriends.remove(user);
 		user.setFriends(friends);
-		friend.setFriends(othersFriends);
+		friend.setFriends(othersFriends);	
 		userRepository.save(user);
 		userRepository.save(friend);
 	}

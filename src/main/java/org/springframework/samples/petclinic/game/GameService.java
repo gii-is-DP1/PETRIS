@@ -22,6 +22,7 @@ import org.springframework.samples.petclinic.token.Token;
 import org.springframework.samples.petclinic.token.TokenService;
 import org.springframework.samples.petclinic.user.DuplicatedUserNameException;
 import org.springframework.samples.petclinic.user.User;
+import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -34,10 +35,11 @@ public class GameService {
     private final SpaceService spaceService;
     private final TokenService tokenService;
     private final AchievementService achievementService;
+    private final UserService userService;
  
     @Autowired
 	public GameService(GameRepository gameRepository,TokenService tokenService,PlayerService playerService,ColourService colourService,
-    PetrisBoardService petrisBoardService,SpaceService spaceService, AchievementService achievementService) {
+    PetrisBoardService petrisBoardService,SpaceService spaceService, AchievementService achievementService,UserService userService) {
 		this.gameRepository = gameRepository;
         this.playerService = playerService;
         this.tokenService = tokenService;
@@ -45,6 +47,7 @@ public class GameService {
         this.petrisBoardService = petrisBoardService;
         this.spaceService = spaceService;
         this.achievementService = achievementService;
+        this.userService = userService;
 	}
     public List<Game> getAllGames(){
         return gameRepository.findAll();
@@ -644,6 +647,28 @@ public class GameService {
         }
 
         return user;
+        
+    }
+
+    public void savUser(Integer gameId, User winnerUser, User user) throws DataAccessException, DuplicatedUserNameException {
+        Game game= this.getGameById(gameId);
+        Integer points = null;
+        if(user.getUsername().equals(winnerUser.getUsername())) {
+             points = 15;
+             user.setPoints(user.getPoints() + points);
+             user.setPlayedGames(user.getPlayedGames() + 1);
+             user.setWonGames(user.getWonGames() + 1);
+             
+        } else if((user.getUsername().equals(game.getPlayer2().getUser().getUsername())) || 
+        (user.getUsername().equals(game.getPlayer1().getUser().getUsername()))) {
+             points = -10;
+             user.setPoints(user.getPoints() + points);
+             user.setPlayedGames(user.getPlayedGames() + 1);
+             user.setLostGames(user.getLostGames() + 1);
+            
+        }
+
+        this.userService.saveUser(user);
         
     }
 

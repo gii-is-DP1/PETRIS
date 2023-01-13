@@ -2,8 +2,6 @@ package org.springframework.samples.petclinic.game;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -24,8 +22,6 @@ import org.springframework.samples.petclinic.token.Token;
 import org.springframework.samples.petclinic.token.TokenService;
 import org.springframework.samples.petclinic.user.DuplicatedUserNameException;
 import org.springframework.samples.petclinic.user.User;
-import org.springframework.samples.petclinic.user.UserRepository;
-import org.springframework.samples.petclinic.user.UserService;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -38,20 +34,16 @@ public class GameService {
     private final SpaceService spaceService;
     private final TokenService tokenService;
     private final AchievementService achievementService;
-    private final UserService userService;
-    private final UserRepository userRepository;
  
     @Autowired
 	public GameService(GameRepository gameRepository,TokenService tokenService,PlayerService playerService,ColourService colourService,
-    PetrisBoardService petrisBoardService,SpaceService spaceService, UserService userService, UserRepository userRepository, AchievementService achievementService) {
+    PetrisBoardService petrisBoardService,SpaceService spaceService, AchievementService achievementService) {
 		this.gameRepository = gameRepository;
         this.playerService = playerService;
         this.tokenService = tokenService;
         this.colourService = colourService;
         this.petrisBoardService = petrisBoardService;
         this.spaceService = spaceService;
-        this.userService = userService;
-        this.userRepository = userRepository;
         this.achievementService = achievementService;
 	}
     public List<Game> getAllGames(){
@@ -420,8 +412,8 @@ public class GameService {
         boolean isUserPlayer2 = this.playerService.isPlayerOfUser(activeGame.getPlayer2().getId(), userName);
 
         boolean isMovementAllowed = false; 
-        Space space1 = null;
-        Space space2 = null;
+        Space space1 = new Space();
+        Space space2 = new Space();
 
         for (Space space : activeGame.getSpaces()){
             if (space.getPosition() == space1Position){
@@ -523,6 +515,7 @@ public class GameService {
             if (phase == 1 || phase == 3 || phase == 5){
                 activeGame.setPhase(phase + 1);
                 changeTurn(userName, activeGame);
+
             }else if (phase == 2 || phase == 4){
                 activeGame.setPhase(phase + 1);
                 this.activateBinaryFision(activeGame);
@@ -534,6 +527,7 @@ public class GameService {
                 activeGame.setPhase(1);
                 activeGame.setRound(round + 1);
             }
+
             this.save(activeGame);
 
             thereIsAWinner = thereIsAWinner || !this.checkThereIsPossibleMove(activeGame);
@@ -547,6 +541,8 @@ public class GameService {
             }
             this.tokenService.setAllHasBeenUsedToFalse(activeGame);
             this.playerService.setFalsePlayersMove(activeGame);
+
+
         }
     return res; 
    }
@@ -711,6 +707,7 @@ public class GameService {
             activeGame.setWinner(activeGame.getPlayer2().getColour().getName());
             activeGame.setActive(false);
             this.save(activeGame);
+
         }else if(isPlayer2){
             activeGame.setLoser(activeGame.getPlayer2().getColour().getName());
             activeGame.setWinner(activeGame.getPlayer1().getColour().getName());
@@ -720,5 +717,6 @@ public class GameService {
 
 
     }
+
     
 }

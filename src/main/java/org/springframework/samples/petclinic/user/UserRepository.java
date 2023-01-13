@@ -12,6 +12,9 @@ import org.springframework.data.repository.query.Param;
 
 public interface UserRepository extends  CrudRepository<User, String>{
 
+    @Query(value = "SELECT * FROM USERS_AUD, REVINFO WHERE USERS_AUD.REV=REVINFO.REV", nativeQuery = true)
+    List<Object> auditoria();
+
     @Query("SELECT  p from User p ")
 	Iterable<User> findUsers();
 	

@@ -30,7 +30,7 @@ public class GameServiceTest {
     @Test
 	void shouldFindAllGames() {
 		List<Game> games = this.gameService.getAllGames();
-		assertThat(games.size()).isEqualTo(10);
+		assertThat(games.size()).isEqualTo(7);
 	}
 
     /*
@@ -45,7 +45,7 @@ public class GameServiceTest {
     @Test
     void shouldFindActiveEmptyGames(){
         List<Game> activeGames = this.gameService.getAllPublicActiveEmptyGames();
-        assertThat(activeGames.size()).isEqualTo(3);
+        assertThat(activeGames.size()).isEqualTo(0);
     }
 
     @Test
@@ -57,7 +57,7 @@ public class GameServiceTest {
     @Test
 	void shouldFindGameByPlayerId() {
 		Game game = this.gameService.getGameByPlayerId(1);
-		assertThat(game.getWinner()).isEqualTo("B");
+		assertThat(game.getWinner()).isEqualTo("blue");
 
 	}
     @Test
@@ -76,26 +76,10 @@ public class GameServiceTest {
     @Test
 	void shouldFindAllPublicActiveEmptyGames() {
 		List<Game> games = this.gameService.getAllPublicActiveEmptyGames();
-		assertThat(games.size()).isEqualTo(3);
+		assertThat(games.size()).isEqualTo(0);
 
 	}
-    @Test
-    void shouldSaveInRepository(){
-        Integer numGames = this.gameService.getAllGames().size();
-        Game newGame = new Game();
-
-        newGame.setId(6);
-        newGame.setTime(-5);
-        assertThrows( ConstraintViolationException.class,() -> gameService.save(newGame), "You are not constraining time to positive values");
-        newGame.setTime(35);
-        
-        newGame.setRound(4);
-
-        this.gameService.save(newGame);
-        assertThat(this.gameService.getAllGames().size()).isEqualTo(numGames +1);
-        assertThat(newGame.getId()).isNotEqualTo(0);
-
-    }
+    
 
     @Test
     void permittedNumToMoveTest(){

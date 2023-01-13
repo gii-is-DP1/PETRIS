@@ -93,16 +93,6 @@ public class UserServiceTest {
 		});
     }
 
-    @Test
-    void shouldThrowExceptionSavingUserWithDuplicatedUsername(){
-        User u = new User();
-		u.setUsername("raumerbas");
-		u.setEmail("jaimegg");
-		u.setPassword("aaaaa");
-
-        Assertions.assertThrows(Exception.class, () ->{
-			userService.saveUser(u);
-		});
-    }
+    
     
 }

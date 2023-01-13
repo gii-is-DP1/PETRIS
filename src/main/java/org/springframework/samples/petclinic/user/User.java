@@ -42,14 +42,17 @@ public class User{
 
 	@Column(name = "played_games")
 	@Builder.Default
+	@NotAudited
 	Integer playedGames = 0;
 
 	@Column(name = "won_games")
 	@Builder.Default
+	@NotAudited
 	Integer wonGames = 0;
 
 	@Column(name = "lost_games")
 	@Builder.Default
+	@NotAudited
 	Integer lostGames = 0;
 
 	@NotNull

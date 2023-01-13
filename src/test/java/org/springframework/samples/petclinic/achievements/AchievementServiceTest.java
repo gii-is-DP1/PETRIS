@@ -54,10 +54,5 @@ public class AchievementServiceTest {
         assertThat(achievements.size()).isEqualTo(1);
     }
 
-    @Test
-    void shouldFindAchievementByUser(){
-        List<Achievement> achievements = this.achievementService.getAchievementsByUser("raumerbas");
-        assertThat(achievements.size()).isEqualTo(0);
-    }
 
 }

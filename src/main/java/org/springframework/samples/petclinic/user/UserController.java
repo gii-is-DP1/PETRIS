@@ -239,6 +239,7 @@ public class UserController {
 		modelMap.addAttribute("user", user);
 		return vista;
 	}
+	//.
 
 	@GetMapping(path = "users/{userId}/friends/delete/{username}")
 	public String eliminarAmigo(@PathVariable("username") String username, ModelMap modelMap) {
